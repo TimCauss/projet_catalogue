@@ -2,3 +2,27 @@ body * {
     margin: 0;
     padding: 0;
 }
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/** STYLE HEADER START */
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90vw;
+    outline: solid 1px black;
+}
+
+.header-img-ctn {
+    object-fit: cover;
+}
+
+.header-img-ctn img {}
+
+/** STYLE HEADER END */
