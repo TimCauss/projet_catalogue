@@ -167,6 +167,44 @@ header {
     overflow: hidden;
 }
 
+.slider-header {
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 25px;
+    display: flex;
+    align-items: center;
+    color: #919191;
+    justify-content: space-between;
+    padding: 0 200px;
+}
+
+.slider-btn {
+    background-color: #232323;
+    border-radius: 10px 10px 0 0;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.slider-icon {
+    fill: #919191;
+    width: 20px;
+    height: 20px;
+}
+
+.slider-header-right {
+    cursor: pointer;
+}
+
+.slider-header-right:hover .slider-icon,
+.slider-header-right:hover {
+    color: white;
+    fill: white;
+}
+
 .carousel {
     background: #ffffff;
     width: 1440px;
@@ -175,8 +213,8 @@ header {
 .carousel-cell {
     width: 360px;
     height: 320px;
-    margin-right: 10px;
     background: #616161;
+    border-inline: 3px solid #232323;
     counter-increment: carousel-cell;
     transition: height 200ms ease-in-out;
 }
@@ -201,8 +239,64 @@ header {
     color: #6767678d;
 }
 
+.carousel-footer {
+    flex-direction: column;
+    padding: 15px 15px;
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 20px;
+    color: #ffffff;
+    display: block;
+    position: absolute;
+    bottom: 0;
+    background-color: #313131;
+    width: 100%;
+    transition: all 200ms ease-in-out;
+}
+
+.carousel-footer h5 {
+    scale: 0.8;
+    text-align: center;
+
+}
+
+.carousel-footer-nbr {
+    float: inline-end;
+    top: 0;
+    display: none;
+}
+
+.crsl-ft-r2 {
+    padding-top: 30px;
+}
+
+.crsl-ft-type,
+.type-label {
+    display: none;
+}
+
+.carousel-cell.is-selected .carousel-footer-nbr,
+.carousel-cell.is-selected .crsl-ft-type,
+.carousel-cell.is-selected .type-label {
+    display: block;
+}
+
+.carousel-cell.is-selected .carousel-footer h5 {
+    scale: 1;
+    text-align: left;
+}
+
+.carousel-cell.is-selected .carousel-footer {
+    border-radius: 0 0 15px 15px;
+    height: 140px;
+    background-color: #232323;
+}
+
 .carousel-cell.is-selected {
     height: 460px;
+    border-radius: 0 0 15px 15px;
 }
 
 .carousel-cell.is-selected img {
