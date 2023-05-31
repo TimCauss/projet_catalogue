@@ -142,3 +142,47 @@ header {
 }
 
 /** STYLE NAV END */
+
+/** STYLE SLIDER START */
+
+.slider-main-container {
+    outline: 1px solid violet;
+    margin-top: 100px;
+}
+
+.slider-header {
+    display: flex;
+    outline: 1px solid rgb(247, 13, 13);
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 25px;
+    display: flex;
+    align-items: center;
+    color: #919191;
+    justify-content: space-between;
+    padding: 0 350px;
+}
+
+.slider-btn {
+    background-color: #232323;
+    border-radius: 10px 10px 0 0;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.slider-icon {
+    fill: #919191;
+    width: 20px;
+    height: 20px;
+}
+
+.slider-content-container {
+    width: 100vw;
+    max-width: 1440px;
+    height: 500px;
+    outline: solid 1px green;
+}
