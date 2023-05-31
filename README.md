@@ -39,8 +39,9 @@ Un administrateur principal peut agir sur l’ensemble des produits.
 Les autres gestionnaires ne peuvent agir que sur les produits qu’ils ont ajouté eux-
 mêmes."
 
-Bonus : l’administrateur principal gère les comptes des autres utilisateurs.
-Back-office
+### Bonus : 
+l’administrateur principal gère les comptes des autres utilisateurs.
+
+### Back-office
 Pour l’apparence du back-office, il faudra utiliser un framework CSS, Bootstrap ou
 Tailwind.
-Groupes
