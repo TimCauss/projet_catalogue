@@ -23,7 +23,7 @@
                 <div class="slider-bg">0004</div>
                 <img class="slider-pokemon" src="./img/pokemon/004.png" alt="Image de salamèche">
                 <div class="slider-pokemon-details">
-                    <h5>SALAMECHE
+                    <h5>Salameche
                         <span class="pokemon-nbr">0004</span>
                     </h5>
                     <dl>
@@ -38,7 +38,7 @@
                 <div class="slider-bg">0004</div>
                 <img class="slider-pokemon" src="./img/pokemon/004.png" alt="Image de salamèche">
                 <div class="slider-pokemon-details">
-                    <h5>SALAMECHE
+                    <h5>Salameche
                         <span class="pokemon-nbr">0004</span>
                     </h5>
                     <dl>
@@ -53,7 +53,7 @@
                 <div class="slider-bg">0004</div>
                 <img class="slider-pokemon" src="./img/pokemon/004.png" alt="Image de salamèche">
                 <div class="slider-pokemon-details">
-                    <h5>SALAMECHE
+                    <h5>Salameche
                         <span class="pokemon-nbr">0004</span>
                     </h5>
                     <dl>
@@ -68,7 +68,7 @@
                 <div class="slider-bg">0004</div>
                 <img class="slider-pokemon" src="./img/pokemon/004.png" alt="Image de salamèche">
                 <div class="slider-pokemon-details">
-                    <h5>SALAMECHE
+                    <h5>Salameche
                         <span class="pokemon-nbr">0004</span>
                     </h5>
                     <dl>
@@ -83,7 +83,7 @@
                 <div class="slider-bg">0004</div>
                 <img class="slider-pokemon" src="./img/pokemon/004.png" alt="Image de salamèche">
                 <div class="slider-pokemon-details">
-                    <h5>SALAMECHE
+                    <h5>Salameche
                         <span class="pokemon-nbr">0004</span>
                     </h5>
                     <dl>
@@ -98,7 +98,7 @@
                 <div class="slider-bg">0004</div>
                 <img class="slider-pokemon" src="./img/pokemon/004.png" alt="Image de salamèche">
                 <div class="slider-pokemon-details">
-                    <h5>SALAMECHE
+                    <h5>Salameche
                         <span class="pokemon-nbr">0004</span>
                     </h5>
                     <dl>
@@ -113,7 +113,7 @@
                 <div class="slider-bg">0004</div>
                 <img class="slider-pokemon" src="./img/pokemon/004.png" alt="Image de salamèche">
                 <div class="slider-pokemon-details">
-                    <h5>SALAMECHE
+                    <h5>Salameche
                         <span class="pokemon-nbr">0004</span>
                     </h5>
                     <dl>
@@ -128,7 +128,37 @@
                 <div class="slider-bg">0004</div>
                 <img class="slider-pokemon" src="./img/pokemon/004.png" alt="Image de salamèche">
                 <div class="slider-pokemon-details">
-                    <h5>SALAMECHE
+                    <h5>Salameche
+                        <span class="pokemon-nbr">0004</span>
+                    </h5>
+                    <dl>
+                        <dt>Type</dt>
+                        <dd class="pokemon-types"><span class="type-colors-feu type-label">Feu</span></dd>
+                    </dl>
+                </div>
+            </li>
+            <!-- CARD END -->
+            <!-- CARD START -->
+            <li class="loaded clone nonactive">
+                <div class="slider-bg">0004</div>
+                <img class="slider-pokemon" src="./img/pokemon/004.png" alt="Image de salamèche">
+                <div class="slider-pokemon-details">
+                    <h5>Salameche
+                        <span class="pokemon-nbr">0004</span>
+                    </h5>
+                    <dl>
+                        <dt>Type</dt>
+                        <dd class="pokemon-types"><span class="type-colors-feu type-label">Feu</span></dd>
+                    </dl>
+                </div>
+            </li>
+            <!-- CARD END -->
+            <!-- CARD START -->
+            <li class="loaded clone nonactive">
+                <div class="slider-bg">0004</div>
+                <img class="slider-pokemon" src="./img/pokemon/004.png" alt="Image de salamèche">
+                <div class="slider-pokemon-details">
+                    <h5>Salameche
                         <span class="pokemon-nbr">0004</span>
                     </h5>
                     <dl>

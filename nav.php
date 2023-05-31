@@ -1,12 +1,14 @@
 <nav class="main-nav">
     <ul>
         <li>
-            <div class="nav-item ni-1">
-                Accueil
-            </div>
+            <a href="index.php">
+                <div class="nav-item ni-1">Accueil</div>
+            </a>
         </li>
         <li>
-            <div class="nav-item ni-2">Types</div>
+            <a href="types.php">
+                <div class="nav-item ni-2">Types</div>
+            </a>
         </li>
         <li>
             <div class="nav-item ni-3">Profile</div>
