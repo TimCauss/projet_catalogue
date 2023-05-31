@@ -9,17 +9,16 @@
     <title>Pokeliste - Home</title>
 </head>
 
-
-<!-- /** includes Header and Nav */ -->
-<?php
-
-include_once "./header.php";
-include_once "./nav.php";
-include_once "./slider.php"
-
-?>
-
 <body>
+
+    <!-- /** includes Header and Nav */ -->
+    <?php
+
+    include_once "./header.php";
+    include_once "./nav.php";
+    include_once "./slider.php"
+
+    ?>
 
 </body>
 
