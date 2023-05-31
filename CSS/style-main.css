@@ -180,6 +180,18 @@ header {
     height: 20px;
 }
 
+.slider-header-right {
+    cursor: pointer;
+}
+
+.slider-header-right:hover .slider-icon,
+.slider-header-right:hover {
+    color: white;
+    fill: white;
+}
+
+
+
 .slider-content-container {
     width: 100vw;
     max-width: 1440px;
