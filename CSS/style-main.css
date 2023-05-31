@@ -198,3 +198,26 @@ header {
     height: 600px;
     outline: solid 1px green;
 }
+
+.slider-pokemon-details {
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 30px;
+}
+
+/** STYLE SLIDER END */
+
+
+/** TYPES COLORS */
+
+.type-label {
+    border-radius: 4px 4px 4px 4px;
+    color: #FFFFFF;
+    border-radius: 4px 4px 4px 4px;
+}
+
+.type-colors-feu {
+    background-color: #E3350D;
+}
