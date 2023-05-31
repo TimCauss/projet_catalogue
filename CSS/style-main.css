@@ -19,15 +19,10 @@ header {
     flex-direction: column;
     align-items: center;
     width: 100vw;
-    height: 15%;
 }
 
 .header-img-ctn {
     object-fit: cover;
-}
-
-.title-container {
-    margin-top: -50px;
 }
 
 .title-container img {
@@ -47,12 +42,103 @@ header {
 .main-nav ul {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+}
+
+.main-nav li {
+    list-style: none;
+
 }
 
 .nav-item {
-    list-style-type: none;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+    color: #464646;
+    /* Accueil */
+    box-sizing: border-box;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 35px 20px;
+    cursor: pointer;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
+.ni-1 {
+    border-left: #919191 solid 1px;
+    border-bottom: #919191 5px solid;
+    border-bottom-left-radius: 10px;
+    transition: background-color ease-in-out 200ms;
+}
 
+.ni-1:hover {
+    background-color: #919191;
+    color: #ffffff;
+}
+
+.ni-2 {
+    border-left: #919191 solid 1px;
+    border-bottom: #E3350D 5px solid;
+    transition: background-color ease-in-out 200ms;
+}
+
+.ni-2:hover {
+    background-color: #E3350D;
+    color: #ffffff;
+}
+
+.ni-3 {
+    border-left: #919191 solid 1px;
+    border-bottom: #EE6B2F 5px solid;
+    transition: background-color ease-in-out 200ms;
+}
+
+.ni-3:hover {
+    background-color: #EE6B2F;
+    color: #ffffff;
+}
+
+.ni-4 {
+    border-left: #919191 solid 1px;
+    border-bottom: #23B028 5px solid;
+    transition: background-color ease-in-out 200ms;
+}
+
+.ni-4:hover {
+    background-color: #23B028;
+    color: #ffffff;
+}
+
+.ni-5 {
+    border-left: #919191 solid 1px;
+    border-bottom: #2F42EE 5px solid;
+    transition: background-color ease-in-out 200ms;
+}
+
+.ni-5:hover {
+    background-color: #2F42EE;
+    color: #ffffff;
+}
+
+.ni-6 {
+    border-left: #919191 solid 1px;
+    border-right: #919191 solid 1px;
+    border-bottom: #EAEE2F 5px solid;
+    border-bottom-right-radius: 10px;
+    transition: background-color ease-in-out 200ms;
+}
+
+.ni-6:hover {
+    background-color: #EAEE2F;
+    color: #ffffff;
+}
 
 /** STYLE NAV END */
