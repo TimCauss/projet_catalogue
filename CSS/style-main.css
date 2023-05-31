@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
+
 body * {
     margin: 0;
     padding: 0;
@@ -151,8 +153,8 @@ header {
 }
 
 .ni-6:hover {
-    background-color: #EAEE2F;
-    color: #ffffff;
+    background-color: #f5f845;
+    color: #8d8d8d;
 }
 
 /** STYLE NAV END */
@@ -162,7 +164,7 @@ header {
 .carousel-container {
     margin-top: 50px;
     max-width: 1440px;
-    height: 600px;
+    height: 650px;
     padding: 100px 0;
     overflow: hidden;
 }
