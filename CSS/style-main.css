@@ -13,6 +13,14 @@ body {
 }
 
 
+h5 {
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 30px;
+}
+
 /** STYLE HEADER START */
 header {
     display: flex;
@@ -146,13 +154,15 @@ header {
 /** STYLE SLIDER START */
 
 .slider-main-container {
-    outline: 1px solid violet;
     margin-top: 100px;
+    clear: both;
+    display: block;
+    float: left;
+    position: relative;
+    width: 100%;
 }
 
 .slider-header {
-    display: flex;
-    outline: 1px solid rgb(247, 13, 13);
     font-family: 'Arial';
     font-style: normal;
     font-weight: 400;
@@ -162,7 +172,7 @@ header {
     align-items: center;
     color: #919191;
     justify-content: space-between;
-    padding: 0 350px;
+    padding: 0 200px;
 }
 
 .slider-btn {
@@ -193,29 +203,97 @@ header {
 
 
 .slider-content-container {
-    width: 100vw;
-    max-width: 1440px;
-    height: 600px;
-    outline: solid 1px green;
+    border-top: 3px solid #232323;
+    clear: both;
+    display: block;
+    float: left;
+    position: relative;
+    width: 200%;
+    right: 35%;
+}
+
+.slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    height: 100%;
+    min-height: 336px;
+    list-style: none;
+}
+
+.slider li {
+    float: none;
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+    padding: 0;
+    text-align: left;
+    font-size: 0;
+    white-space: nowrap;
+    margin: 0 0 0 -4px;
+    width: 250px;
+    height: 380px;
+    background: #616161;
+    border-left: 3px solid #232323;
+}
+
+.nonactive img {
+    opacity: 0.4;
+}
+
+.active img {
+    z-index: 2;
+    opacity: 1;
+    scale: 1.25;
+    transform: translateY(-15px);
+}
+
+.loaded img.slider-pokemon {
+    display: block;
+    width: 250px;
+    display: block;
+    top: 0;
+    left: 50%;
+    width: 250px;
+    height: 250px;
+    z-index: 2;
 }
 
 .slider-pokemon-details {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: #313131;
     font-family: 'Arial';
     font-style: normal;
     font-weight: 400;
     font-size: 24px;
     line-height: 30px;
+    color: #FFFFFF;
 }
+
+
 
 /** STYLE SLIDER END */
 
 
 /** TYPES COLORS */
 
+.slider-pokemon-details dt {
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+}
+
+
 .type-label {
     border-radius: 4px 4px 4px 4px;
-    color: #FFFFFF;
-    border-radius: 4px 4px 4px 4px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    padding: 5px 10px;
 }
 
 .type-colors-feu {
