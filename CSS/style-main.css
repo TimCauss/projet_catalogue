@@ -195,6 +195,6 @@ header {
 .slider-content-container {
     width: 100vw;
     max-width: 1440px;
-    height: 500px;
+    height: 600px;
     outline: solid 1px green;
 }
