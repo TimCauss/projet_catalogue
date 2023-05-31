@@ -52,7 +52,6 @@
     <div class="type-card card-Tenebres">
         Ténèbres
     </div>
-
 </section>
 
 </html>
