@@ -1,12 +1,15 @@
 body * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 
 
@@ -15,14 +18,41 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 90vw;
-    outline: solid 1px black;
+    width: 100vw;
+    height: 15%;
 }
 
 .header-img-ctn {
     object-fit: cover;
 }
 
-.header-img-ctn img {}
+.title-container {
+    margin-top: -50px;
+}
+
+.title-container img {
+    width: 500px;
+}
+
+
 
 /** STYLE HEADER END */
+
+
+/** STYLE NAV START */
+.main-nav {
+    background-color: #ffffff;
+}
+
+.main-nav ul {
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-item {
+    list-style-type: none;
+}
+
+
+
+/** STYLE NAV END */
