@@ -1,8 +1,8 @@
 # Projet 4 : Catalogue
 du 23/05/2023 au 20/06/2023
 
-💡- Technologies : HTML, CSS, Bootstrap/Tailwind, PHP, MySQL
-👨‍👩‍👧‍👦- Projet par groupes de 2 ou 3
+* 💡 Technologies : HTML, CSS, Bootstrap/Tailwind, PHP, MySQL
+* 👨‍👩‍👧‍👦 Projet par groupes de 2 ou 3
 
 ## Description :
 Le but est de créer un catalogue dont le choix du thème vous appartient (on parle d’un catalogue du type Allociné pour les films, le but n’est pas de faire un site e-commerce). Ce catalogue doit permettre de visualiser une grille de produits (films, musiques, objets...). En cliquant sur un produit de cette grille, on pourra consulter la page individuelle de celui-ci. Cette page individuelle fournira une description et des informations supplémentaires.
