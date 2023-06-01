@@ -1,9 +1,10 @@
 <?php
-
+session_start();
 
 require_once("./connect.php");
 
-if ($_POST && isset($_POST['nom']) && isset($_POST['numero'])) {
+if ($_POST && !empty($_POST['nom']) && !empty($_POST['numero'])) {
+    $_SESSION['er_msg01'] = null;
     $nom = strip_tags($_POST['nom']);
     $numero = strip_tags($_POST['numero']);
     $p_img = strip_tags($_POST['p_img']);
@@ -29,6 +30,10 @@ if ($_POST && isset($_POST['nom']) && isset($_POST['numero'])) {
 
     $query->execute();
     header("Location: creer.php");
+} else {
+    $_SESSION['er_msg'] = [
+        1 => "Remplissez les champs obligatoires"
+    ];
 }
 
 
@@ -60,46 +65,65 @@ if ($_POST && isset($_POST['nom']) && isset($_POST['numero'])) {
 
     <a href="/img/img_not_found.png"></a>
 
-    <section class="form-add-container">
-        <div class="card-body p-4 p-md-5">
-            <h1>Ajouter un Poékmon</h1>
-            <form method="POST">
-                <div class="form-outline">
-                    <input type="text" class="form-control" name="nom" id="nom" placeholder="Nom du Pokémon">
-                    <label for="nom" class="form-label">Nom</label>
-                </div>
-                <div class="form-outline">
-                    <input type="number" name="numero" id="numero" class="form-control" placeholder="Numéro officiel du Pokémon">
-                    <label for="numero" class="form-label">Numéro</label>
-                </div>
-                <div class="form-outline">
-                    <input type="p_img" name="p_img" id="p_img" class="form-control" placeholder="Image URL of the Pokémon">
-                    <label for="p_img" class="form-label">Image</label>
-                </div>
-                <div class="form-outline">
-                    <input type="text" name="description" id="description" class="form-control" placeholder="Description rapide du Pokémon">
-                    <label for="description" class="form-label">Description</label>
-                </div>
-                <div class="form-outline">
-                    <input type="text" name="taille" id="taille" class="form-control">
-                    <label for="taille" class="form-label">Taille</label>
-                </div>
-                <div class="form-outline">
-                    <input type="text" name="poids" id="poids" class="form-control">
-                    <label for="poids" class="form-label">Poids</label>
-                </div>
-                <div class="form-outline">
-                    <input type="text" name="evolutions" id="evolutions" class="form-control">
-                    <label for="evolutions" class="form-label">Evolutions</label>
-                </div>
-                <div class="form-outline">
-                    <input type="text" name="type" id="type" class="form-control">
-                    <label for="type" class="form-label">Type</label>
-                </div>
+    <section class="form-add-container container px-10">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-9 col-xl-7">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="mb-4 pb-2">Ajouter un Pokémon</h1>
+                        <form method="POST">
+                            <div class="row mb-4">
+                                <div class="form-outline col col-form-r">
+                                    <input type="text" class="form-control" name="nom" id="nom" placeholder="Nom du Pokémon">
+                                    <label for="nom" class="form-label">Nom</label>
+                                </div>
+                                <div class="form-outline col">
+                                    <input type="number" name="numero" id="numero" class="form-control" placeholder="Numéro officiel du Pokémon">
+                                    <label for="numero" class="form-label">Numéro</label>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="form-outline">
+                                    <input type="p_img" name="p_img" id="p_img" class="form-control" placeholder="Image URL of the Pokémon">
+                                    <label for="p_img" class="form-label">Image</label>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="form-outline">
+                                    <textarea name="description" id="description" rows="3" class="form-control" placeholder="Description rapide du Pokémon"></textarea>
+                                    <label for="description" class="form-label">Description</label>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="form-outline col col-form-r">
+                                    <input type="text" name="taille" id="taille" class="form-control" placeholder="Taille du Pokémon, en mètre (ex: 0.4)">
+                                    <label for="taille" class="form-label">Taille</label>
+                                </div>
+                                <div class="form-outline col">
+                                    <input type="text" name="poids" id="poids" class="form-control" placeholder="Poids du Pokémon en kg (ex: 6)">
+                                    <label for="poids" class="form-label">Poids</label>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="form-outline">
+                                    <input type="text" name="evolutions" id="evolutions" class="form-control" placeholder="Url de l'évolution">
+                                    <label for="evolutions" class="form-label">Evolutions</label>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="form-outline">
+                                    <input type="text" name="type" id="type" class="form-control">
+                                    <label for="type" class="form-label">Type</label>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <input type="submit" class="btn btn-form" value="Ajouter">
+                            </div>
 
-                <input type="submit" value="Ajouter">
-
-            </form>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 

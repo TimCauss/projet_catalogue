@@ -442,3 +442,21 @@ header {
 .form-add-container form {
     margin-top: 50px;
 }
+
+.btn-form {
+    background: #232323;
+    color: #FFFFFF;
+}
+
+.btn-form:hover {
+    background: #6d6d6d;
+    color: #FFFFFF;
+}
+
+.error {
+    color: red;
+}
+
+.col-form-r {
+    margin-right: 10px;
+}
