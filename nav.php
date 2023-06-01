@@ -6,7 +6,7 @@
             </a>
         </li>
         <li>
-            <a href="types.php">
+            <a href="#types">
                 <div class="nav-item ni-2">Types</div>
             </a>
         </li>

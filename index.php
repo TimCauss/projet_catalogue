@@ -17,8 +17,8 @@
 
     include_once "./header.php";
     include_once "./nav.php";
-    include_once "./slider.php"
-
+    include_once "./slider.php";
+    include_once "./types.php";
     ?>
 
     <script src="./JS/flickity.pkgd.js"></script>
