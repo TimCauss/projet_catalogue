@@ -27,7 +27,8 @@
                     <h5>Salamèche <span class="carousel-footer-nbr">0004</span></h5>
                 </div>
                 <div class="crsl-ft-r2">
-                    <span class="crsl-ft-type">Type</span><span class="type-label type-colors-feu">Feu</span>
+                    <div class="crsl-ft-type">Type</div>
+                    <div class="type-label type-colors-feu">Feu</div>
                 </div>
             </div>
         </div>
@@ -39,7 +40,10 @@
                 <div class="crsl-ft-r1">
                     <h5>Bulbizarre <span class="carousel-footer-nbr">0001</span></h5>
                 </div>
-                <div class="crsl-ft-r2"><span class="crsl-ft-type">Type</span><span class="type-label type-colors-plante">Plante</span></div>
+                <div class="crsl-ft-r2">
+                    <div class="crsl-ft-type">Type</div>
+                    <div class="type-label type-colors-plante">Plante</div>
+                </div>
             </div>
         </div>
         <!--Card-->
@@ -72,7 +76,13 @@
                 <div class="crsl-ft-r1">
                     <h5>Aspicot <span class="carousel-footer-nbr">0013</span></h5>
                 </div>
-                <div class="crsl-ft-r2"><span class="crsl-ft-type">Type</span><span class="type-label type-colors-insecte">Insecte</span><span class="type-label type-colors-poison">Poison</span></div>
+                <div class="crsl-ft-r2">
+                    <div class="crsl-ft-type">Type</div>
+                    <div>
+                        <div class="type-label type-colors-insecte">Insecte</div>
+                        <div class="type-label type-colors-poison">Poison</div>
+                    </div>
+                </div>
             </div>
         </div>
         <!--Card-->

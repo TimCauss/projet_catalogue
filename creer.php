@@ -70,8 +70,15 @@ if ($_POST && !empty($_POST['nom']) && !empty($_POST['numero'])) {
         <div class="row justify-content-center">
             <div class="col-12 col-lg-9 col-xl-7">
                 <div class="card">
+                    <div class="center-on-page">
+                        <div class="pokeball">
+                            <div class="pokeball__button"></div>
+                        </div>
+                    </div>
                     <div class="card-body">
+
                         <h1 class="mb-4 pb-2">Ajouter un Pokémon</h1>
+
                         <form method="POST">
                             <div class="row mb-4">
                                 <div class="form-outline col col-form-r">
