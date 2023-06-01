@@ -375,11 +375,12 @@ header {
     font-size: 20px;
     line-height: 23px;
     cursor: pointer;
-    transition: opacity 200ms;
+    transition: opacity 200ms ease-in-out, scale 200ms ease-in-out;
 }
 
 .type-card:hover {
     opacity: 0.5;
+    scale: 1.1;
 }
 
 .card-feu {
