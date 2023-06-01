@@ -11,7 +11,7 @@
             </a>
         </li>
         <li>
-            <div class="nav-item ni-3">Profile</div>
+            <div class="nav-item ni-3">Pokedex</div>
         </li>
         <li>
             <div class="nav-item ni-4">Random</div>
@@ -22,7 +22,7 @@
             </a>
         </li>
         <li>
-            <div class="nav-item ni-6">Admin</div>
+            <div class="nav-item ni-6">Profil</div>
         </li>
     </ul>
 </nav>
