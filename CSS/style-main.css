@@ -432,3 +432,13 @@ header {
 .card-Tenebres {
     background-color: #3D3D3D;
 }
+
+/** STYLE PAGE CREER START **/
+
+.form-add-container {
+    margin-top: 50px;
+}
+
+.form-add-container form {
+    margin-top: 50px;
+}
