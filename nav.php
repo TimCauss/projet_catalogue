@@ -11,7 +11,9 @@
             </a>
         </li>
         <li>
-            <div class="nav-item ni-3">Pokedex</div>
+            <a href="pokedex.php">
+                <div class="nav-item ni-3">Pokedex</div>
+            </a>
         </li>
         <li>
             <div class="nav-item ni-4">Random</div>
