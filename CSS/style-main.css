@@ -108,6 +108,7 @@ header {
 
 .ni-2:hover {
     background-color: #E3350D;
+    border-color: #E3350D;
     color: #ffffff;
 }
 
@@ -119,6 +120,7 @@ header {
 
 .ni-3:hover {
     background-color: #EE6B2F;
+    border-color: #EE6B2F;
     color: #ffffff;
 }
 
@@ -130,6 +132,7 @@ header {
 
 .ni-4:hover {
     background-color: #23B028;
+    border-color: #23B028;
     color: #ffffff;
 }
 
@@ -141,6 +144,7 @@ header {
 
 .ni-5:hover {
     background-color: #2F42EE;
+    border-color: #2F42EE;
     color: #ffffff;
 }
 
@@ -154,6 +158,7 @@ header {
 
 .ni-6:hover {
     background-color: #f5f845;
+    border-color: #f5f845;
     color: #8d8d8d;
 }
 
