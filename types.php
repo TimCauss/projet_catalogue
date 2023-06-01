@@ -1,5 +1,5 @@
-<section class="section-types">
-    <div id="types" class="type-card card-feu">
+<section id="types" class="section-types">
+    <div class="type-card card-feu">
         Feu
     </div>
     <div class="type-card card-plante">

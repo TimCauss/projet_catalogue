@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
 
+html {
+    scroll-behavior: smooth;
+}
+
 body * {
     margin: 0;
     padding: 0;
@@ -354,6 +358,7 @@ header {
 
 .section-types {
     margin-top: 50px;
+    margin-bottom: 75px;
     max-width: 1440px;
     display: flex;
     flex-flow: row wrap;
