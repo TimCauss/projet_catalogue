@@ -506,6 +506,9 @@ header {
     border-radius: 50%;
     overflow: hidden;
     box-shadow: inset -10px 10px 0 10px #ccc;
+}
+
+.pokeball--animation {
     animation: fall .25s ease-in-out,
         shake 1.25s cubic-bezier(.36, .07, .19, .97) 3;
 }
@@ -543,6 +546,14 @@ header {
     animation: blink .5s alternate 7;
 }
 
+.pokeball:hover {
+    animation: shake 1.25s cubic-bezier(.36, .07, .19, .97) infinite;
+}
+
+.pokeball:hover .pokeball__button {
+    animation: blink .5s alternate infinite;
+}
+
 /* Animation */
 @keyframes blink {
     from {
@@ -555,7 +566,7 @@ header {
 }
 
 @keyframes shake {
-    0 {
+    0% {
         transform: translate(0, 0) rotate(0);
     }
 
