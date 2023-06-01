@@ -1,5 +1,5 @@
 <section class="carousel-container">
-<div class="slider-header">
+    <div class="slider-header">
         <div class="slider-btn slider-header-left">
             <svg width="23" height="22" class="slider-icon" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M11.4936 5.81359C12.8397 5.81359 14.1031 6.339 15.0592 7.29002C15.8236 8.05435 16.306 9.01969 16.4719 10.0631H22.0625C21.8758 7.52893 20.8088 5.17033 18.9964 3.35518C16.9899 1.35148 14.3259 0.248894 11.4936 0.248894C8.65904 0.248894 5.995 1.35379 3.98853 3.35795C2.17661 5.17033 1.10683 7.52893 0.920135 10.0631H6.5084C6.89426 7.65924 8.98113 5.81359 11.4936 5.81359ZM9.04721 8.41155C8.39657 9.06682 8.03243 9.93281 8.03243 10.8579C8.03243 11.7785 8.39657 12.6468 9.04721 13.2997C9.70017 13.9527 10.5662 14.3122 11.4913 14.3122C13.3961 14.3122 14.9456 12.7604 14.9456 10.8556C14.9456 9.9305 14.5837 9.06451 13.9354 8.40924C13.2801 7.75629 12.4141 7.39908 11.4913 7.39908C10.5685 7.40139 9.70248 7.7586 9.04721 8.41155ZM15.0569 14.4213C14.1031 15.3723 12.8374 15.8977 11.4913 15.8977C10.1401 15.8977 8.8767 15.3746 7.92568 14.4213C7.16413 13.6569 6.67429 12.6939 6.5084 11.6482H0.920135C1.10683 14.1823 2.17383 16.5433 3.98622 18.3579C5.99269 20.3621 8.65673 21.467 11.4913 21.467C17.0726 21.467 21.6484 17.1278 22.0578 11.6482H16.4719C16.306 12.6939 15.8212 13.6592 15.0569 14.4213Z" />
@@ -16,7 +16,7 @@
             </svg>
         </div>
     </div>
-    
+
     <div class="carousel" data-flickity='{ "wrapAround": true, "adaptiveHeight": true }'>
         <!--Card-->
         <div class="carousel-cell">
@@ -33,68 +33,68 @@
         </div>
         <!--Card-->
         <div class="carousel-cell">
-            <div class="carousel-poke-nbr">0004</div>
-            <img class="carousel-img" src="./img/pokemon/004.png" alt="Image de salamèche">
+            <div class="carousel-poke-nbr">0001</div>
+            <img class="carousel-img" src="./img/pokemon/001.png" alt="Image de Bulbizarre">
             <div class="carousel-footer">
                 <div class="crsl-ft-r1">
-                    <h5>Salamèche <span class="carousel-footer-nbr">0004</span></h5>
+                    <h5>Bulbizarre <span class="carousel-footer-nbr">0001</span></h5>
                 </div>
-                <div class="crsl-ft-r2"><span class="crsl-ft-type">Type</span><span class="type-label type-colors-feu">Feu</span></div>
+                <div class="crsl-ft-r2"><span class="crsl-ft-type">Type</span><span class="type-label type-colors-plante">Plante</span></div>
             </div>
         </div>
         <!--Card-->
         <div class="carousel-cell">
-            <div class="carousel-poke-nbr">0004</div>
-            <img class="carousel-img" src="./img/pokemon/004.png" alt="Image de salamèche">
+            <div class="carousel-poke-nbr">0007</div>
+            <img class="carousel-img" src="./img/pokemon/007.png" alt="Image de Carapuce">
             <div class="carousel-footer">
                 <div class="crsl-ft-r1">
-                    <h5>Salamèche <span class="carousel-footer-nbr">0004</span></h5>
+                    <h5>Carapuce <span class="carousel-footer-nbr">0007</span></h5>
                 </div>
-                <div class="crsl-ft-r2"><span class="crsl-ft-type">Type</span><span class="type-label type-colors-feu">Feu</span></div>
+                <div class="crsl-ft-r2"><span class="crsl-ft-type">Type</span><span class="type-label type-colors-eau">Eau</span></div>
             </div>
         </div>
         <!--Card-->
         <div class="carousel-cell">
-            <div class="carousel-poke-nbr">0004</div>
-            <img class="carousel-img" src="./img/pokemon/004.png" alt="Image de salamèche">
+            <div class="carousel-poke-nbr">0010</div>
+            <img class="carousel-img" src="./img/pokemon/010.png" alt="Image de Chenipan">
             <div class="carousel-footer">
                 <div class="crsl-ft-r1">
-                    <h5>Salamèche <span class="carousel-footer-nbr">0004</span></h5>
+                    <h5>Chenipan <span class="carousel-footer-nbr">0010</span></h5>
                 </div>
-                <div class="crsl-ft-r2"><span class="crsl-ft-type">Type</span><span class="type-label type-colors-feu">Feu</span></div>
+                <div class="crsl-ft-r2"><span class="crsl-ft-type">Type</span><span class="type-label type-colors-insecte">Insecte</span></div>
             </div>
         </div>
         <!--Card-->
         <div class="carousel-cell">
-            <div class="carousel-poke-nbr">0004</div>
-            <img class="carousel-img" src="./img/pokemon/004.png" alt="Image de salamèche">
+            <div class="carousel-poke-nbr">0013</div>
+            <img class="carousel-img" src="./img/pokemon/013.png" alt="Image d'Aspicot">
             <div class="carousel-footer">
                 <div class="crsl-ft-r1">
-                    <h5>Salamèche <span class="carousel-footer-nbr">0004</span></h5>
+                    <h5>Aspicot <span class="carousel-footer-nbr">0013</span></h5>
                 </div>
-                <div class="crsl-ft-r2"><span class="crsl-ft-type">Type</span><span class="type-label type-colors-feu">Feu</span></div>
+                <div class="crsl-ft-r2"><span class="crsl-ft-type">Type</span><span class="type-label type-colors-insecte">Insecte</span><span class="type-label type-colors-poison">Poison</span></div>
             </div>
         </div>
         <!--Card-->
         <div class="carousel-cell">
-            <div class="carousel-poke-nbr">0004</div>
-            <img class="carousel-img" src="./img/pokemon/004.png" alt="Image de salamèche">
+            <div class="carousel-poke-nbr">0016</div>
+            <img class="carousel-img" src="./img/pokemon/016.png" alt="Image de Roucool">
             <div class="carousel-footer">
                 <div class="crsl-ft-r1">
-                    <h5>Salamèche <span class="carousel-footer-nbr">0004</span></h5>
+                    <h5>Roucool <span class="carousel-footer-nbr">0016</span></h5>
                 </div>
-                <div class="crsl-ft-r2"><span class="crsl-ft-type">Type</span><span class="type-label type-colors-feu">Feu</span></div>
+                <div class="crsl-ft-r2"><span class="crsl-ft-type">Type</span><span class="type-label type-colors-normal">Normal</span></div>
             </div>
         </div>
         <!--Card-->
         <div class="carousel-cell">
-            <div class="carousel-poke-nbr">0004</div>
-            <img class="carousel-img" src="./img/pokemon/004.png" alt="Image de salamèche">
+            <div class="carousel-poke-nbr">0023</div>
+            <img class="carousel-img" src="./img/pokemon/023.png" alt="Image de Abo">
             <div class="carousel-footer">
                 <div class="crsl-ft-r1">
-                    <h5>Salamèche <span class="carousel-footer-nbr">0004</span></h5>
+                    <h5>Abo <span class="carousel-footer-nbr">0023</span></h5>
                 </div>
-                <div class="crsl-ft-r2"><span class="crsl-ft-type">Type</span><span class="type-label type-colors-feu">Feu</span></div>
+                <div class="crsl-ft-r2"><span class="crsl-ft-type">Type</span><span class="type-label type-colors-poison">Poison</span></div>
             </div>
         </div>
         <!--Card-->
