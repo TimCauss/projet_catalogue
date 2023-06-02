@@ -206,6 +206,5 @@
                 <div class="crsl-ft-r2"><span class="crsl-ft-type">Type</span><span class="type-label type-colors-feu">Feu</span></div>
             </div>
         </div>
-
     </div>
 </section>

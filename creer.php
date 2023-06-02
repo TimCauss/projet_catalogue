@@ -3,39 +3,74 @@ session_start();
 
 require_once("./connect.php");
 
-if ($_POST && !empty($_POST['nom']) && !empty($_POST['numero'])) {
-    $_SESSION['er_msg01'] = null;
-    $nom = strip_tags($_POST['nom']);
-    $numero = strip_tags($_POST['numero']);
-    $p_img = strip_tags($_POST['p_img']);
-    $p_description = strip_tags($_POST['description']);
-    $taille = strip_tags($_POST['taille']);
-    $poids = strip_tags($_POST['poids']);
-    $evolutions = strip_tags($_POST['evolutions']);
-    $p_type = strip_tags($_POST['type']);
+/** On fetch la base de donnée pour la comparer au données entrées dans le formulaire */
 
-    $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_img`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`) VALUES (:nom, :numero, :p_img,:p_description, :taille, :poids, :evolutions, :p_type)";
 
-    $query = $db->prepare($sql);
+$sql_all = "SELECT * FROM pokemon";
+$query_all = $db->prepare($sql_all);
+$query_all->execute();
+$result_all = $query_all->fetchAll(PDO::FETCH_ASSOC);
 
-    var_dump($query);
-    $query->bindValue(':nom', $nom);
-    $query->bindValue(':numero', $numero);
-    $query->bindValue(':p_img', $p_img);
-    $query->bindValue(':p_description', $p_description);
-    $query->bindValue(':taille', $taille);
-    $query->bindValue(':poids', $poids);
-    $query->bindValue(':evolutions', $evolutions);
-    $query->bindValue(':p_type', $p_type);
 
-    $query->execute();
-    header("Location: creer.php");
-} else {
-    $_SESSION['er_msg'] = [
-        1 => "Remplissez les champs obligatoires"
-    ];
+
+/* Si on capture un POST :*/
+if ($_POST) {
+    /* On vérifie si les champs necessaire sont remplis : */
+    if (!empty($_POST['nom']) && !empty($_POST['numero'])) {
+
+        /* On unset les potentiels précédents message d'erreur stockés dans la session php*/
+        unset($_SESSION['er_msg']['form_01']);
+
+        /* On Vérifie que le Pokémon n'est pas déjà présent dans la base de donée
+        Si le nom ou le numero existe déjà, on stock un message d'erreur
+        dans la session PHP */
+        foreach ($result_all as $result) {
+            if (strtoupper($result["nom"]) == strtoupper($_POST["nom"])) {
+                $_SESSION['er_msg'] = [
+                    'p_name' => "Ce nom de Pokemon est déjà pris"
+                ];
+            } elseif ($result["numero"] == $_POST["numero"]) {
+                $_SESSION['er_msg'] += [
+                    'p_nbr' => "Ce numéro de Pokémon est déjà pris"
+                ];
+            }
+        }
+
+
+        /* On nettoies les post puis on stock le résultat de ce netooyage dans une variable */
+        $nom = strip_tags($_POST['nom']);
+        $numero = strip_tags($_POST['numero']);
+        $p_img = strip_tags($_POST['p_img']);
+        $p_description = strip_tags($_POST['description']);
+        $taille = strip_tags($_POST['taille']);
+        $poids = strip_tags($_POST['poids']);
+        $evolutions = strip_tags($_POST['evolutions']);
+        $p_type = strip_tags($_POST['type']);
+
+        $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_img`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`) VALUES (:nom, :numero, :p_img,:p_description, :taille, :poids, :evolutions, :p_type)";
+
+        $query = $db->prepare($sql);
+
+        var_dump($query);
+        $query->bindValue(':nom', $nom);
+        $query->bindValue(':numero', $numero);
+        $query->bindValue(':p_img', $p_img);
+        $query->bindValue(':p_description', $p_description);
+        $query->bindValue(':taille', $taille);
+        $query->bindValue(':poids', $poids);
+        $query->bindValue(':evolutions', $evolutions);
+        $query->bindValue(':p_type', $p_type);
+
+        $query->execute();
+        header("Location: creer.php");
+    } else {
+        $_SESSION['er_msg'] = [
+            'form_01' => "Remplissez les champs obligatoires"
+        ];
+    }
 }
 
+var_dump($_SESSION);
 
 
 ?>
