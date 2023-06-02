@@ -1,0 +1,142 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+h1 {
+    position: relative;
+    z-index: 2;
+    background-color:#FFF;
+    margin-top: -50px;
+    font-size: 36px;
+    font-weight: 520;
+    text-align: center;
+    padding: 10px;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 15px;
+    
+}
+h4 {
+    text-align: center;
+    color:#616161;
+    font-weight: 200;
+    font-size: 16px;
+}
+#precedent, #suivant {
+    background-color: #A4A4A4;
+    width: 49%;
+    display: inline-flex;
+    height: 120px;
+    font-size: 2em;
+   
+}
+#section1 {
+    margin-left: 25%;
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+#bulbizarre {
+    background-color: #F2F2F2;
+    margin-right: 15px;
+}
+#section1 p {
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+.desc {
+   margin-top: 20px;
+   margin-left: 15px;
+}
+#section1 ul {
+    font-size: 20px;
+    background-color: #336377;
+    color: #fffbfb;
+    padding:15px 25px;
+    padding-bottom:25px;
+}
+#section1 li {
+    margin-top: 25px;
+}
+.vert {
+    color:#00F6CA
+}
+h6{
+    font-size: 25px;
+    font-weight: 300;
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
+.plante {
+    background-color: #9BCC50;
+    width: 130px;
+    height: 17px;
+    color: #fffbfb;
+    display: inline-block;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px;
+}
+.poison {
+    background-color:#B97FC9;
+    width: 130px;
+    height: 17px;
+    display: inline-block;
+    color: #fffbfb;
+    text-align: center;
+    border-radius: 5px;
+   padding: 5px;
+    margin: 10px;
+    
+}
+.evo img {
+    height: 160px;
+    background-color: #616161;
+    border-radius: 50%;
+}
+h2{
+    color: #fffbfb;
+    margin: 20px;
+    font-size: 2em;
+}
+.evolutions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #336377;
+    padding: 20px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.evo-container {
+    display: flex;
+    align-items: center;
+
+}
+
+.evo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0px 50px;
+}
+
+.arrow {
+    font-size: 80px;
+    margin-left: 10px;
+    margin-right: 10px;
+    color: #FFF;
+}
+
+
+.poke {
+    color: #FFF;
+    font-size: 1.5em;
+}
