@@ -16,10 +16,10 @@
     <!-- /** includes Header and Nav */ -->
     <?php
 
-    include_once "./header.php";
-    include_once "./nav.php";
-    include_once "./slider.php";
-    include_once "./types.php";
+    include_once "./includes/header.php";
+    include_once "./includes/nav.php";
+    include_once "./includes/slider.php";
+    include_once "./includes/types.php";
     ?>
 
     <script src="./JS/flickity.pkgd.js"></script>

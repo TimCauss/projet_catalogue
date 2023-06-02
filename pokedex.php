@@ -18,17 +18,12 @@
 
 <body>
     <?php
-    include_once "./header.php";
-    include_once "./nav.php";
+    include_once "./includes/header.php";
+    include_once "./includes/nav.php";
+    include_once "./includes/pokegrid.php"
     ?>
 
-    <section class="container">
-        <div class="d-flex flex-row flex-wrap justify-content-center">
-            <div class="p2">
-                <!-- Mettre les infos dynamics des pokemons ici -->
-            </div>
-        </div>
-    </section>
+
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
 </body>
