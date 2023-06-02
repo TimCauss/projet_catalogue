@@ -13,14 +13,12 @@ $result_all = $query_all->fetchAll(PDO::FETCH_ASSOC);
 
 
 
-/* Si on capture un POST :*/
+/* Si on capture un POST:*/
 if ($_POST) {
     /* On vérifie si les champs necessaire sont remplis : */
     if (!empty($_POST['nom']) && !empty($_POST['numero'])) {
-
         /* On unset les potentiels précédents message d'erreur stockés dans la session php*/
         unset($_SESSION['er_msg']['form_01']);
-
         /* On Vérifie que le Pokémon n'est pas déjà présent dans la base de donée
         Si le nom ou le numero existe déjà, on stock un message d'erreur
         dans la session PHP */
@@ -36,39 +34,48 @@ if ($_POST) {
             }
         }
 
+        /* On vérifie ensuite la receptionde l'image, et s'il elle ne contient pas d'erreur:*/
+        if (isset($_FILES["p_img"]) && $_FILES["p_img"]["error"] === 0) {
+            /* On nettoies les post puis on stock le résultat de ce netooyage dans une variable */
+            $nom = strip_tags($_POST['nom']);
+            $numero = strip_tags($_POST['numero']);
+            $p_img = strip_tags($_POST['p_img']);
+            $p_description = strip_tags($_POST['description']);
+            $taille = strip_tags($_POST['taille']);
+            $poids = strip_tags($_POST['poids']);
+            $evolutions = strip_tags($_POST['evolutions']);
+            $p_type = strip_tags($_POST['type']);
 
-        /* On nettoies les post puis on stock le résultat de ce netooyage dans une variable */
-        $nom = strip_tags($_POST['nom']);
-        $numero = strip_tags($_POST['numero']);
-        $p_img = strip_tags($_POST['p_img']);
-        $p_description = strip_tags($_POST['description']);
-        $taille = strip_tags($_POST['taille']);
-        $poids = strip_tags($_POST['poids']);
-        $evolutions = strip_tags($_POST['evolutions']);
-        $p_type = strip_tags($_POST['type']);
+            $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_img`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`) VALUES (:nom, :numero, :p_img,:p_description, :taille, :poids, :evolutions, :p_type)";
 
-        $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_img`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`) VALUES (:nom, :numero, :p_img,:p_description, :taille, :poids, :evolutions, :p_type)";
+            $query = $db->prepare($sql);
 
-        $query = $db->prepare($sql);
+            var_dump($query);
+            $query->bindValue(':nom', $nom);
+            $query->bindValue(':numero', $numero);
+            $query->bindValue(':p_img', $p_img);
+            $query->bindValue(':p_description', $p_description);
+            $query->bindValue(':taille', $taille);
+            $query->bindValue(':poids', $poids);
+            $query->bindValue(':evolutions', $evolutions);
+            $query->bindValue(':p_type', $p_type);
 
-        var_dump($query);
-        $query->bindValue(':nom', $nom);
-        $query->bindValue(':numero', $numero);
-        $query->bindValue(':p_img', $p_img);
-        $query->bindValue(':p_description', $p_description);
-        $query->bindValue(':taille', $taille);
-        $query->bindValue(':poids', $poids);
-        $query->bindValue(':evolutions', $evolutions);
-        $query->bindValue(':p_type', $p_type);
-
-        $query->execute();
-        header("Location: creer.php");
+            $query->execute();
+            header("Location: creer.php");
+        }
+        /* Si on ne reçoit pas d'image ou que l'image contient des erreurs: */
     } else {
         $_SESSION['er_msg'] = [
-            'form_01' => "Remplissez les champs obligatoires"
+            'form_img' => "Image envoyée non conforme"
         ];
     }
+    /*Si on ne capture pas de POST */
+} else {
+    $_SESSION['er_msg'] = [
+        'form_01' => "Remplissez les champs obligatoires"
+    ];
 }
+
 
 var_dump($_SESSION);
 
@@ -114,7 +121,7 @@ var_dump($_SESSION);
 
                         <h1 class="mb-4 pb-2">Ajouter un Pokémon</h1>
 
-                        <form method="POST">
+                        <form method="POST" enctype="multipart/form-data">
                             <div class="row mb-4">
                                 <div class="form-outline col col-form-r">
                                     <input type="text" class="form-control" name="nom" id="nom" placeholder="Nom du Pokémon">
@@ -126,9 +133,11 @@ var_dump($_SESSION);
                                 </div>
                             </div>
                             <div class="row mb-4">
+                                <label class="form-label">
+                                    Image :
+                                </label>
                                 <div class="form-outline">
-                                    <input type="p_img" name="p_img" id="p_img" class="form-control" placeholder="Image URL of the Pokémon">
-                                    <label for="p_img" class="form-label">Image</label>
+                                    <input type="file" name="p_img" id="p_img" class="form-control" accept="image/png, image/jpeg" value="Image">
                                 </div>
                             </div>
                             <div class="row mb-4">
