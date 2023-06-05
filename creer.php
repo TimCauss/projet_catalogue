@@ -58,9 +58,9 @@ if ($_POST) {
             }
 
             //A ce stade, l'image est correct
-            //on limite la taille de l'image à 5Mo
-            if ($filesize > 5 * MB) {
-                die("Fichier image trop volumineux (5mo max)");
+            //on limite la taille de l'image à 1Mo
+            if ($filesize > 1 * MB) {
+                die("Fichier image trop volumineux (1mo max)");
             }
 
             /* On nettoies les post puis on stock le résultat de ce netooyage dans une variable */
