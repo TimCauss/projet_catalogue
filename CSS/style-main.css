@@ -460,7 +460,13 @@ header {
 /** STYLE PAGE CREER START **/
 
 .form-add-container {
-    margin-top: 50px;
+    z-index: 3;
+    transform: translateY(-250vh);
+    transition: transform 0.5s ease-in-out;
+}
+
+.form-add-container.active {
+    transform: translateY(-50%);
 }
 
 .form-add-container form {
@@ -508,7 +514,7 @@ header {
 }
 
 .pokeball--animation {
-    animation: fall .25s ease-in-out,
+    animation: .3s fall .25s ease-in-out,
         shake 1.25s cubic-bezier(.36, .07, .19, .97) 3;
 }
 
@@ -609,3 +615,33 @@ header {
 }
 
 /** STYLE PAGE CREER END **/
+
+/** STYLE MON PROFIL START*/
+
+.trg-btn {
+    border-radius: 5px;
+}
+
+.trg-btn.onuse {
+    background-color: #232323;
+    color: #FFFFFF;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+}
+
+.overlay.active {
+    display: flex;
+    justify-content: center;
+}
+
+/** STYLE MON PROFIL END*/

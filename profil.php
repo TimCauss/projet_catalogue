@@ -20,11 +20,12 @@
     <?php
     include_once "./includes/header.php";
     include_once "./includes/nav.php";
+    include_once "./includes/profil_nav.php";
     include_once "./includes/creer.php";
     ?>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
-    <script type="text/javascript" src="./js/pokeball.js"></script>
+    <script type="text/javascript" src="./js/modal-ajouter.js"></script>
 </body>
 
 </html>
