@@ -16,7 +16,7 @@
     </div>
     <h4>n°0001</h4>
     <section id="section1">
-        <img id="bulbizarre" src="img/001.png" alt="bulbizarre">
+        <img id="bulbizarre" src="img/pokemon/001.png" alt="bulbizarre">
         <div class="desc">
         <p>Il y a une graine sur son dos depuis sa naissance.<br>
             Elle grossit un peu chaque jour.<br></p>
@@ -36,21 +36,21 @@
     <h2>Evolutions:</h2>
     <div class="evo-container">
         <div class="evo">
-            <img src="img/001.png">
+            <img src="img/pokemon/001.png">
             <span class="poke">Bulbizarre</span> 
             <span class="plante">PLANTE </span>
             <span class="poison">POISON</span>
         </div>
         <span class="arrow">→</span>
         <div class="evo">
-            <img src="img/002.png">
+            <img src="img/pokemon/002.png">
             <span class="poke">Herbizarre</span>
             <span class="plante">PLANTE </span>
             <span class="poison">POISON</span>
         </div>
         <span class="arrow">→</span>
         <div class="evo">
-            <img src="img/003.png">
+            <img src="img/pokemon/003.png">
             <span class="poke">Florizarre</span>
             <span class="plante">PLANTE </span>
             <span class="poison">POISON</span>

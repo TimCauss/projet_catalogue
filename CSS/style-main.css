@@ -1,0 +1,611 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
+
+html {
+    scroll-behavior: smooth;
+}
+
+body * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+
+h5 {
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 30px;
+}
+
+/** STYLE HEADER START */
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+}
+
+.header-img-ctn {
+    object-fit: cover;
+}
+
+.title-container img {
+    width: 500px;
+}
+
+
+
+/** STYLE HEADER END */
+
+
+/** STYLE NAV START */
+.main-nav {
+    background-color: #ffffff;
+}
+
+.main-nav ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+}
+
+.main-nav li {
+    list-style: none;
+
+}
+
+.main-nav li a {
+    color: #464646;
+    text-decoration: none;
+}
+
+.nav-item {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+    color: #464646;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    cursor: pointer;
+    /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
+}
+
+.ni-1 {
+    border-left: #ebebeb solid 0.5px;
+    border-bottom: #919191 5px solid;
+    border-bottom-left-radius: 10px;
+    transition: background-color ease-in-out 200ms;
+}
+
+.ni-1:hover {
+    background-color: #919191;
+    color: #ffffff;
+}
+
+.ni-2 {
+    border-left: #ebebeb solid 0.5px;
+    border-bottom: #E3350D 5px solid;
+    transition: background-color ease-in-out 200ms;
+}
+
+.ni-2:hover {
+    background-color: #E3350D;
+    border-color: #E3350D;
+    color: #ffffff;
+}
+
+.ni-3 {
+    border-left: #ebebeb solid 0.5px;
+    border-bottom: #EE6B2F 5px solid;
+    transition: background-color ease-in-out 200ms;
+}
+
+.ni-3:hover {
+    background-color: #EE6B2F;
+    border-color: #EE6B2F;
+    color: #ffffff;
+}
+
+.ni-4 {
+    border-left: #ebebeb solid 0.5px;
+    border-bottom: #23B028 5px solid;
+    transition: background-color ease-in-out 200ms;
+}
+
+.ni-4:hover {
+    background-color: #23B028;
+    border-color: #23B028;
+    color: #ffffff;
+}
+
+.ni-5 {
+    border-left: #ebebeb solid 0.5px;
+    border-bottom: #2F42EE 5px solid;
+    transition: background-color ease-in-out 200ms;
+}
+
+.ni-5:hover {
+    background-color: #2F42EE;
+    border-color: #2F42EE;
+    color: #ffffff;
+}
+
+.ni-6 {
+    border-left: #ebebeb solid 0.5px;
+    border-right: #ebebeb solid 0.5px;
+    border-bottom: #EAEE2F 5px solid;
+    border-bottom-right-radius: 10px;
+    transition: background-color ease-in-out 200ms;
+}
+
+.ni-6:hover {
+    background-color: #f5f845;
+    border-color: #f5f845;
+    color: #8d8d8d;
+}
+
+/** STYLE NAV END */
+
+/** STYLE SLIDER START */
+
+.carousel-container {
+    margin-top: 50px;
+    max-width: 1440px;
+    height: 650px;
+    padding: 100px 0;
+    overflow: hidden;
+}
+
+.slider-header {
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 25px;
+    display: flex;
+    align-items: center;
+    color: #919191;
+    justify-content: space-between;
+    padding: 0 200px;
+}
+
+.slider-btn {
+    background-color: #232323;
+    border-radius: 10px 10px 0 0;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.slider-icon {
+    fill: #919191;
+    width: 20px;
+    height: 20px;
+}
+
+.slider-header-right {
+    cursor: pointer;
+}
+
+.slider-header-right:hover .slider-icon,
+.slider-header-right:hover {
+    color: white;
+    fill: white;
+}
+
+.carousel {
+    background: #ffffff;
+    width: 1440px;
+}
+
+.carousel-cell {
+    width: 360px;
+    height: 320px;
+    background: #616161;
+    border-inline: 3px solid #232323;
+    counter-increment: carousel-cell;
+    transition: height 200ms ease-in-out;
+}
+
+.carousel-img {
+    width: 250px;
+    height: 250px;
+    position: absolute;
+    top: 0%;
+    left: 20%;
+    opacity: 0.4;
+    transition: all 200ms ease-in-out;
+}
+
+.carousel-poke-nbr {
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 89px;
+    text-align: center;
+    line-height: 95px;
+    color: #6767678d;
+}
+
+.carousel-footer {
+    flex-direction: column;
+    padding: 15px 15px;
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 20px;
+    color: #ffffff;
+    display: block;
+    position: absolute;
+    bottom: 0;
+    background-color: #313131;
+    width: 100%;
+    transition: all 200ms ease-in-out;
+}
+
+.carousel-footer h5 {
+    scale: 0.8;
+    text-align: center;
+
+}
+
+.carousel-footer-nbr {
+    float: inline-end;
+    top: 0;
+    display: none;
+}
+
+.crsl-ft-r2 {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 30px;
+}
+
+
+.crsl-ft-type,
+.type-label {
+    display: none;
+}
+
+.carousel-cell.is-selected .carousel-footer-nbr,
+.carousel-cell.is-selected .crsl-ft-type,
+.carousel-cell.is-selected .type-label {
+    display: inline-block;
+}
+
+.carousel-cell.is-selected .carousel-footer h5 {
+    scale: 1;
+    text-align: left;
+}
+
+.carousel-cell.is-selected .carousel-footer {
+    border-radius: 0 0 15px 15px;
+    height: 140px;
+    background-color: #232323;
+}
+
+.carousel-cell.is-selected {
+    height: 370px;
+    border-radius: 0 0 15px 15px;
+}
+
+.carousel-cell.is-selected img {
+    top: -10%;
+    opacity: 1;
+    scale: 1.2;
+    z-index: 2;
+}
+
+.carousel-cell.is-selected .carousel-poke-nbr {
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 140px;
+    line-height: 140px;
+    align-items: center;
+    text-align: center;
+    color: #adadadcc;
+}
+
+/** STYLE SLIDER END */
+
+
+/** TYPES COLORS */
+
+.carousel-pokemon-details {
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+    float: left;
+}
+
+
+.type-label {
+    border-radius: 4px 4px 4px 4px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    padding: 5px 10px;
+    margin-left: 5px;
+}
+
+.type-colors-feu {
+    background-color: #E3350D;
+}
+
+.type-colors-plante {
+    background-color: #68D037;
+}
+
+
+.type-colors-eau {
+    background-color: #1E90FF;
+}
+
+.type-colors-insecte {
+    background-color: #729f3f;
+}
+
+.type-colors-poison {
+    background-color: #800080;
+}
+
+.type-colors-normal {
+    background-color: #a4acaf;
+}
+
+
+/** STYLE TYPES PAGES START  */
+
+.section-types {
+    margin-top: 50px;
+    margin-bottom: 75px;
+    max-width: 1440px;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-around;
+    gap: 50px;
+}
+
+.type-card {
+    width: 250px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+    cursor: pointer;
+    transition: opacity 200ms ease-in-out, scale 200ms ease-in-out;
+}
+
+.type-card:hover {
+    opacity: 0.5;
+    scale: 1.1;
+}
+
+.card-feu {
+    background-color: #E3350D;
+}
+
+.card-plante {
+    background-color: #68D037;
+}
+
+.card-Eau {
+    background-color: #1E90FF;
+}
+
+.card-Glace {
+    background-color: #1DFFFF;
+}
+
+.card-Normal {
+    background-color: #CD853F;
+}
+
+.card-Electrik {
+    background-color: #FFDB1D;
+}
+
+.card-Poison {
+    background-color: #800080;
+}
+
+.card-Insecte {
+    background-color: #729f3f;
+}
+
+.card-Psy {
+    background-color: #EE82EE;
+}
+
+.card-Combat {
+    background-color: #8B0000;
+}
+
+.card-Acier {
+    background-color: #C0C0C0;
+}
+
+.card-Tenebres {
+    background-color: #3D3D3D;
+}
+
+/** STYLE PAGE CREER START **/
+
+.form-add-container {
+    margin-top: 50px;
+}
+
+.form-add-container form {
+    margin-top: 50px;
+}
+
+.btn-form {
+    background: #232323;
+    color: #FFFFFF;
+}
+
+.btn-form:hover {
+    background: #6d6d6d;
+    color: #FFFFFF;
+}
+
+.error {
+    color: red;
+}
+
+.col-form-r {
+    margin-right: 10px;
+}
+
+/*Style pokeball*/
+
+.center-on-page {
+    z-index: 5;
+    position: absolute;
+    top: -50px;
+    right: -50px;
+}
+
+/* Poké Styles */
+.pokeball {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    scale: 0.3;
+    background: #fff;
+    border: 10px solid #000;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: inset -10px 10px 0 10px #ccc;
+}
+
+.pokeball--animation {
+    animation: fall .25s ease-in-out,
+        shake 1.25s cubic-bezier(.36, .07, .19, .97) 3;
+}
+
+.pokeball::before,
+.pokeball::after {
+    content: "";
+    position: absolute;
+}
+
+.pokeball::before {
+    background: red;
+    width: 100%;
+    height: 50%;
+}
+
+.pokeball::after {
+    top: calc(50% - 10px);
+    width: 100%;
+    height: 20px;
+    background: #000;
+}
+
+.pokeball__button {
+    position: absolute;
+    top: calc(50% - 30px);
+    left: calc(50% - 30px);
+    width: 60px;
+    height: 60px;
+    background: #7f8c8d;
+    border: 10px solid #fff;
+    border-radius: 50%;
+    z-index: 10;
+    box-shadow: 0 0 0 10px black;
+    animation: blink .5s alternate 7;
+}
+
+.pokeball:hover {
+    animation: shake 1.25s cubic-bezier(.36, .07, .19, .97) infinite;
+}
+
+.pokeball:hover .pokeball__button {
+    animation: blink .5s alternate infinite;
+}
+
+/* Animation */
+@keyframes blink {
+    from {
+        background: #eee;
+    }
+
+    to {
+        background: #e74c3c;
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: translate(0, 0) rotate(0);
+    }
+
+    20% {
+        transform: translate(-10px, 0) rotate(-20deg);
+    }
+
+    30% {
+        transform: translate(10px, 0) rotate(20deg);
+    }
+
+    50% {
+        transform: translate(-10px, 0) rotate(-10deg);
+    }
+
+    60% {
+        transform: translate(10px, 0) rotate(10deg);
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(0);
+    }
+}
+
+@keyframes fall {
+    0% {
+        top: -200px
+    }
+
+    60% {
+        top: 0
+    }
+
+    80% {
+        top: -20px
+    }
+
+    100% {
+        top: 0
+    }
+}
+
+/** STYLE PAGE CREER END **/
