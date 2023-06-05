@@ -66,20 +66,25 @@ if ($_POST) {
             /* On nettoies les post puis on stock le résultat de ce netooyage dans une variable */
             $nom = strip_tags($_POST['nom']);
             $numero = strip_tags($_POST['numero']);
-            $p_img = strip_tags($_POST['p_img']);
             $p_description = strip_tags($_POST['description']);
             $taille = strip_tags($_POST['taille']);
             $poids = strip_tags($_POST['poids']);
             $evolutions = strip_tags($_POST['evolutions']);
             $p_type = strip_tags($_POST['type']);
 
-            $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_img`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`) VALUES (:nom, :numero, :p_img,:p_description, :taille, :poids, :evolutions, :p_type)";
+            //On génère le chemin complet de l'image
+            $newfilename = __DIR__ . "/uploads/$nom.$extension";
+            //On déplace le fichier tmp vers upload sous son nouveau nom :
+            if (!move_uploaded_file($_FILES["p_img"]["tmp_name"], $newfilename)) {
+                die("Le transfert de fichier à échoué, veuillez contacter un administrateur");
+            }
+
+            $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`) VALUES (:nom, :numero, :p_description, :taille, :poids, :evolutions, :p_type)";
 
             $query = $db->prepare($sql);
 
             $query->bindValue(':nom', $nom);
             $query->bindValue(':numero', $numero);
-            $query->bindValue(':p_img', $p_img);
             $query->bindValue(':p_description', $p_description);
             $query->bindValue(':taille', $taille);
             $query->bindValue(':poids', $poids);
@@ -87,6 +92,13 @@ if ($_POST) {
             $query->bindValue(':p_type', $p_type);
 
             $query->execute();
+
+            //On ajoute un repère de l'action dans la Session
+            $_SESSION['action'] = [
+                "add_pokemon" => "Pokémon ajouter avec succès"
+            ];
+            //On vide les erreurs de la Session php
+            unset($_SESSION["er_msg"]);
             header("Location: creer.php");
         }
         /* Si on ne reçoit pas d'image ou que l'image contient des erreurs: */
@@ -103,31 +115,6 @@ if ($_POST) {
 }
 
 ?>
-
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <!-- MDB -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="./CSS/style-main.css">
-    <title>Pokeliste - Ajouter un Pokémon</title>
-</head>
-
-<body>
-    <?php
-    include_once "./includes/header.php";
-    include_once "./includes/nav.php";
-    ?>
-
     <a href="/img/img_not_found.png"></a>
 
     <section class="form-add-container container px-10">
@@ -200,11 +187,3 @@ if ($_POST) {
             </div>
         </div>
     </section>
-
-
-    <!-- MDB -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
-    <script type="text/javascript" src="./js/pokeball.js"></script>
-</body>
-
-</html>
