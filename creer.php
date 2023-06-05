@@ -3,8 +3,9 @@ session_start();
 
 require_once("./connect.php");
 
-/** On fetch la base de donnée pour la comparer au données entrées dans le formulaire */
+define('MB', 1048576); //on Définir la valeur d'un MB
 
+/** On fetch la base de donnée pour la comparer au données entrées dans le formulaire */
 
 $sql_all = "SELECT * FROM pokemon";
 $query_all = $db->prepare($sql_all);
@@ -54,6 +55,12 @@ if ($_POST) {
             if (!array_key_exists($extension, $allowed) || !in_array($filetype, $allowed)) {
                 //ici soit l'extension soit le type n'est pas trouvable dans le tableau $allowed
                 die("Erreur, formats de fichier autorisés : .jpg, .jpeg ou .png");
+            }
+
+            //A ce stade, l'image est correct
+            //on limite la taille de l'image à 5Mo
+            if ($filesize > 5 * MB) {
+                die("Fichier image trop volumineux (5mo max)");
             }
 
             /* On nettoies les post puis on stock le résultat de ce netooyage dans une variable */
