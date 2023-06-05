@@ -49,7 +49,7 @@ if ($_POST) {
             $filename = $_FILES["p_img"]["name"]; //On stock le nom du fichier dans une variable
             $filetype = $_FILES["p_img"]["type"]; //On stok le type
             $filesize = $_FILES["p_img"]["size"]; //On stock la taille
-            $extension = pathinfo($filename, PATHINFO_EXTENSION); //On récupère l'extension
+            $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION)); //On récupère l'extension
 
             //On vérifie l'absence de l'extension dans les clé du tableau $allowed ou l'absence du type MIME:
             if (!array_key_exists($extension, $allowed) || !in_array($filetype, $allowed)) {
