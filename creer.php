@@ -28,14 +28,34 @@ if ($_POST) {
                     'p_name' => "Ce nom de Pokemon est déjà pris"
                 ];
             } elseif ($result["numero"] == $_POST["numero"]) {
-                $_SESSION['er_msg'] += [
+                $_SESSION['er_msg'] = [
                     'p_nbr' => "Ce numéro de Pokémon est déjà pris"
                 ];
             }
         }
 
+
         /* On vérifie ensuite la receptionde l'image, et s'il elle ne contient pas d'erreur:*/
         if (isset($_FILES["p_img"]) && $_FILES["p_img"]["error"] === 0) {
+            /* On procède aux vérifications de l'image : */
+            // On vérifie l'extension & le type MIME :
+            $allowed = [
+                "jpg" => "image/jpeg",
+                "jpeg" => "image/jpeg",
+                "png" => "image/png"
+            ];
+
+            $filename = $_FILES["p_img"]["name"]; //On stock le nom du fichier dans une variable
+            $filetype = $_FILES["p_img"]["type"]; //On stok le type
+            $filesize = $_FILES["p_img"]["size"]; //On stock la taille
+            $extension = pathinfo($filename, PATHINFO_EXTENSION); //On récupère l'extension
+
+            //On vérifie l'absence de l'extension dans les clé du tableau $allowed ou l'absence du type MIME:
+            if (!array_key_exists($extension, $allowed) || !in_array($filetype, $allowed)) {
+                //ici soit l'extension soit le type n'est pas trouvable dans le tableau $allowed
+                die("Erreur, formats de fichier autorisés : .jpg, .jpeg ou .png");
+            }
+
             /* On nettoies les post puis on stock le résultat de ce netooyage dans une variable */
             $nom = strip_tags($_POST['nom']);
             $numero = strip_tags($_POST['numero']);
@@ -50,7 +70,6 @@ if ($_POST) {
 
             $query = $db->prepare($sql);
 
-            var_dump($query);
             $query->bindValue(':nom', $nom);
             $query->bindValue(':numero', $numero);
             $query->bindValue(':p_img', $p_img);
@@ -75,10 +94,6 @@ if ($_POST) {
         'form_01' => "Remplissez les champs obligatoires"
     ];
 }
-
-
-var_dump($_SESSION);
-
 
 ?>
 
