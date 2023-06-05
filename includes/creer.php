@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once("./connect.php");
+require_once("connect.php");
 
 define('MB', 1048576); //on Définir la valeur d'un MB
 
@@ -73,7 +73,7 @@ if ($_POST) {
             $p_type = strip_tags($_POST['type']);
 
             //On génère le chemin complet de l'image
-            $newfilename = __DIR__ . "/uploads/$nom.$extension";
+            $newfilename = __DIR__ . "/../uploads/$nom.$extension";
             //On déplace le fichier tmp vers upload sous son nouveau nom :
             if (!move_uploaded_file($_FILES["p_img"]["tmp_name"], $newfilename)) {
                 die("Le transfert de fichier à échoué, veuillez contacter un administrateur");
@@ -99,7 +99,7 @@ if ($_POST) {
             ];
             //On vide les erreurs de la Session php
             unset($_SESSION["er_msg"]);
-            header("Location: creer.php");
+            header("Location: profil.php");
         }
         /* Si on ne reçoit pas d'image ou que l'image contient des erreurs: */
     } else {
