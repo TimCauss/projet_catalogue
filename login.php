@@ -24,13 +24,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         isset($_POST["pass"]) && !empty($_POST["pass"])
     ) {
         /*Si le formulaire est complet (Tous les champs ont été remplis)
-        ============SECURITE DES DONNEES ============
+        ============SECURITE DES DONNEES============
         On check si le prenom est valide (Seulement des lettres) */
         if (preg_match("/^[a-zA-Z-' ]*$/", $_POST["prenom"])) {
             //Si le prenom est valide, on le nettoie
             $prenom = testInput($_POST["prenom"]);
         } else {
-            //Si le prenom n'est pas valide, on stock un message d'erreur
+            //Si le prenom n'est pas valide, message d'erreur
             die("Le prénom n'est pas valide");
         }
         //On check si le nom est valide (Seulement des lettres)
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             //Si le nom est valide, on le nettoie
             $lastname = testInput($_POST["lastname"]);
         } else {
-            //Si le nom n'est pas valide, on stock un message d'erreur
+            //Si le nom n'est pas valide, message d'erreur
             die("Le nom n'est pas valide");
         }
         //On check si l'email est valide
@@ -46,9 +46,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             //Si l'email est valide, on le nettoie
             $email = testInput($_POST["email"]);
         } else {
-            //Si l'email n'est pas valide, on stock un message d'erreur
+            //Si l'email n'est pas valide, message d'erreur
             die("L'email n'est pas valide");
         }
+
+        //On vérifie le password longueur minumum 5char:
+        if (strlen($_POST["pass"]) < 5) {
+            die("Mot de passe invalide; Longueur mini : 5");
+        }
+
+        /*A ce stade, les données peuvent être insérées : */
+        die((`$email $prenom $lastname`));
     } else {
         //Si le formulaire est incomplet
         $_SESSION["er_msg"] = "Veuillez remplir tous les champs";
@@ -121,16 +129,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <!-- Password input -->
                                 <div class="form-outline mb-4">
                                     <input type="password" name="pass" id="pass" class="form-control" required>
-                                    <label class="form-label" for="pass">Mot de passe</label>
-                                    <div class="invalid-feedback">Veuillez remplir ce champ.</div>
+                                    <label class="form-label" for="pass">Mot de passe (Longueur 5 min)</label>
+                                    <div class="invalid-feedback">5 caractères minimum.</div>
                                 </div>
                                 <div class="form-outline mb-4">
-                                    <input type="password" name="pass2" id="pass2" class="form-control" required>
-                                    <label class="form-label" for="pass2">Mot de passe</label>
-                                    <div class="invalid-feedback">Veuillez remplir ce champ.</div>
+                                    <input type="password" name="pass2" id="pass2" class="form-control" disabled required>
+                                    <label class="form-label" for="pass2">Mot de passe vérification</label>
+                                    <div class="invalid-feedback">Les mots de passes ne sont pas identiques</div>
                                 </div>
                                 <!-- Submit button -->
-                                <button type="submit" id="submitForm" class="btn btn-primary btn-block mb-4">
+                                <button type="submit" id="submitForm" disabled class="btn btn-primary btn-block mb-4">
                                     S'enregistrer
                                 </button>
                             </form>

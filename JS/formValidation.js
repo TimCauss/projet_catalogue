@@ -20,3 +20,21 @@
     );
   });
 })();
+
+const pass1 = document.getElementById("pass");
+const pass2 = document.getElementById("pass2");
+const subButton = document.getElementById("submitForm");
+
+console.log(pass1.value);
+console.log(pass2.value);
+console.log(subButton);
+
+
+
+window.addEventListener("keyup", () => {
+  if (pass1.value.length >= 5 && pass1.value == pass2.value) {
+    subButton.removeAttribute("disabled");
+  } else {
+    subButton.setAttribute("disabled", "");
+  }
+});
