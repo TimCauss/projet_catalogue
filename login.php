@@ -1,3 +1,63 @@
+<?php
+require_once './connect.php';
+
+//On déclare les variables du formulaire à vide pour éviter des bidouilles
+$prenom = $email = $pass = $lastname = "";
+
+//fonction qui va nettoyer les données du formulaire :
+function testInput($data)
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
+
+//On check le POST du formulaire
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    //On check si les champs sont remplis
+    if (
+        isset($_POST["prenom"]) && !empty($_POST["prenom"]) &&
+        isset($_POST["lastname"]) && !empty($_POST["lastname"]) &&
+        isset($_POST["email"]) && !empty($_POST["email"]) &&
+        isset($_POST["pass"]) && !empty($_POST["pass"])
+    ) {
+        /*Si le formulaire est complet (Tous les champs ont été remplis)
+        ============SECURITE DES DONNEES ============
+        On check si le prenom est valide (Seulement des lettres) */
+        if (preg_match("/^[a-zA-Z-' ]*$/", $_POST["prenom"])) {
+            //Si le prenom est valide, on le nettoie
+            $prenom = testInput($_POST["prenom"]);
+        } else {
+            //Si le prenom n'est pas valide, on stock un message d'erreur
+            die("Le prénom n'est pas valide");
+        }
+        //On check si le nom est valide (Seulement des lettres)
+        if (preg_match("/^[a-zA-Z-' ]*$/", $_POST["lastname"])) {
+            //Si le nom est valide, on le nettoie
+            $lastname = testInput($_POST["lastname"]);
+        } else {
+            //Si le nom n'est pas valide, on stock un message d'erreur
+            die("Le nom n'est pas valide");
+        }
+        //On check si l'email est valide
+        if (filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+            //Si l'email est valide, on le nettoie
+            $email = testInput($_POST["email"]);
+        } else {
+            //Si l'email n'est pas valide, on stock un message d'erreur
+            die("L'email n'est pas valide");
+        }
+    } else {
+        //Si le formulaire est incomplet
+        $_SESSION["er_msg"] = "Veuillez remplir tous les champs";
+    }
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,63 +80,72 @@
     include_once "./includes/header.php";
     include_once "./includes/nav.php";
     ?>
-    <!-- Section: Design Block -->
+
     <section class="login-ctn text-center text-lg-start">
-        <!-- Jumbotron -->
+
         <div class="register-form-ctn container py-4">
             <div class="row g-0 align-items-center">
                 <div class="mb-5 mb-lg-0">
-                    <div class="card cascading-right" style="
+                    <div class="login-card card cascading-right" style="
             background: hsla(0, 0%, 100%, 0.55);
             backdrop-filter: blur(30px);
             ">
                         <div class="card-body p-5 shadow-5 text-center">
                             <h2 class="fw-bold mb-5">Créer un compte</h2>
-                            <form>
-                                <!-- 2 column grid layout with text inputs for the first and last names -->
+                            <form method="POST" class="needs-validation" novalidate>
                                 <div class="row">
                                     <div class="col-md-6 mb-4">
                                         <div class="form-outline">
-                                            <input type="text" id="form3Example1" class="form-control" />
-                                            <label class="form-label" for="form3Example1">Prénom</label>
+                                            <input type="text" name="prenom" id="prenom" class="form-control">
+                                            <label class="form-label" for="prenom">Prénom</label>
+                                            <div class="valid-feedback">Ce champ est OK !</div>
+                                            <div class="invalid-feedback">Veuillez remplir ce champ.</div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <div class="form-outline">
-                                            <input type="text" id="form3Example2" class="form-control" />
-                                            <label class="form-label" for="form3Example2">Nom</label>
+                                            <input type="text" name="lastname" id="lastname" class="form-control" required>
+                                            <label class="form-label" for="lastname">Nom</label>
+                                            <div class="valid-feedback">Ce champ est OK !</div>
+                                            <div class="invalid-feedback">Veuillez remplir ce champ.</div>
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- Email input -->
                                 <div class="form-outline mb-4">
-                                    <input type="email" id="form3Example3" class="form-control" />
-                                    <label class="form-label" for="form3Example3">Adresse Email</label>
+                                    <input type="email" name="email" id="email" class="form-control" required>
+                                    <label class="form-label" for="email">Adresse Email</label>
+                                    <div class="valid-feedback">Ce champ est OK !</div>
+                                    <div class="invalid-feedback">Veuillez remplir ce champ.</div>
                                 </div>
-
                                 <!-- Password input -->
                                 <div class="form-outline mb-4">
-                                    <input type="password" id="form3Example4" class="form-control" />
-                                    <label class="form-label" for="form3Example4">Mot de passe</label>
+                                    <input type="password" name="pass" id="pass" class="form-control" required>
+                                    <label class="form-label" for="pass">Mot de passe</label>
+                                    <div class="invalid-feedback">Veuillez remplir ce champ.</div>
                                 </div>
-
-
+                                <div class="form-outline mb-4">
+                                    <input type="password" name="pass2" id="pass2" class="form-control" required>
+                                    <label class="form-label" for="pass2">Mot de passe</label>
+                                    <div class="invalid-feedback">Veuillez remplir ce champ.</div>
+                                </div>
                                 <!-- Submit button -->
-                                <button type="submit" class="btn btn-primary btn-block mb-4">
-                                    S'enregistrer'
+                                <button type="submit" id="submitForm" class="btn btn-primary btn-block mb-4">
+                                    S'enregistrer
                                 </button>
                             </form>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Jumbotron -->
+
     </section>
-    <!-- Section: Design Block -->
 
 
+
+    <script type="text/javascript" src="./JS/formValidation.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
 </body>
 

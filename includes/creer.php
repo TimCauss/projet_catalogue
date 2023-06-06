@@ -7,7 +7,7 @@ define('MB', 1048576); //on Définir la valeur d'un MB
 
 /** On fetch la base de donnée pour la comparer au données entrées dans le formulaire */
 
-$sql_all = "SELECT * FROM pokemon";
+$sql_all = "SELECT nom, numero FROM pokemon";
 $query_all = $db->prepare($sql_all);
 $query_all->execute();
 $result_all = $query_all->fetchAll(PDO::FETCH_ASSOC);
