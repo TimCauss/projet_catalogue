@@ -3,6 +3,9 @@
     padding: 0;
     font-family: "Flexo-Medium",arial,sans-serif;
 }
+body {
+    overflow-x: hidden;
+}
 h1 {
     position: relative;
     z-index: 2;
@@ -31,7 +34,7 @@ h4 {
     display: inline-flex;
     height: 120px;
     font-size: 2em;
-   
+   margin-top: 30px;
 }
 
 #section1 {
@@ -52,6 +55,7 @@ h4 {
 .desc {
    margin-top: 20px;
    margin-left: 15px;
+   max-width: 450px;
 }
 #section1 ul {
     font-size: 20px;
@@ -74,7 +78,7 @@ h6{
     margin-bottom: 30px;
 }
 
-.plante {
+.PLANTE {
     background-color: #9BCC50;
     width: 130px;
     height: 17px;

@@ -4,20 +4,6 @@ html {
     scroll-behavior: smooth;
 }
 
-body * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-x: hidden;
-    box-sizing: border-box;
-}
-
 
 h5 {
     font-family: 'Arial';

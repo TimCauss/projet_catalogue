@@ -7,41 +7,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="./CSS/style-main.css">
-    <title>Bulbizarre</title>
+    <title>pokemon</title>
 </head>
 
 <body>
 <?php
+require_once "connect.php";
 
+if(isset($_GET['id'])) {
+    $id = $_GET['id'];
+
+    $query = "SELECT * FROM pokemon WHERE id = :id";
+
+    $sql = $db->prepare($query);
+
+    $sql->bindParam(':id', $id);
+
+    $sql->execute();
+
+    
+    $row = $sql->fetch(PDO::FETCH_ASSOC);
+    if ($row) {
+        $nom = $row['nom'];
+        $numero = $row['numero'];
+        $img = $row['img'];
+        $description = $row['description'];
+        $taille = $row['taille'];
+        $poids = $row['poids'];
+        $type = $row['type'];
+    } else {
+        echo "Aucun résultat.";
+    }
+} 
+?>
+
+
+
+
+    <?php
     include_once "./includes/header.php";
     include_once "./includes/nav.php";
-    require_once "connect.php";
     ?>
     <div class="contenaire">
-    <a href="" id="precedent">Précédent</a> <a href="" id="suivant">Suivant</a>
-    <h1>Bulbizarre</h1>
+        <a href="" id="precedent">Précédent</a> <a href="" id="suivant">Suivant</a>
+        <h1><?php echo $nom; ?></h1>
     </div>
-    <h4>n°0001</h4>
+    <h4>n°<?php echo $numero; ?></h4>
     <section id="section1">
-        <img id="bulbizarre" src="img/pokemon/001.png" alt="bulbizarre">
+        <img id="bulbizarre" src="<?php echo $img; ?>" alt="bulbizarre">
         <div class="desc">
-        <p>Il y a une graine sur son dos depuis sa naissance.<br>
-            Elle grossit un peu chaque jour.<br></p>
-        
+            <p><?php echo $description; ?></p>
+
             <ul>
-                <li>Taille: <span class="vert">0.7m</span></li>
-                <li>Poids: <span class="vert">6.9kg</span></li>
-                <li>Catégorie: <span class="vert">Graine</span></li>
-                <li>Talent: <span class="vert">Engrais</span></li>
+                <li>Taille: <span class="vert"><?php echo $taille; ?></span></li>
+                <li>Poids: <span class="vert"><?php echo $poids; ?></span></li>
+                
             </ul>
-        
-        <h6>Type</h6>
-        <div class="type"><span class="plante">PLANTE</span></div>  <div class="type"><span class="poison">POISON</span></div>
+
+            <h6>Type</h6>
+            <div class="<?=$type?>"><?php echo $type; ?></div>
+            
         </div>
     </section>
     <section class="evolutions">
-    <h2>Evolutions:</h2>
-    <div class="evo-container">
+        <h2>Evolutions:</h2>
+        <div class="evo-container">
         <div class="evo">
             <img src="img/pokemon/001.png">
             <span class="poke">Bulbizarre</span> 
@@ -63,7 +93,7 @@
             <span class="poison">POISON</span>
         </div>
     </div>
-</section>
+    </section>
 
 </body>
 
