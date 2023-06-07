@@ -21,79 +21,96 @@ function timing($timeStart, $timeEnd)
 
 //On check le POST du formulaire
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    //On check si les champs sont remplis
-    if (
-        isset($_POST["prenom"]) && !empty($_POST["prenom"]) &&
-        isset($_POST["lastname"]) && !empty($_POST["lastname"]) &&
-        isset($_POST["email"]) && !empty($_POST["email"]) &&
-        isset($_POST["pass"]) && !empty($_POST["pass"])
-    ) {
-        /*Si le formulaire est complet (Tous les champs ont été remplis)
+
+    /* --------------- REGISTER POST ------------------------*/
+    if (isset($_POST["register-submit"])) {
+        //On check si les champs sont remplis
+        if (
+            isset($_POST["prenom"]) && !empty($_POST["prenom"]) &&
+            isset($_POST["lastname"]) && !empty($_POST["lastname"]) &&
+            isset($_POST["email"]) && !empty($_POST["email"]) &&
+            isset($_POST["pass"]) && !empty($_POST["pass"])
+        ) {
+            /*Si le formulaire est complet (Tous les champs ont été remplis)
         ============SECURITE DES DONNEES============
         On check si le prenom est valide (Seulement des lettres) */
-        if (preg_match("/^[a-zA-Z-é' ]*$/", $_POST["prenom"])) {
-            //Si le prenom est valide, on le nettoie
-            $prenom = testInput($_POST["prenom"]);
+            if (preg_match("/^[a-zA-Z-é' ]*$/", $_POST["prenom"])) {
+                //Si le prenom est valide, on le nettoie
+                $prenom = testInput($_POST["prenom"]);
+            } else {
+                //Si le prenom n'est pas valide, message d'erreur
+                die("Le prénom n'est pas valide, seul les lettres sont autorisés");
+            }
+            //On check si le nom est valide (Seulement des lettres)
+            if (preg_match("/^[a-zA-Z-' ]*$/", $_POST["lastname"])) {
+                //Si le nom est valide, on le nettoie
+                $lastname = testInput($_POST["lastname"]);
+            } else {
+                //Si le nom n'est pas valide, message d'erreur
+                die("Le nom n'est pas valide, seul les lettres sont autorisés");
+            }
+
+            //On check si l'email est valide
+            if (filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+                //Si l'email est valide, on le nettoie
+                $email = testInput($_POST["email"]);
+            } else {
+                //Si l'email n'est pas valide, message d'erreur
+                die("L'email n'est pas valide");
+            }
+            //On check si l'email existe déjà :
+            require_once 'connect.php'; //Connexion BDD
+
+            $mailcheckSQL = "SELECT email FROM users";
+            $mailSQL = $db->prepare($mailcheckQ);
+            $mailSQL->execute();
+            $mailSQLList = $mailSQL->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($mailSQLList as $mail) {
+                if ($email == $mailSQLList) {
+                    die("Adresse email déjà utilisée.");
+                }
+            }
+
+            //On vérifie le password longueur minumum 5char:
+            if (strlen($_POST["pass"]) < 5) {
+                die("Mot de passe invalide; Longueur mini : 5");
+            }
+            //On check si les 2 mot de passe sont identiques:
+            if ($_POST["pass"] != $_POST["pass2"]) {
+                die("Les 2 champs mot de passe ne sont pas identiques");
+            }
+
+            //On déclare les options de hash pour le password:
+            $options = [
+                PASSWORD_ARGON2_DEFAULT_MEMORY_COST => 1 << 17,
+                PASSWORD_ARGON2_DEFAULT_TIME_COST => 2,
+                PASSWORD_ARGON2_DEFAULT_THREADS => 2
+            ];
+            //On Hash le password : (0.25s en moyenne)
+            $hashedpass = password_hash($_POST["pass"], PASSWORD_ARGON2ID, $options);
+
+            //------------Enregistrement des données en BSS:----------------
+
+            //Préparation et execution de la requête :
+            $createUser = "INSERT INTO users(prenom, lastname, email, pass) VALUES ('$prenom', '$lastname', '$email', '$hashedpass')";
+            $createQuery = $db->prepare($createUser);
+            $createQuery->execute();
+
+            $_SESSION["action"] = [
+                "create_user" => 1
+            ];
+
+            $_SESSION["user"] = [
+                "prenom" => $prenom,
+                "lasname" => $lasname,
+                "email" => $email
+            ];
+            header("Location: index.php");
         } else {
-            //Si le prenom n'est pas valide, message d'erreur
-            die("Le prénom n'est pas valide, seul les lettres sont autorisés");
+            //Si le formulaire est incomplet
+            $_SESSION["er_msg"] = "Veuillez remplir tous les champs";
         }
-        //On check si le nom est valide (Seulement des lettres)
-        if (preg_match("/^[a-zA-Z-' ]*$/", $_POST["lastname"])) {
-            //Si le nom est valide, on le nettoie
-            $lastname = testInput($_POST["lastname"]);
-        } else {
-            //Si le nom n'est pas valide, message d'erreur
-            die("Le nom n'est pas valide, seul les lettres sont autorisés");
-        }
-        //On check si l'email est valide
-        if (filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-            //Si l'email est valide, on le nettoie
-            $email = testInput($_POST["email"]);
-        } else {
-            //Si l'email n'est pas valide, message d'erreur
-            die("L'email n'est pas valide");
-        }
-
-        //On vérifie le password longueur minumum 5char:
-        if (strlen($_POST["pass"]) < 5) {
-            die("Mot de passe invalide; Longueur mini : 5");
-        }
-        //On check si les 2 mot de passe sont identiques:
-        if ($_POST["pass"] != $_POST["pass2"]) {
-            die("Les 2 champs mot de passe ne sont pas identiques");
-        }
-
-        //On déclare les options de hash pour le password:
-        $options = [
-            PASSWORD_ARGON2_DEFAULT_MEMORY_COST => 1 << 17,
-            PASSWORD_ARGON2_DEFAULT_TIME_COST => 2,
-            PASSWORD_ARGON2_DEFAULT_THREADS => 2
-        ];
-        //On Hash le password : (0.25s en moyenne)
-        $hashedpass = password_hash($_POST["pass"], PASSWORD_ARGON2ID, $options);
-
-        //------------Enregistrement des données en BSS:----------------
-        require_once 'connect.php'; //Connexion BDD
-
-        //Préparation et execution de la requête :
-        $createUser = "INSERT INTO users(prenom, lastname, email, pass) VALUES ('$prenom', '$lastname', '$email', '$hashedpass')";
-        $createQuery = $db->prepare($createUser);
-        $createQuery->execute();
-
-        $_SESSION["action"] = [
-            "create_user" => 1
-        ];
-
-        $_SESSION["user"] = [
-            "prenom" => $prenom,
-            "lasname" => $lasname,
-            "email" => $email
-        ];
-        header("Location: index.php");
-    } else {
-        //Si le formulaire est incomplet
-        $_SESSION["er_msg"] = "Veuillez remplir tous les champs";
     }
 }
 
@@ -175,7 +192,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <div class="invalid-feedback">Les mots de passes ne sont pas identiques</div>
                                 </div>
                                 <!-- Submit button -->
-                                <button type="submit" id="submitForm" disabled="" class="btn btn-primary btn-block mb-4">
+                                <button type="submit" name="register-submit" id="submitForm" disabled="" class="btn btn-primary btn-block mb-4">
                                     S'enregistrer
                                 </button>
                                 <p>Remplir le formulaire pour activer le bouton</p>
@@ -215,7 +232,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <div class="invalid-feedback">Veuillez renseigner un mot de passe.</div>
                                     </div>
                                     <!-- Submit button -->
-                                    <button type="submit" id="submitLogin" disabled="" class="btn btn-primary btn-block mb-4">
+                                    <button type="submit" name="login-submit" id="submitLogin" disabled="" class="btn btn-primary btn-block mb-4">
                                         S'enregistrer
                                     </button>
                                     <p>Remplir le formulaire pour activer le bouton</p>
