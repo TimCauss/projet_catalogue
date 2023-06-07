@@ -126,7 +126,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $loginQuery->execute();
             $loginResult = $loginQuery->fetchAll(PDO::FETCH_ASSOC);
 
-            //On vérifie si l'u
+            //On vérifie si l'utilisateur existe dans la bdd:
+            foreach ($loginResult as $user) {
+                if ($_POST["login-email"] == $user["email"]) {
+                    //Si l'utilisateur existe, on vérifie le mot de passe:
+                    if (password_verify($_POST["login-pass"], $user["pass"])) {
+                        //Si le mot de passe est correct, on connecte l'utilisateur:
+                        $_SESSION["user"] = [
+                            "user_id" => $user["user_id"],
+                            "email" => $user["email"]
+                        ];
+                        header("Location: index.php");
+                    } else {
+                        //Si le mot de passe est incorrect, message d'erreur:
+                        $_SESSION["er_msg"] = "Utilisateur ou Mot de passe incorrect";
+                    }
+                } else {
+                    //Si l'utilisateur n'existe pas, message d'erreur:
+                    $_SESSION["er_msg"] = "Utilisateur ou Mot de passe incorrect";
+                }
+            }
         } else {
             $_SESSION["er_msg"] = "Veuillez remplir les champs correctement.";
         }
