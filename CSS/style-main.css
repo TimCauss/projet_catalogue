@@ -653,9 +653,10 @@ header {
     position: relative;
     flex-direction: row;
     width: 1440px;
+    height: 600px;
     background-image: url(../img/login/Frame\ 39.png);
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
     background-position: center;
 }
 
@@ -668,7 +669,8 @@ header {
 }
 
 .login-form-ctn {
-    max-width: 650px;
+    max-width: 500px;
+    transform: translateY(10%);
     z-index: 1;
     transition: transform 0.3s ease-in-out;
 }

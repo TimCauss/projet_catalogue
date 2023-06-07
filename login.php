@@ -201,23 +201,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <form method="POST" class="needs-validation" novalidate>
                                 <div class="row">
-                                    <div class="col-md-6 mb-4">
-                                        <div class="form-outline">
-                                            <input type="text" name="prenom" id="prenom" class="form-control" required>
-                                            <label class="form-label" for="prenom">Prénom</label>
-                                            <div class="valid-feedback">Ce champ est OK !</div>
-                                            <div class="invalid-feedback">Veuillez remplir ce champ.</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <div class="form-outline">
-                                            <input type="text" name="lastname" id="lastname" class="form-control" required>
-                                            <label class="form-label" for="lastname">Nom</label>
-                                            <div class="valid-feedback">Ce champ est OK !</div>
-                                            <div class="invalid-feedback">Veuillez remplir ce champ.</div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <!-- Email input -->
                                 <div class="form-outline mb-4">
                                     <input type="email" name="email" id="email" class="form-control" required>
@@ -230,11 +213,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <input type="password" name="pass" id="pass" class="form-control" required>
                                     <label class="form-label" for="pass">Mot de passe (Longueur 5 min)</label>
                                     <div class="invalid-feedback">5 caractères minimum.</div>
-                                </div>
-                                <div class="form-outline mb-4">
-                                    <input type="password" name="pass2" id="pass2" class="form-control" required>
-                                    <label class="form-label" for="pass2">Vérification du mot de passe</label>
-                                    <div class="invalid-feedback">Les mots de passes ne sont pas identiques</div>
                                 </div>
                                 <!-- Submit button -->
                                 <button type="submit" id="submitForm" disabled="" class="btn btn-primary btn-block mb-4">
