@@ -114,15 +114,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     /*--------------------------LOGIN POST---------------------------------*/
     if (isset($_POST["login-submit"])) {
-        //on connect la bdd
-        require_once 'connect.php';
-        // on fetch les données utiles pour les vérification:
-        $loginSQL = "SELECT user_id, email, pass FROM users";
-        $loginQuery = $db->prepare($loginSQL);
-        $loginQuery->execute();
-        $loginResult = $loginQuery->fetchAll(PDO::FETCH_ASSOC);
 
-        die(var_dump($loginResult));
+        //Verification des champs du formulaire :
+        if (isset($_POST["login-email"]) && isset($_POST["login-pass"])) {
+
+            //on connect la bdd
+            require_once 'connect.php';
+            // on fetch les données utiles pour les vérification:
+            $loginSQL = "SELECT user_id, email, pass FROM users";
+            $loginQuery = $db->prepare($loginSQL);
+            $loginQuery->execute();
+            $loginResult = $loginQuery->fetchAll(PDO::FETCH_ASSOC);
+
+            //On vérifie si l'u
+        } else {
+            $_SESSION["er_msg"] = "Veuillez remplir les champs correctement.";
+        }
     }
 }
 
