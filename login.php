@@ -12,7 +12,7 @@ function testInput($data)
 }
 
 /*fonction pour calculer le temps d'execution
-Renvois un temps en MS prend arguments 2 valeurs microtime */
+Renvois un temps en sec, prend en arguments 2 valeurs microtime */
 function timing($timeStart, $timeEnd)
 {
     return ($timeEnd - $timeStart);
@@ -83,6 +83,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $_SESSION["action"] = [
             "create_user" => 1
+        ];
+
+        $_SESSION["user"] = [
+            "prenom" => $prenom,
+            "lasname" => $lasname,
+            "email" => $email
         ];
         header("Location: index.php");
     } else {

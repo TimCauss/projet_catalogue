@@ -18,10 +18,8 @@
         <li>
             <div class="nav-item ni-4">Random</div>
         </li>
-        <li>
-            <a href="profil.php">
-                <div class="nav-item ni-6">Profil</div>
-            </a>
-        </li>
+        <?php if (isset($_SESSION["user"]["email"])) {
+            include_once "profile_btn.php";
+        } ?>
     </ul>
 </nav>
