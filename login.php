@@ -112,6 +112,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["er_msg"] = "Veuillez remplir tous les champs";
         }
     }
+    /*--------------------------LOGIN POST---------------------------------*/
+    if (isset($_POST["login-submit"])) {
+        die("Login post catch");
+    }
 }
 
 
