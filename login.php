@@ -120,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST["login-email"]) && isset($_POST["login-pass"])) {
 
             // on fetch les données utiles pour les vérification:
-            $loginSQL = "SELECT user_id, email, prenom, lastname, pass FROM users";
+            $loginSQL = "SELECT user_id, email, prenom, lastname, pass, user_role FROM users";
             $loginQuery = $db->prepare($loginSQL);
             $loginQuery->execute();
             $loginResult = $loginQuery->fetchAll(PDO::FETCH_ASSOC);
@@ -136,7 +136,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             "user_id" => $user["user_id"],
                             "prenom" => $user["prenom"],
                             "lasname" => $user["lasname"],
-                            "email" => $user["email"]
+                            "email" => $user["email"],
+                            "role" => $user["user_role"]
                         ];
                         header("Location: index.php");
                     } else {
