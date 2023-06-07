@@ -19,6 +19,9 @@ body {
     box-sizing: border-box;
 }
 
+body>* {
+    border-inline: #bfbfbf 1px solid;
+}
 
 h5 {
     font-family: 'Arial';
@@ -52,6 +55,9 @@ header {
 /** STYLE NAV START */
 .main-nav {
     background-color: #ffffff;
+    width: 1440px;
+    border: #bfbfbf 1px solid;
+    margin-bottom: 0px;
 }
 
 .main-nav ul {
@@ -60,6 +66,7 @@ header {
     justify-content: center;
     align-items: center;
     padding: 0px;
+    margin: 0px;
 }
 
 .main-nav li {
@@ -90,9 +97,7 @@ header {
 }
 
 .ni-1 {
-    border-left: #ebebeb solid 0.5px;
     border-bottom: #919191 5px solid;
-    border-bottom-left-radius: 10px;
     transition: background-color ease-in-out 200ms;
 }
 
@@ -151,9 +156,7 @@ header {
 
 .ni-6 {
     border-left: #ebebeb solid 0.5px;
-    border-right: #ebebeb solid 0.5px;
     border-bottom: #EAEE2F 5px solid;
-    border-bottom-right-radius: 10px;
     transition: background-color ease-in-out 200ms;
 }
 
@@ -168,7 +171,6 @@ header {
 /** STYLE SLIDER START */
 
 .carousel-container {
-    margin-top: 50px;
     max-width: 1440px;
     height: 650px;
     padding: 100px 0;
@@ -379,7 +381,6 @@ header {
 /** STYLE TYPES PAGES START  */
 
 .section-types {
-    margin-top: 50px;
     margin-bottom: 75px;
     max-width: 1440px;
     display: flex;

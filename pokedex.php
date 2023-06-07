@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -20,7 +23,7 @@
     <?php
     include_once "./includes/header.php";
     include_once "./includes/nav.php";
-    include_once "./includes/pokegrid.php"
+    include_once "./includes/pokegrid.php";
     ?>
 
 
