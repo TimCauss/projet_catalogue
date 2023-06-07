@@ -1,6 +1,4 @@
 <?php
-require_once './connect.php';
-
 //On déclare les variables du formulaire à vide pour éviter des bidouilles
 $prenom = $email = $pass = $lastname = "";
 
@@ -11,6 +9,13 @@ function testInput($data)
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
     return $data;
+}
+
+/*fonction pour calculer le temps d'execution
+Renvois un temps en MS prend arguments 2 valeurs microtime */
+function timing($timeStart, $timeEnd)
+{
+    return ($timeEnd - $timeStart);
 }
 
 
@@ -26,12 +31,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         /*Si le formulaire est complet (Tous les champs ont été remplis)
         ============SECURITE DES DONNEES============
         On check si le prenom est valide (Seulement des lettres) */
-        if (preg_match("/^[a-zA-Z-' ]*$/", $_POST["prenom"])) {
+        if (preg_match("/^[a-zA-Z-é' ]*$/", $_POST["prenom"])) {
             //Si le prenom est valide, on le nettoie
             $prenom = testInput($_POST["prenom"]);
         } else {
             //Si le prenom n'est pas valide, message d'erreur
-            die("Le prénom n'est pas valide");
+            die("Le prénom n'est pas valide, seul les lettres sont autorisés");
         }
         //On check si le nom est valide (Seulement des lettres)
         if (preg_match("/^[a-zA-Z-' ]*$/", $_POST["lastname"])) {
@@ -39,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $lastname = testInput($_POST["lastname"]);
         } else {
             //Si le nom n'est pas valide, message d'erreur
-            die("Le nom n'est pas valide");
+            die("Le nom n'est pas valide, seul les lettres sont autorisés");
         }
         //On check si l'email est valide
         if (filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
@@ -54,12 +59,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (strlen($_POST["pass"]) < 5) {
             die("Mot de passe invalide; Longueur mini : 5");
         }
-
+        //On check si les 2 mot de passe sont identiques:
         if ($_POST["pass"] != $_POST["pass2"]) {
             die("Les 2 champs mot de passe ne sont pas identiques");
         }
 
-        /*A ce stade, les données peuvent être insérées : */
+        //On déclare les options de hash pour le password:
+        $options = [
+            PASSWORD_ARGON2_DEFAULT_MEMORY_COST => 1 << 17,
+            PASSWORD_ARGON2_DEFAULT_TIME_COST => 2,
+            PASSWORD_ARGON2_DEFAULT_THREADS => 2
+        ];
+        //On Hash le password : (0.25s en moyenne)
+        $hashedpass = password_hash($_POST["pass"], PASSWORD_ARGON2ID, $options);
+
+        //------------Enregistrement des données en BSS:----------------
+        require_once 'connect.php'; //Connexion BDD
+
+        //Préparation et execution de la requête :
+        $createUser = "INSERT INTO users(prenom, lastname, email, pass) VALUES ('$prenom', '$lastname', '$email', '$hashedpass')";
+        $createQuery = $db->prepare($createUser);
+        $createQuery->execute();
+
+        $_SESSION["action"] = [
+            "create_user" => 1
+        ];
+        header("Location: index.php");
     } else {
         //Si le formulaire est incomplet
         $_SESSION["er_msg"] = "Veuillez remplir tous les champs";
@@ -104,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="card-body p-5 shadow-5 text-center">
                             <h2 class="fw-bold mb-1">Créer un compte</h2>
                             <div class="form-msg mb-5">
-                                <p>Remplir le formulaire pour activer le bouton</p>
+                                <a href="">Se connecter</a>
                             </div>
                             <form method="POST" class="needs-validation" novalidate>
                                 <div class="row">
@@ -140,13 +165,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                                 <div class="form-outline mb-4">
                                     <input type="password" name="pass2" id="pass2" class="form-control" required>
-                                    <label class="form-label" for="pass2">Mot de passe vérification</label>
+                                    <label class="form-label" for="pass2">Vérification du mot de passe</label>
                                     <div class="invalid-feedback">Les mots de passes ne sont pas identiques</div>
                                 </div>
                                 <!-- Submit button -->
                                 <button type="submit" id="submitForm" disabled="" class="btn btn-primary btn-block mb-4">
                                     S'enregistrer
                                 </button>
+                                <p>Remplir le formulaire pour activer le bouton</p>
                             </form>
 
                         </div>
