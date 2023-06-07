@@ -117,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Pokelist - Login Page</title>
 </head>
 
-<body>
+<body onload="formVerif()">
     <?php
     include_once "./includes/header.php";
     include_once "./includes/nav.php";
@@ -125,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <section class="login-ctn">
 
-        <div class="register-form-ctn container py-4">
+        <div class="register-form-ctn container py-4 hidden-scale">
             <div class="row g-0 align-items-center">
                 <div class="mb-5 mb-lg-0">
                     <div class="login-card card cascading-right" style="
@@ -211,8 +211,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <!-- Password input -->
                                     <div class="form-outline mb-4">
                                         <input type="password" name="login-pass" id="login-pass" class="form-control" required>
-                                        <label class="form-label" for="login-pass">Mot de passe (Longueur 5 min)</label>
-                                        <div class="invalid-feedback">5 caractères minimum.</div>
+                                        <label class="form-label" for="login-pass">Mot de passe</label>
+                                        <div class="invalid-feedback">Veuillez renseigner un mot de passe.</div>
                                     </div>
                                     <!-- Submit button -->
                                     <button type="submit" id="submitLogin" disabled="" class="btn btn-primary btn-block mb-4">

@@ -662,17 +662,18 @@ header {
 
 .register-form-ctn {
     position: absolute;
-    left: 27.5%;
+    left: 26%;
     max-width: 650px;
     z-index: 2;
-    transition: transform 0.3s ease-in-out;
+    transition: transform .3s ease-in-out;
 }
 
 .login-form-ctn {
+    position: absolute;
+    left: 31%;
     max-width: 500px;
-    transform: translateY(10%);
     z-index: 1;
-    transition: transform 0.3s ease-in-out;
+    transition: transform .3s ease-in-out;
 }
 
 .form-change,
@@ -681,15 +682,15 @@ header {
 }
 
 .register-hidden {
-    transform: translateX(-500vh)
+    transform: translateX(-500vh);
+}
+
+.hidden-scale {
+    transform: scale(0)
 }
 
 .login-hidden {
     transform: translateX(500vh)
-}
-
-.form-show {
-    transform: translateX(0);
 }
 
 .cascading-right {
