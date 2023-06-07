@@ -32,6 +32,7 @@ window.addEventListener("keyup", () => {
   } else {
     subButton.setAttribute("disabled", "");
   }
+  
 });
 
 /* CHANGEMENT DES FORMULAIRES LOGIN/REGISTER */

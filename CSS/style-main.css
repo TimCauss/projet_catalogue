@@ -685,7 +685,7 @@ header {
 }
 
 .login-hidden {
-    transform: translateX(-500vh)
+    transform: translateX(500vh)
 }
 
 .form-show {

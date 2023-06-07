@@ -201,24 +201,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <form method="POST" class="needs-validation" novalidate>
                                 <div class="row">
-                                <!-- Email input -->
-                                <div class="form-outline mb-4">
-                                    <input type="email" name="email" id="email" class="form-control" required>
-                                    <label class="form-label" for="email">Adresse Email</label>
-                                    <div class="valid-feedback">Ce champ est OK !</div>
-                                    <div class="invalid-feedback">Veuillez remplir ce champ.</div>
-                                </div>
-                                <!-- Password input -->
-                                <div class="form-outline mb-4">
-                                    <input type="password" name="pass" id="pass" class="form-control" required>
-                                    <label class="form-label" for="pass">Mot de passe (Longueur 5 min)</label>
-                                    <div class="invalid-feedback">5 caractères minimum.</div>
-                                </div>
-                                <!-- Submit button -->
-                                <button type="submit" id="submitForm" disabled="" class="btn btn-primary btn-block mb-4">
-                                    S'enregistrer
-                                </button>
-                                <p>Remplir le formulaire pour activer le bouton</p>
+                                    <!-- Email input -->
+                                    <div class="form-outline mb-4">
+                                        <input type="email" name="login-email" id="login-email" class="form-control" required>
+                                        <label class="form-label" for="login-email">Adresse Email</label>
+                                        <div class="valid-feedback">Ce champ est OK !</div>
+                                        <div class="invalid-feedback">Veuillez remplir ce champ.</div>
+                                    </div>
+                                    <!-- Password input -->
+                                    <div class="form-outline mb-4">
+                                        <input type="password" name="login-pass" id="login-pass" class="form-control" required>
+                                        <label class="form-label" for="login-pass">Mot de passe (Longueur 5 min)</label>
+                                        <div class="invalid-feedback">5 caractères minimum.</div>
+                                    </div>
+                                    <!-- Submit button -->
+                                    <button type="submit" id="submitLogin" disabled="" class="btn btn-primary btn-block mb-4">
+                                        S'enregistrer
+                                    </button>
+                                    <p>Remplir le formulaire pour activer le bouton</p>
                             </form>
 
                         </div>
