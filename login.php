@@ -123,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include_once "./includes/nav.php";
     ?>
 
-    <section class="login-ctn text-center text-lg-start">
+    <section class="login-ctn">
 
         <div class="register-form-ctn container py-4">
             <div class="row g-0 align-items-center">
@@ -135,7 +135,69 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="card-body p-5 shadow-5 text-center">
                             <h2 class="fw-bold mb-1">Créer un compte</h2>
                             <div class="form-msg mb-5">
-                                <a href="">Se connecter</a>
+                                <a class="form-change">Se connecter</a>
+                            </div>
+                            <form method="POST" class="needs-validation" novalidate>
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <div class="form-outline">
+                                            <input type="text" name="prenom" id="prenom" class="form-control" required>
+                                            <label class="form-label" for="prenom">Prénom</label>
+                                            <div class="valid-feedback">Ce champ est OK !</div>
+                                            <div class="invalid-feedback">Veuillez remplir ce champ.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <div class="form-outline">
+                                            <input type="text" name="lastname" id="lastname" class="form-control" required>
+                                            <label class="form-label" for="lastname">Nom</label>
+                                            <div class="valid-feedback">Ce champ est OK !</div>
+                                            <div class="invalid-feedback">Veuillez remplir ce champ.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Email input -->
+                                <div class="form-outline mb-4">
+                                    <input type="email" name="email" id="email" class="form-control" required>
+                                    <label class="form-label" for="email">Adresse Email</label>
+                                    <div class="valid-feedback">Ce champ est OK !</div>
+                                    <div class="invalid-feedback">Veuillez remplir ce champ.</div>
+                                </div>
+                                <!-- Password input -->
+                                <div class="form-outline mb-4">
+                                    <input type="password" name="pass" id="pass" class="form-control" required>
+                                    <label class="form-label" for="pass">Mot de passe (Longueur 5 min)</label>
+                                    <div class="invalid-feedback">5 caractères minimum.</div>
+                                </div>
+                                <div class="form-outline mb-4">
+                                    <input type="password" name="pass2" id="pass2" class="form-control" required>
+                                    <label class="form-label" for="pass2">Vérification du mot de passe</label>
+                                    <div class="invalid-feedback">Les mots de passes ne sont pas identiques</div>
+                                </div>
+                                <!-- Submit button -->
+                                <button type="submit" id="submitForm" disabled="" class="btn btn-primary btn-block mb-4">
+                                    S'enregistrer
+                                </button>
+                                <p>Remplir le formulaire pour activer le bouton</p>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="login-form-ctn container py-4">
+            <div class="row g-0 align-items-center">
+                <div class="mb-5 mb-lg-0">
+                    <div class="login-card card cascading-right" style="
+            background: hsla(0, 0%, 100%, 0.55);
+            backdrop-filter: blur(30px);
+            ">
+                        <div class="card-body p-5 shadow-5 text-center">
+                            <h2 class="fw-bold mb-1">Se connecter</h2>
+                            <div class="form-msg mb-5">
+                                <a class="form-change2">S'enregitrer</a>
                             </div>
                             <form method="POST" class="needs-validation" novalidate>
                                 <div class="row">

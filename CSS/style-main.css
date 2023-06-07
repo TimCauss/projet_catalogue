@@ -649,16 +649,45 @@ header {
 
 /** STYLE LOGIN PAGE START */
 .login-ctn {
-    margin-top: 60px;
+    display: flex;
+    position: relative;
+    flex-direction: row;
     width: 1440px;
     background-image: url(../img/login/Frame\ 39.png);
     background-repeat: no-repeat;
-    background-size: cover;
-    background-position: -20% 0;
+    background-size: contain;
+    background-position: center;
 }
 
 .register-form-ctn {
+    position: absolute;
+    left: 27.5%;
     max-width: 650px;
+    z-index: 2;
+    transition: transform 0.3s ease-in-out;
+}
+
+.login-form-ctn {
+    max-width: 650px;
+    z-index: 1;
+    transition: transform 0.3s ease-in-out;
+}
+
+.form-change,
+.form-change2 {
+    cursor: pointer;
+}
+
+.register-hidden {
+    transform: translateX(-500vh)
+}
+
+.login-hidden {
+    transform: translateX(-500vh)
+}
+
+.form-show {
+    transform: translateX(0);
 }
 
 .cascading-right {

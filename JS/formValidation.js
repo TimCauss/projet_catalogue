@@ -1,4 +1,4 @@
-// Example starter JavaScript for disabling form submissions if there are invalid fields
+/* VALIDATION DES CHAMPS DU FORMULAIRE */
 (() => {
   "use strict";
 
@@ -21,15 +21,10 @@
   });
 })();
 
+/* VERIFICATION DES MOTS DE PASSE */
 const pass1 = document.getElementById("pass");
 const pass2 = document.getElementById("pass2");
 const subButton = document.getElementById("submitForm");
-
-console.log(pass1.value);
-console.log(pass2.value);
-console.log(subButton);
-
-
 
 window.addEventListener("keyup", () => {
   if (pass1.value.length >= 5 && pass1.value == pass2.value) {
@@ -37,4 +32,14 @@ window.addEventListener("keyup", () => {
   } else {
     subButton.setAttribute("disabled", "");
   }
+});
+
+/* CHANGEMENT DES FORMULAIRES LOGIN/REGISTER */
+
+const btnChangeToLogin = document.querySelector(".form-change");
+const registerElem = document.querySelector(".register-form-ctn");
+
+btnChangeToLogin.addEventListener("click", () => {
+  console.log("click");
+  registerElem.classList.add("register-hidden");
 });
