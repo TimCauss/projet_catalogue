@@ -19,7 +19,7 @@ session_start()
 
     <!-- /** includes Header and Nav */ -->
     <?php
-
+    var_dump($_SESSION);
     include_once "./includes/header.php";
     include_once "./includes/nav.php";
     include_once "./includes/slider.php";

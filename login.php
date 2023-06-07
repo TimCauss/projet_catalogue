@@ -1,4 +1,6 @@
 <?php
+session_start();
+require_once 'connect.php'; //Connexion BDD
 //On déclare les variables du formulaire à vide pour éviter des bidouilles
 $prenom = $email = $pass = $lastname = "";
 
@@ -59,15 +61,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 die("L'email n'est pas valide");
             }
             //On check si l'email existe déjà :
-            require_once 'connect.php'; //Connexion BDD
 
             $mailcheckSQL = "SELECT email FROM users";
-            $mailSQL = $db->prepare($mailcheckQ);
+            $mailSQL = $db->prepare($mailcheckSQL);
             $mailSQL->execute();
             $mailSQLList = $mailSQL->fetchAll(PDO::FETCH_ASSOC);
 
             foreach ($mailSQLList as $mail) {
-                if ($email == $mailSQLList) {
+                if ($email == $mail) {
                     die("Adresse email déjà utilisée.");
                 }
             }
@@ -103,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $_SESSION["user"] = [
                 "prenom" => $prenom,
-                "lasname" => $lasname,
+                "lastname" => $lastname,
                 "email" => $email
             ];
             header("Location: index.php");
@@ -118,10 +119,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         //Verification des champs du formulaire :
         if (isset($_POST["login-email"]) && isset($_POST["login-pass"])) {
 
-            //on connect la bdd
-            require_once 'connect.php';
             // on fetch les données utiles pour les vérification:
-            $loginSQL = "SELECT user_id, email, pass FROM users";
+            $loginSQL = "SELECT user_id, email, prenom, lastname, pass FROM users";
             $loginQuery = $db->prepare($loginSQL);
             $loginQuery->execute();
             $loginResult = $loginQuery->fetchAll(PDO::FETCH_ASSOC);
@@ -132,8 +131,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     //Si l'utilisateur existe, on vérifie le mot de passe:
                     if (password_verify($_POST["login-pass"], $user["pass"])) {
                         //Si le mot de passe est correct, on connecte l'utilisateur:
+
                         $_SESSION["user"] = [
                             "user_id" => $user["user_id"],
+                            "prenom" => $user["prenom"],
+                            "lasname" => $user["lasname"],
                             "email" => $user["email"]
                         ];
                         header("Location: index.php");
