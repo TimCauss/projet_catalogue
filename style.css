@@ -30,11 +30,11 @@ h4 {
 
 #precedent, #suivant {
     background-color: #A4A4A4;
-    width: 49%;
+   width: 49%;
     display: inline-flex;
     height: 120px;
     font-size: 2em;
-   margin-top: 30px;
+
 }
 
 #section1 {
@@ -78,28 +78,31 @@ h6{
     margin-bottom: 30px;
 }
 
-.PLANTE {
-    background-color: #9BCC50;
+.type {
+    
     width: 130px;
-    height: 17px;
+    height: 19px;
     color: #fffbfb;
     display: inline-block;
     text-align: center;
     border-radius: 5px;
     padding: 5px;
     margin: 10px;
+    text-transform: uppercase;
+}
+.plante {
+    background-color: #9BCC50;
 }
 .poison {
     background-color:#B97FC9;
-    width: 130px;
-    height: 17px;
-    display: inline-block;
-    color: #fffbfb;
-    text-align: center;
-    border-radius: 5px;
-   padding: 5px;
-    margin: 10px;
     
+}
+.feu {
+    background-color: #f64600;
+}
+.type-container {
+    display: flex;
+    flex-direction: column;
 }
 .evo img {
     height: 160px;

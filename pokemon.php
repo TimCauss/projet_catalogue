@@ -35,6 +35,7 @@ if(isset($_GET['id'])) {
         $taille = $row['taille'];
         $poids = $row['poids'];
         $type = $row['type'];
+        $type2 = $row['type-2'];
     } else {
         echo "Aucun résultat.";
     }
@@ -48,7 +49,7 @@ if(isset($_GET['id'])) {
     include_once "./includes/header.php";
     include_once "./includes/nav.php";
     ?>
-    <div class="contenaire">
+    <div class="container">
         <a href="" id="precedent">Précédent</a> <a href="" id="suivant">Suivant</a>
         <h1><?php echo $nom; ?></h1>
     </div>
@@ -63,10 +64,11 @@ if(isset($_GET['id'])) {
                 <li>Poids: <span class="vert"><?php echo $poids; ?></span></li>
                 
             </ul>
-
+            <div class="type-container">
             <h6>Type</h6>
-            <div class="<?=$type?>"><?php echo $type; ?></div>
-            
+            <div class="type <?=$type?>"><?php echo $type?></div>
+            <div class="type <?=$type2?>"><?php echo $type2?></div>
+            </div>
         </div>
     </section>
     <section class="evolutions">
@@ -75,22 +77,22 @@ if(isset($_GET['id'])) {
         <div class="evo">
             <img src="img/pokemon/001.png">
             <span class="poke">Bulbizarre</span> 
-            <span class="plante">PLANTE </span>
-            <span class="poison">POISON</span>
+            <span class="type plante">PLANTE </span>
+            <span class="type poison">POISON</span>
         </div>
         <span class="arrow">→</span>
         <div class="evo">
             <img src="img/pokemon/002.png">
             <span class="poke">Herbizarre</span>
-            <span class="plante">PLANTE </span>
-            <span class="poison">POISON</span>
+            <span class="type plante">PLANTE </span>
+            <span class="type poison">POISON</span>
         </div>
         <span class="arrow">→</span>
         <div class="evo">
             <img src="img/pokemon/003.png">
             <span class="poke">Florizarre</span>
-            <span class="plante">PLANTE </span>
-            <span class="poison">POISON</span>
+            <span class="type plante">PLANTE </span>
+            <span class="type poison">POISON</span>
         </div>
     </div>
     </section>
