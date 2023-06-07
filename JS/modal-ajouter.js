@@ -12,17 +12,23 @@ pokeball.addEventListener("mouseover", () => {
 const addBtnElement = document.querySelector(".trg-btn");
 const modalAddElement = document.querySelector(".form-add-container");
 const overlayElement = document.querySelector(".overlay");
+const closeTriggerElement = document.querySelectorAll(".closer");
 
 addBtnElement.addEventListener("click", () => {
-  modalAddElement.classList.toggle("active");
-  addBtnElement.classList.toggle("onuse");
+  modalAddElement.classList.add("active");
+  addBtnElement.classList.add("onuse");
   pokeball.classList.add("pokeball--animation");
-  overlayElement.classList.toggle("active");
+  overlayElement.classList.add("active");
 });
 
-overlayElement.addEventListener("click", () => {
+closeTriggerElement.forEach((closer) => {
+  closer.addEventListener("click", () => {
+    closeModal();
+  });
+});
+
+function closeModal() {
   modalAddElement.classList.remove("active");
   addBtnElement.classList.remove("onuse");
   overlayElement.classList.remove("active");
-});
-
+}

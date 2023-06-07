@@ -462,13 +462,17 @@ header {
 /** STYLE PAGE CREER START **/
 
 .form-add-container {
-    z-index: 3;
+    z-index: 1;
+    position: absolute;
+    top: 0px;
+    left: auto;
+    max-width: 600px;
     transform: translateY(-250vh);
     transition: transform 0.5s ease-in-out;
 }
 
 .form-add-container.active {
-    transform: translateY(-50%);
+    transform: translateY(20%);
 }
 
 .form-add-container form {
@@ -493,6 +497,10 @@ header {
     margin-right: 10px;
 }
 
+.closer {
+    z-index: 1;
+}
+
 /*Style pokeball*/
 
 .center-on-page {
@@ -504,7 +512,6 @@ header {
 
 /* Poké Styles */
 .pokeball {
-    position: relative;
     width: 200px;
     height: 200px;
     scale: 0.3;
@@ -630,10 +637,10 @@ header {
 }
 
 .overlay {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    z-index: 2;
+    z-index: 0;
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
@@ -642,8 +649,7 @@ header {
 }
 
 .overlay.active {
-    display: flex;
-    justify-content: center;
+    display: block;
 }
 
 /** STYLE MON PROFIL END*/
