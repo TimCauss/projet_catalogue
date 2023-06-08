@@ -82,8 +82,10 @@ if ($_POST) {
                 die("Le transfert de fichier à échoué, veuillez contacter un administrateur");
             }
 
-            $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`) VALUES (:nom, :numero, :p_description, :taille, :poids, :evolutions, :p_type)";
+            //On récupère l'id de l'utilisateur connecté
+            $user_id = $_SESSION['user']['user_id'];
 
+            $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`, `created_by`) VALUES (:nom, :numero, :p_description, :taille, :poids, :evolutions, :p_type, '$user_id')";
             $query = $db->prepare($sql);
 
             $query->bindValue(':nom', $nom);
