@@ -8,9 +8,11 @@
                 <li class="nav-item">
                     <div class="nav-link trg-btn">Ajouter</div>
                 </li>
-                <li class="nav-item">
-                    <div class="nav-link">Liste Utilisateurs</div>
-                </li>
+                <?php
+                if ($_SESSION['user']['role'] == 1) {
+                    include_once "./includes/profile_user_btn.php";
+                }
+                ?>
             </ul>
             <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

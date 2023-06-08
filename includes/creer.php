@@ -116,8 +116,8 @@ if ($_POST) {
         'form_01' => "Remplissez les champs obligatoires"
     ];
 }
-
 ?>
+
 <div class="overlay closer"></div>
 <section class="form-add-container px-10">
     <div class="card">
