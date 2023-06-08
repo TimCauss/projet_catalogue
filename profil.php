@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['user'])) {
-    header('Location: ./index.php');
+    header('Location: ./login.php');
     die();
 }
 ?>
@@ -30,6 +30,10 @@ if (!isset($_SESSION['user'])) {
     include_once "./includes/nav.php";
     include_once "./includes/profil_nav.php";
     include_once "./includes/creer.php";
+
+    if ($_SESSION['user']['role'] == 1) {
+        include_once "./includes/users.php";
+    }
     ?>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
