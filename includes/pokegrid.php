@@ -2,7 +2,7 @@
 
 require_once "connect.php";
 
-$p_sql = "SELECT * FROM pokemon";
+$p_sql = "SELECT * FROM pokemon ORDER BY numero ASC";
 $p_query = $db->prepare($p_sql);
 $p_query->execute();
 $p_result = $p_query->fetchAll(PDO::FETCH_ASSOC);
