@@ -37,6 +37,7 @@ header {
     flex-direction: column;
     align-items: center;
     width: 100vw;
+    border-bottom: none;
 }
 
 .header-img-ctn {
@@ -54,10 +55,10 @@ header {
 
 /** STYLE NAV START */
 .main-nav {
-    background-color: #ffffff;
     width: 1440px;
     border: #bfbfbf 1px solid;
     margin-bottom: 0px;
+    border-top: none;
 }
 
 .main-nav ul {
@@ -71,7 +72,7 @@ header {
 
 .main-nav li {
     list-style: none;
-
+    z-index: 10;
 }
 
 .main-nav li a {
@@ -86,6 +87,7 @@ header {
     font-size: 20px;
     line-height: 24px;
     text-align: center;
+    background: #ffffff;
     color: #464646;
     display: flex;
     flex-direction: column;
@@ -93,7 +95,31 @@ header {
     align-items: center;
     padding: 10px 20px;
     cursor: pointer;
+    z-index: 10;
     /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
+}
+
+.ni-login {
+    background: #3D3D3D;
+    width: 50px;
+    height: 49px;
+    position: relative;
+}
+
+.login-buttons {
+    border: #bfbfbf 1px solid;
+    padding: 10px;
+    background-color: #FFFFFF;
+    position: absolute;
+    z-index: 9;
+    transform: translateY(-48px);
+    transition: transform ease-in-out 200ms,
+        z-index ease-in-out 500ms;
+}
+
+.login-buttons-show {
+    transform: translateY(0px);
+    z-index: 0;
 }
 
 .ni-1 {

@@ -23,7 +23,6 @@ function timing($timeStart, $timeEnd)
 
 //On check le POST du formulaire
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     /* --------------- REGISTER POST ------------------------*/
     if (isset($_POST["register-submit"])) {
         //On check si les champs sont remplis
@@ -91,18 +90,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             //On Hash le password : (0.25s en moyenne)
             $hashedpass = password_hash($_POST["pass"], PASSWORD_ARGON2ID, $options);
 
-            //------------Enregistrement des données en BSS:----------------
+            //------------Enregistrement des données en BDD:----------------
 
             //Préparation et execution de la requête :
             $createUser = "INSERT INTO users(prenom, lastname, email, pass) VALUES ('$prenom', '$lastname', '$email', '$hashedpass')";
             $createQuery = $db->prepare($createUser);
             $createQuery->execute();
 
+            $userSQL = "SELECT user_id FROM users WHERE email = '$email'";
+            $userQuery = $db->prepare($userSQL);
+            $userQuery->execute();
+            $userResult = $userQuery->fetch(PDO::FETCH_ASSOC);
+
             $_SESSION["action"] = [
                 "create_user" => 1
             ];
 
             $_SESSION["user"] = [
+                "user_id" => $userResult["user_id"],
                 "prenom" => $prenom,
                 "lastname" => $lastname,
                 "email" => $email
@@ -112,49 +117,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             //Si le formulaire est incomplet
             $_SESSION["er_msg"] = "Veuillez remplir tous les champs";
         }
-    }
-    /*--------------------------LOGIN POST---------------------------------*/
-    if (isset($_POST["login-submit"])) {
-
+        /*--------------------------LOGIN POST---------------------------------*/
+    } elseif (isset($_POST["login-submit"])) {
         //Verification des champs du formulaire :
         if (isset($_POST["login-email"]) && isset($_POST["login-pass"])) {
 
             // on fetch les données utiles pour les vérification:
-            $loginSQL = "SELECT user_id, email, prenom, lastname, pass, user_role FROM users";
+            $loginSQL = "SELECT user_id, email, prenom, lastname, pass, user_role FROM users WHERE email = '$email'";
             $loginQuery = $db->prepare($loginSQL);
             $loginQuery->execute();
-            $loginResult = $loginQuery->fetchAll(PDO::FETCH_ASSOC);
+            $loginResult = $loginQuery->fetch(PDO::FETCH_ASSOC);
 
             //On vérifie si l'utilisateur existe dans la bdd:
-            foreach ($loginResult as $user) {
-                if ($_POST["login-email"] == $user["email"]) {
-                    //Si l'utilisateur existe, on vérifie le mot de passe:
-                    if (password_verify($_POST["login-pass"], $user["pass"])) {
-                        //Si le mot de passe est correct, on connecte l'utilisateur:
-
-                        $_SESSION["user"] = [
-                            "user_id" => $user["user_id"],
-                            "prenom" => $user["prenom"],
-                            "lasname" => $user["lasname"],
-                            "email" => $user["email"],
-                            "role" => $user["user_role"]
-                        ];
-                        header("Location: index.php");
-                    } else {
-                        //Si le mot de passe est incorrect, message d'erreur:
-                        $_SESSION["er_msg"] = "Utilisateur ou Mot de passe incorrect";
-                    }
+            if ($loginResult) {
+                //Si l'utilisateur existe, on vérifie le mot de passe:
+                if (password_verify($_POST["login-pass"], $loginResult["pass"])) {
+                    //Si le mot de passe est correct, on crée la session:
+                    $_SESSION["user"] = [
+                        "user_id" => $loginResult["user_id"],
+                        "prenom" => $loginResult["prenom"],
+                        "lastname" => $loginResult["lastname"],
+                        "email" => $loginResult["email"],
+                        "user_role" => $loginResult["user_role"]
+                    ];
+                    header("Location: index.php");
                 } else {
-                    //Si l'utilisateur n'existe pas, message d'erreur:
+                    //Si le mot de passe est incorrect, message d'erreur:
                     $_SESSION["er_msg"] = "Utilisateur ou Mot de passe incorrect";
                 }
+            } else {
+                //Si l'utilisateur n'existe pas, message d'erreur:
+                $_SESSION["er_msg"] = "Utilisateur ou Mot de passe incorrect";
             }
-        } else {
-            $_SESSION["er_msg"] = "Veuillez remplir les champs correctement.";
         }
+    } else {
+        $_SESSION["er_msg"] = "Veuillez remplir les champs correctement.";
     }
 }
-
 
 ?>
 

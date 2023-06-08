@@ -66,3 +66,5 @@ btnChangeToReg.addEventListener("click", () => {
     loginElem.classList.remove("login-hidden");
   }, "175");
 });
+
+
