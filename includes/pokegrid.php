@@ -9,12 +9,12 @@ $p_result = $p_query->fetchAll(PDO::FETCH_ASSOC);
 
 
 ?>
-<section class="container p-grid">
+<section class="container p-grid pb-5">
     <div class="d-flex flex-row flex-wrap justify-content-center gap-5">
         <?php foreach ($p_result as $pokemon) : ?>
             <a href="./pokemon.php?id=<?= $pokemon['p_id'] ?>">
                 <div class="p-card p2">
-                    <figure class="grid-p-img" data-p_type="<?= $pokemon['p_type'] ?>">
+                    <figure class="grid-p-img" data-p_type="<?= strtolower($pokemon['p_type']) ?>">
                         <div class="circle"></div><img src="./uploads/<?= $pokemon['nom'] ?>.png" alt="pokemon img">
                     </figure>
                     <figcaption class="grid-p-details">
