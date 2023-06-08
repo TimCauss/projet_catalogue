@@ -12,11 +12,13 @@
 
 <body>
 <?php
+//connexion bdd
 require_once "connect.php";
 
+//récupération de l'id
 if(isset($_GET['id'])) {
     $id = $_GET['id'];
-
+//requête sql
     $query = "SELECT * FROM pokemon WHERE id = :id";
 
     $sql = $db->prepare($query);
@@ -25,7 +27,7 @@ if(isset($_GET['id'])) {
 
     $sql->execute();
 
-    
+//récupération des informations du pokemon
     $row = $sql->fetch(PDO::FETCH_ASSOC);
     if ($row) {
         $nom = $row['nom'];
@@ -36,32 +38,31 @@ if(isset($_GET['id'])) {
         $poids = $row['poids'];
         $type = $row['type'];
         $type2 = $row['type-2'];
+        $evolutions = explode(",", $row['evolutions']);
+       
     } else {
         echo "Aucun résultat.";
     }
 } 
-?>
 
-
-
-
-    <?php
+//affichage header/navbar
     include_once "./includes/header.php";
     include_once "./includes/nav.php";
     ?>
+
     <div class="container">
         <a href="" id="precedent">Précédent</a> <a href="" id="suivant">Suivant</a>
         <h1><?php echo $nom; ?></h1>
     </div>
     <h4>n°<?php echo $numero; ?></h4>
     <section id="section1">
-        <img id="bulbizarre" src="<?php echo $img; ?>" alt="bulbizarre">
+        <img id="pokemon" src="<?php echo $img; ?>" alt="<?= $nom?>">
         <div class="desc">
             <p><?php echo $description; ?></p>
 
             <ul>
-                <li>Taille: <span class="vert"><?php echo $taille; ?></span></li>
-                <li>Poids: <span class="vert"><?php echo $poids; ?></span></li>
+                <li>Taille: <span class="vert"><?php echo $taille; ?>m</span></li>
+                <li>Poids: <span class="vert"><?php echo $poids; ?>kg</span></li>
                 
             </ul>
             <div class="type-container">
@@ -74,26 +75,39 @@ if(isset($_GET['id'])) {
     <section class="evolutions">
         <h2>Evolutions:</h2>
         <div class="evo-container">
-        <div class="evo">
-            <img src="img/pokemon/001.png">
-            <span class="poke">Bulbizarre</span> 
-            <span class="type plante">PLANTE </span>
-            <span class="type poison">POISON</span>
-        </div>
-        <span class="arrow">→</span>
-        <div class="evo">
-            <img src="img/pokemon/002.png">
-            <span class="poke">Herbizarre</span>
-            <span class="type plante">PLANTE </span>
-            <span class="type poison">POISON</span>
-        </div>
-        <span class="arrow">→</span>
-        <div class="evo">
-            <img src="img/pokemon/003.png">
-            <span class="poke">Florizarre</span>
-            <span class="type plante">PLANTE </span>
-            <span class="type poison">POISON</span>
-        </div>
+            <?php
+        foreach ($evolutions as $evo_nom) {
+    //requête SQL pour récupérer les informations de l'évolution courante
+    $query = "SELECT * FROM pokemon WHERE nom = :nom";
+    $sql = $db->prepare($query);
+    $sql->bindParam(':nom', $evo_nom);
+    $sql->execute();
+    $row = $sql->fetch(PDO::FETCH_ASSOC);
+    
+
+   // Vérifiez si la requête SQL a renvoyé des résultats
+   if ($row !== false) {
+    // Récupérez les informations de l'évolution courante
+    $evo_nom = $row['nom'];
+    $evo_numero = $row['numero'];
+    $evo_img = $row['img'];
+    $evo_type = $row['type'];
+    $evo_type2 = $row['type-2'];
+    echo "<div class=\"evo\">";
+                    echo "<img src=\"$evo_img\">";
+                    echo "<span class=\"poke\">$evo_nom</span>";
+                    echo "<span class=\"evo-type $evo_type\">$evo_type</span>";
+                    echo "<span class=\"evo-type $evo_type2\">$evo_type2</span>";
+                    echo "</div>";
+    
+} else {
+    // La requête SQL n'a renvoyé aucun résultat
+    echo "Aucun résultat pour l'évolution '$evo_nom'.";
+}
+if (next($evolutions)) {
+    echo "<span class=\"arrow\">→</span>";
+}}
+?>
     </div>
     </section>
 

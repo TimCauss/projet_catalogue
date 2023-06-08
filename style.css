@@ -44,7 +44,7 @@ h4 {
     flex-wrap: wrap;
     margin-bottom: 50px;
 }
-#bulbizarre {
+#pokemon {
     background-color: #F2F2F2;
     margin-right: 15px;
 }
@@ -81,7 +81,19 @@ h6{
 .type {
     
     width: 130px;
-    height: 19px;
+    height: 20px;
+    color: #fffbfb;
+    display: inline-block;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px;
+    text-transform: uppercase;
+}
+.evo-type {
+    font-size: 13px;
+    width: 85px;
+    height: 12px;
     color: #fffbfb;
     display: inline-block;
     text-align: center;
@@ -99,6 +111,9 @@ h6{
 }
 .feu {
     background-color: #f64600;
+}
+.vol {
+    background-color: rgb(0, 183, 255);
 }
 .type-container {
     display: flex;
