@@ -229,6 +229,11 @@ header {
     gap: 15px;
 }
 
+.slider-header a {
+    color: #919191;
+    text-decoration: none;
+}
+
 .slider-icon {
     fill: #919191;
     width: 20px;
