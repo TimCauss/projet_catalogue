@@ -737,3 +737,21 @@ header {
 }
 
 /** STYLE LOGIN PAGE END */
+
+/** STYLE GRID PAGE START */
+
+.p-card * {
+    border: #e20707 1px solid;
+}
+
+.p-card {
+    border: #0716e2 1px solid;
+    width: 120px;
+    height: 200px;
+}
+
+.p-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
