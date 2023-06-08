@@ -488,7 +488,7 @@ header {
 /** STYLE PAGE CREER START **/
 
 .form-add-container {
-    z-index: 1;
+    z-index: 11;
     position: absolute;
     top: 0px;
     left: auto;
@@ -498,7 +498,7 @@ header {
 }
 
 .form-add-container.active {
-    transform: translateY(20%);
+    transform: translateY(5%);
 }
 
 .form-add-container form {
@@ -666,7 +666,7 @@ header {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 0;
+    z-index: 10;
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);

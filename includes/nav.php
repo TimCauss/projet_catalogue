@@ -11,9 +11,10 @@
                 </div>
             </a>
             <div class="login-buttons">
-                <a href="./login.php">Se connecter</a>
-                <?php if (isset($_SESSION["users"]["user_id"])) {
-                    echo "<a href='/deconnect.php'>Se déconnecter</a>";
+                <?php if (isset($_SESSION["user"]["email"])) {
+                    echo "<a href='./deconnect.php'>Se déconnecter</a>";
+                } else {
+                    echo "<a href='./login.php'>Se connecter</a>";
                 } ?>
             </div>
         </li>

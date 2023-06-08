@@ -115,19 +115,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: index.php");
         } else {
             //Si le formulaire est incomplet
-            $_SESSION["er_msg"] = "Veuillez remplir tous les champs";
+            $_SESSION["er_msg"] = "00 - Veuillez remplir tous les champs";
         }
         /*--------------------------LOGIN POST---------------------------------*/
     } elseif (isset($_POST["login-submit"])) {
         //Verification des champs du formulaire :
         if (isset($_POST["login-email"]) && isset($_POST["login-pass"])) {
-
+            $email = $_POST["login-email"];
             // on fetch les données utiles pour les vérification:
             $loginSQL = "SELECT user_id, email, prenom, lastname, pass, user_role FROM users WHERE email = '$email'";
             $loginQuery = $db->prepare($loginSQL);
             $loginQuery->execute();
             $loginResult = $loginQuery->fetch(PDO::FETCH_ASSOC);
-
             //On vérifie si l'utilisateur existe dans la bdd:
             if ($loginResult) {
                 //Si l'utilisateur existe, on vérifie le mot de passe:
@@ -143,15 +142,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     header("Location: index.php");
                 } else {
                     //Si le mot de passe est incorrect, message d'erreur:
-                    $_SESSION["er_msg"] = "Utilisateur ou Mot de passe incorrect";
+                    $_SESSION["er_msg"] = "1 - Utilisateur ou Mot de passe incorrect";
+                    die($_SESSION["er_msg"]);
                 }
             } else {
                 //Si l'utilisateur n'existe pas, message d'erreur:
-                $_SESSION["er_msg"] = "Utilisateur ou Mot de passe incorrect";
+                $_SESSION["er_msg"] = "2 - Utilisateur ou Mot de passe incorrect";
+                die($_SESSION["er_msg"]);
             }
         }
     } else {
-        $_SESSION["er_msg"] = "Veuillez remplir les champs correctement.";
+        $_SESSION["er_msg"] = "0 - Veuillez remplir les champs correctement.";
+        die($_SESSION["er_msg"]);
     }
 }
 

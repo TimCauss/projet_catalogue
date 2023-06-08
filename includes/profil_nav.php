@@ -9,7 +9,7 @@
                     <div class="nav-link trg-btn">Ajouter</div>
                 </li>
                 <?php
-                if ($_SESSION['user']['role'] == 1) {
+                if ($_SESSION['user']['user_role'] == 1) {
                     include_once "./includes/profile_user_btn.php";
                 }
                 ?>

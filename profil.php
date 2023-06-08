@@ -31,7 +31,7 @@ if (!isset($_SESSION['user'])) {
     include_once "./includes/profil_nav.php";
     include_once "./includes/creer.php";
 
-    if ($_SESSION['user']['role'] == 1) {
+    if ($_SESSION['user']['user_role'] == 1) {
         include_once "./includes/users.php";
     }
     ?>
