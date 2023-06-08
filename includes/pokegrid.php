@@ -14,12 +14,17 @@ $p_result = $p_query->fetchAll(PDO::FETCH_ASSOC);
         <?php foreach ($p_result as $pokemon) : ?>
             <a href="./pokemon.php?id=<?= $pokemon['p_id'] ?>">
                 <div class="p-card p2">
-                    <figure class="grid-p-img" data-p_type="<?= $pokemon['p_type'] ?>"><img src="./uploads/<?= $pokemon['nom'] ?>.png" alt="pokemon img"></figure>
+                    <figure class="grid-p-img" data-p_type="<?= $pokemon['p_type'] ?>">
+                        <div class="circle"></div><img src="./uploads/<?= $pokemon['nom'] ?>.png" alt="pokemon img">
+                    </figure>
                     <figcaption class="grid-p-details">
                         <div class="grid-p-nbr">n°<?= $pokemon['numero'] ?></div>
                         <div class="grid-p-name"><?= $pokemon['nom'] ?></div>
-                        <div class="grid-p-type1"><?= $pokemon['p_type'] ?></div>
-                        <div class="grid-p-type2"><?= $pokemon['p_type-2'] ?></div>
+                        <div class="p-type-wrapper pt-2">
+                            <div class="grid-p-type1"><?= strtoupper($pokemon['p_type']) ?></div>
+                            <div class="grid-p-type2"><?= strtoupper($pokemon['p_type-2']) ?></div>
+                        </div>
+
                     </figcaption>
                 </div>
             </a>
