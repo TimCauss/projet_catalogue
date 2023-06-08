@@ -743,6 +743,10 @@ header {
 /** STYLE LOGIN PAGE END */
 
 /** STYLE GRID PAGE START */
+.container {
+    max-width: 1440px !important;
+}
+
 .p-grid {
     padding-top: 20px;
     font-family: 'Inter';
@@ -801,9 +805,11 @@ header {
     font-size: 20px;
     line-height: 24px;
     color: #000000;
+    text-align: center;
 }
 
 .grid-p-nbr {
+    text-align: center;
     font-size: 12px;
     line-height: 15px;
     color: rgba(0, 0, 0, 0.67);
@@ -811,6 +817,7 @@ header {
 
 .p-type-wrapper {
     display: flex;
+    justify-content: space-between;
 }
 
 .grid-p-type1,
