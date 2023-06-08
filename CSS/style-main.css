@@ -783,6 +783,7 @@ header {
 .grid-p-img {
     position: relative;
     background-color: #61616125;
+    transition: background-color .5s ease-in-out;
 }
 
 .circle {
@@ -795,11 +796,18 @@ header {
     transition: transform .5s ease-in-out, border-radius .2s ease-in-out;
 }
 
+.grid-p-img:hover {
+    background-color: rgba(255, 255, 255, 0);
+    transition: background-color .8s ease-in-out;
+}
+
+
 .grid-p-img:hover .circle {
     transform: scale(1);
     border-radius: 0;
     transition: transform .5s ease-in-out, border-radius .5s .2s ease-in-out;
 }
+
 
 .grid-p-name {
     font-size: 20px;
