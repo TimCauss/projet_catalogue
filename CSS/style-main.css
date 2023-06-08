@@ -745,7 +745,9 @@ header {
 /** STYLE GRID PAGE START */
 .p-grid {
     padding-top: 20px;
-
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
 }
 
 .p-grid a {
@@ -762,6 +764,7 @@ header {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    z-index: 1;
     transition: transform .3s ease-in-out;
 }
 
@@ -774,8 +777,49 @@ header {
 }
 
 .grid-p-img {
+    position: relative;
     background-color: #61616125;
 }
 
+.circle {
+    position: absolute;
+    border-radius: 100%;
+    height: 198px;
+    width: 198px;
+    z-index: -1;
+    transform: scale(0);
+    transition: transform .5s ease-in-out, border-radius .2s ease-in-out;
+}
+
+.grid-p-img:hover .circle {
+    transform: scale(1);
+    border-radius: 0;
+    transition: transform .5s ease-in-out, border-radius .5s .2s ease-in-out;
+}
+
+.grid-p-name {
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+}
+
+.grid-p-nbr {
+    font-size: 12px;
+    line-height: 15px;
+    color: rgba(0, 0, 0, 0.67);
+}
+
+.p-type-wrapper {
+    display: flex;
+}
+
+.grid-p-type1,
+.grid-p-type2 {
+    width: 80px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 15px;
+    color: rgb(255, 255, 255);
+}
 
 /** STYLE GRID PAGE END */
