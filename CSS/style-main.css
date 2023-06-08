@@ -743,17 +743,39 @@ header {
 /** STYLE LOGIN PAGE END */
 
 /** STYLE GRID PAGE START */
+.p-grid {
+    padding-top: 20px;
 
+}
 
+.p-grid a {
+    cursor: pointer;
+    color: #232323;
+}
 
 .p-card {
-
-    width: 120px;
-    height: 200px;
+    border: 1px solid #28282835;
+    width: 200px;
 }
 
 .p-card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform .3s ease-in-out;
 }
+
+.p-card:hover img {
+    transform: scale(1.3);
+}
+
+.p-grid a:hover {
+    color: #232323;
+}
+
+.grid-p-img {
+    background-color: #61616125;
+}
+
+
+/** STYLE GRID PAGE END */
