@@ -111,10 +111,6 @@ if ($_POST) {
         ];
     }
     /*Si on ne capture pas de POST */
-} else {
-    $_SESSION['er_msg'] = [
-        'form_01' => "Remplissez les champs obligatoires"
-    ];
 }
 ?>
 
