@@ -184,7 +184,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <section class="login-ctn">
 
-        <div class="register-form-ctn container py-4 hidden-scale">
+        <div class="register-form-ctn container-form py-4 hidden-scale">
             <div class="row g-0 align-items-center">
                 <div class="mb-5 mb-lg-0">
                     <div class="login-card card cascading-right" style="

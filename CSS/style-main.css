@@ -748,9 +748,11 @@ header {
 /** STYLE LOGIN PAGE END */
 
 /** STYLE GRID PAGE START */
-.container {
+.container-grid {
     max-width: 1440px !important;
 }
+
+.container-form {}
 
 .p-grid {
     padding-top: 20px;

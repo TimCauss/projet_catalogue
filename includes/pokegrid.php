@@ -9,7 +9,7 @@ $p_result = $p_query->fetchAll(PDO::FETCH_ASSOC);
 
 
 ?>
-<section class="container p-grid pb-5">
+<section class="container-grid p-grid pb-5">
     <div class="d-flex flex-row flex-wrap justify-content-center gap-5">
         <?php foreach ($p_result as $pokemon) : ?>
             <a href="./pokemon.php?id=<?= $pokemon['p_id'] ?>">
