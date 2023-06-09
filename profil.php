@@ -34,6 +34,8 @@ if (!isset($_SESSION['user'])) {
     if ($_SESSION['user']['user_role'] == 1) {
         include_once "./includes/users.php";
     }
+
+    include_once "./includes/dashboard.php"
     ?>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
