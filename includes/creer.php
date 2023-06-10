@@ -103,15 +103,21 @@ if ($_POST) {
                 "add_pokemon" => "Pokémon ajouter avec succès"
             ];
 
-            //On récupère l'id du dernier Pokémon ajouté
+            /*On récupère l'id du dernier Pokémon ajouté
+            Ainsi que la date et l'heure de actuel*/
             $last_id = $db->lastInsertId();
-            //On récupère la date et l'heure de l'ajout:
             $log_date = date("Y-m-d H:i:s");
+
             //on log la création en db :
             $log = "INSERT INTO `logs`(`log_user`,`log_action`,`log_description`, ) VALUES ('$user_id', 'Ajout du Pokémon', '$last_id', '$log_date' )";
+            $query_log = $db->prepare($log);
+            $query_log->execute();
 
             //On vide les erreurs de la Session php
             unset($_SESSION["er_msg"]);
+            //On déconnecte la db
+            unset($db);
+            //On redirige vers la page de profil
             header("Location: profil.php");
         }
         /* Si on ne reçoit pas d'image ou que l'image contient des erreurs: */
