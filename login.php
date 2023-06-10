@@ -246,7 +246,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
 
-        <div class="login-form-ctn container py-4">
+        <div class="login-form-ctn container-form py-4">
             <div class="row g-0 align-items-center">
                 <div class="mb-5 mb-lg-0">
                     <div class="login-card card cascading-right" style="
@@ -275,7 +275,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div>
                                     <!-- Submit button -->
                                     <button type="submit" name="login-submit" id="submitLogin" disabled="" class="btn btn-primary btn-block mb-4">
-                                        S'enregistrer
+                                        Se connecter
                                     </button>
                                     <p>Remplir le formulaire pour activer le bouton</p>
                             </form>

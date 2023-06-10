@@ -687,6 +687,16 @@ header {
     display: block;
 }
 
+.dash-p-img {
+    width: 75px;
+    height: 75px;
+}
+
+.dash-table {
+    max-width: 1440px;
+    border-top: #bfbfbf 1px solid;
+}
+
 /** STYLE MON PROFIL END*/
 
 /** STYLE LOGIN PAGE START */
@@ -704,7 +714,7 @@ header {
 
 .register-form-ctn {
     position: absolute;
-    left: 26%;
+    left: 31%;
     max-width: 650px;
     z-index: 2;
     transition: transform .3s ease-in-out;
@@ -738,6 +748,7 @@ header {
 .cascading-right {
     margin-right: -50px;
 }
+
 
 @media (max-width: 991.98px) {
     .cascading-right {
