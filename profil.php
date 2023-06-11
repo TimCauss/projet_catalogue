@@ -38,6 +38,22 @@ if (!isset($_SESSION['user'])) {
     include_once "./includes/dashboard.php"
     ?>
 
+    <!-- Toast notifications START -->
+
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="..." class="rounded mr-2" alt="...">
+            <strong class="mr-auto"><?= key($_SESSION['action']) ?></strong>
+            <small class="text-muted">Infos</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            <?= $_SESSION['action'][key($_SESSION['action'])] ?>
+        </div>
+    </div>
+
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
     <script type="text/javascript" src="./js/modal-ajouter.js"></script>
 </body>

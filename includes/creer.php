@@ -100,7 +100,7 @@ if ($_POST) {
 
             //On ajoute un repère de l'action dans la Session
             $_SESSION['action'] = [
-                "add_pokemon" => "Pokémon ajouter avec succès"
+                "Création Réussi" => "Pokémon ajouté avec succès"
             ];
 
             /*On récupère l'id du dernier Pokémon ajouté*/
