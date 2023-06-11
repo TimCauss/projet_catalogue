@@ -85,7 +85,7 @@ if ($_POST) {
             //On récupère l'id de l'utilisateur connecté
             $user_id = $_SESSION['user']['user_id'];
 
-            $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`, `created_by`) VALUES (:nom, :numero, :p_description, :taille, :poids, :evolutions, :p_type, '$user_id')";
+            $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`, `created_by`, `created_on`) VALUES (:nom, :numero, :p_description, :taille, :poids, :evolutions, :p_type, '$user_id', NOW())";
             $query = $db->prepare($sql);
 
             $query->bindValue(':nom', $nom);
@@ -103,13 +103,11 @@ if ($_POST) {
                 "add_pokemon" => "Pokémon ajouter avec succès"
             ];
 
-            /*On récupère l'id du dernier Pokémon ajouté
-            Ainsi que la date et l'heure de actuel*/
+            /*On récupère l'id du dernier Pokémon ajouté*/
             $last_id = $db->lastInsertId();
-            $log_date = date("Y-m-d H:i:s");
 
             //on log la création en db :
-            $log = "INSERT INTO `logs`(`log_user`,`log_action`,`log_description`, ) VALUES ('$user_id', 'Ajout du Pokémon', '$last_id', '$log_date' )";
+            $log = "INSERT INTO `logs`(`log_user`,`log_description`, `log_pokemon` ,`log_date`) VALUES ('$user_id', 'Ajout du Pokémon', '$last_id', now())";
             $query_log = $db->prepare($log);
             $query_log->execute();
 

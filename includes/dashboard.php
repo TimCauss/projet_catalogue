@@ -1,7 +1,4 @@
 <?php
-
-
-
 //On prépare une variable $isadmin pour stocker si l'utilisateur est admin ou non
 //On prépare une variable $sql pour stocker la requête SQL
 if ($_SESSION['user']['user_role'] === 1) {
