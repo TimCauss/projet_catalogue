@@ -4,7 +4,7 @@ require_once "connect.php";
 
 if (isset($_GET['type'])) {
     $type = $_GET['type'];
-    $p_sql = "SELECT * FROM pokemon WHERE p_type = '$type' ORDER BY numero ";
+    $p_sql = "SELECT * FROM pokemon WHERE (p_type = '$type') OR (`p_type-2` ='$type') ORDER BY numero ";
     unset($_GET);
 } else {
     $p_sql = "SELECT * FROM pokemon ORDER BY numero ASC";
