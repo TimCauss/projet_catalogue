@@ -697,6 +697,14 @@ header {
     border-top: #bfbfbf 1px solid;
 }
 
+.toast {
+    position: absolute;
+    background-color: #e2e2e2;
+    bottom: 10px;
+    right: 10px;
+    z-index: 50;
+}
+
 /** STYLE MON PROFIL END*/
 
 /** STYLE LOGIN PAGE START */
