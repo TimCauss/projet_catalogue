@@ -193,3 +193,4 @@ if ($_POST) {
         </div>
     </div>
 </section>
+<script type="text/javascript" src="./js/modal-ajouter.js"></script>
