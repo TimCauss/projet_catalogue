@@ -36,6 +36,8 @@ $resultCheck = mysqli_num_rows($result);
                 <th scope="col">Créé par</th>
             <?php } ?>
             <th scope="col">Créé le</th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
 
@@ -61,6 +63,8 @@ $resultCheck = mysqli_num_rows($result);
                     }
                     ?>
                     <td><?= $row['created_on'] ?></td>
+                    <td><a href="p_edit.php">Editer</a></td>
+                    <td><a href="p_edit.php">Supprimer</a></td>
                 </tr>
         <?php
             }

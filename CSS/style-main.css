@@ -869,3 +869,30 @@ header {
 }
 
 /** STYLE GRID PAGE END */
+
+/** STYLE DASHBOARD PAGE START */
+
+.dash-table thead tr th {
+    border-bottom: none;
+}
+
+.dash-table tbody tr td,
+.dash-table tbody tr th {
+    vertical-align: middle;
+}
+
+@media screen and (max-width: 988px) {
+    .dash-table thead {
+        display: none;
+    }
+
+    .dash-table tbody tr {
+        display: flex;
+        flex-wrap: wrap;
+        min-width: 320px;
+    }
+
+    .dash-table tbody td {
+        border: none;
+    }
+}
