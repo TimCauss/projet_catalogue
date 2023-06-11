@@ -18,6 +18,9 @@ $p_result = $p_query->fetchAll(PDO::FETCH_ASSOC);
 
 
 ?>
+
+//TODO: Add a search bar to search for a pokemon by name or number or type
+
 <section class="container-grid p-grid pb-5">
     <div class="d-flex flex-row flex-wrap justify-content-center gap-5">
         <?php foreach ($p_result as $pokemon) : ?>

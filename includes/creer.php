@@ -1,5 +1,7 @@
 <?php
 
+//TODO finish the form security specially error messages !!!
+
 require_once("connect.php");
 
 /* Verification de la connexion de l'utilisateur */
