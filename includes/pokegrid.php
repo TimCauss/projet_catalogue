@@ -2,10 +2,19 @@
 
 require_once "connect.php";
 
-$p_sql = "SELECT * FROM pokemon ORDER BY numero ASC";
+if (isset($_GET['type'])) {
+    $type = $_GET['type'];
+    $p_sql = "SELECT * FROM pokemon WHERE p_type = '$type' ORDER BY numero ";
+    unset($_GET);
+} else {
+    $p_sql = "SELECT * FROM pokemon ORDER BY numero ASC";
+}
+
+
 $p_query = $db->prepare($p_sql);
 $p_query->execute();
 $p_result = $p_query->fetchAll(PDO::FETCH_ASSOC);
+
 
 
 ?>
