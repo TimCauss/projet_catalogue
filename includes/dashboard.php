@@ -66,7 +66,7 @@ $resultCheck = mysqli_num_rows($result);
                     }
                     ?>
                     <td><?= $row['created_on'] ?></td>
-                    <td><a href="p_edit.php">Editer</a></td>
+                    <td><a href="p_edit.php?id=<?= $row['p_id'] ?>">Editer</a></td>
                     <td><button type="button" class="del-btn" data-id="<?= $row['p_id'] ?>">Supprimer</button></td>
                 </tr>
         <?php
