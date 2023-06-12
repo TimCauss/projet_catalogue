@@ -35,14 +35,46 @@ h4 {
 #suivant {
     background-color: #A4A4A4;
     width: 49%;
-    display: inline-flex;
     height: 120px;
     font-size: 2em;
+}
 
+#suivant {
+    text-align: right;
+}
+
+.ind-wrapper {
+    width: 1440px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ind-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.p-header-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 75%;
+}
+
+.p-header-nav:first-child {
+    text-align: left;
+}
+
+.p-header-nav a:last-child {
+    text-align: right;
 }
 
 #section1 {
-    margin-left: 25%;
     margin-top: 30px;
     display: flex;
     flex-wrap: wrap;
