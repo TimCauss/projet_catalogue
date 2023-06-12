@@ -942,7 +942,10 @@ header {
     margin-right: auto;
     border-top-right-radius: 30px;
     border-top-left-radius: 30px;
-    font-family: "Flexo-Medium", arial, sans-serif;
+}
+
+.input-h1 input {
+    border: none;
 }
 
 .input-h4 {

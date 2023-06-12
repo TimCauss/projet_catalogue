@@ -81,7 +81,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
             </div>
             <form method="POST">
                 <div class="p-header-title">
-                    <h1><input type="text" value="<?= $nom ?>"></h1>
+                    <input class="input-h1" type="text" value="<?= $nom ?>">
                 </div>
         </div>
         <h4>n°<?= $numero ?></h4>
