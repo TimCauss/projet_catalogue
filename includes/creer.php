@@ -128,6 +128,8 @@ if ($_POST) {
 }
 ?>
 
+<!-- //TODO   Debug overlay et position du modal-->
+
 <div class="overlay closer"></div>
 <section class="form-add-container px-10">
     <div class="card">
@@ -180,13 +182,47 @@ if ($_POST) {
                     </div>
                 </div>
                 <div class="row mb-4">
-                    <div class="form-outline col col-form-r">
-                        <input type="text" name="type" id="type" class="form-control">
-                        <label for="type" class="form-label">Type</label>
+                    <div class="col col-form-r">
+                        <select class="custom-select" name="type" id="type" required>
+                            <option selected>Type</option>
+                            <option value="feu">Feu</option>
+                            <option value="plante">Plante</option>
+                            <option value="eau">Eau</option>
+                            <option value="glace">Glace</option>
+                            <option value="insecte">Insecte</option>
+                            <option value="normal">Normal</option>
+                            <option value="electrik">Electrik</option>
+                            <option value="poison">Poison</option>
+                            <option value="psy">Psy</option>
+                            <option value="combat">Combat</option>
+                            <option value="acier">Acier</option>
+                            <option value="tenebres">Tenèbres</option>
+                            <option value="spectre">Spectre</option>
+                            <option value="sol">Sol</option>
+                            <option value="roche">Roche</option>
+                            <option value="vol">Vol</option>
+                        </select>
                     </div>
-                    <div class="form-outline col">
-                        <input type="text" name="type-2" id="type-2" class="form-control">
-                        <label for="type-2" class="form-label">Type-2</label>
+                    <div class="col">
+                        <select class="custom-select" name="type" id="type">
+                            <option selected>Type</option>
+                            <option value="feu">Feu</option>
+                            <option value="plante">Plante</option>
+                            <option value="eau">Eau</option>
+                            <option value="glace">Glace</option>
+                            <option value="insecte">Insecte</option>
+                            <option value="normal">Normal</option>
+                            <option value="electrik">Electrik</option>
+                            <option value="poison">Poison</option>
+                            <option value="psy">Psy</option>
+                            <option value="combat">Combat</option>
+                            <option value="acier">Acier</option>
+                            <option value="tenebres">Tenèbres</option>
+                            <option value="spectre">Spectre</option>
+                            <option value="sol">Sol</option>
+                            <option value="roche">Roche</option>
+                            <option value="vol">Vol</option>
+                        </select>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center">

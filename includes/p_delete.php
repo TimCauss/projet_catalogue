@@ -37,11 +37,19 @@ if (isset($_GET['p_id'])) {
             'ERROR RESULT' => "Une erreur est survenue lors de la suppression du Pokémon"
         ];
     }
+
+    //on log la suppréssion en db :
+    $user_id = $_SESSION['user']['user_id'];
+
+    $log = "INSERT INTO `logs`(`log_user`,`log_description`, `log_pokemon` ,`log_date`) VALUES ('$user_id', 'Suppr du Pokémon', '$p_id', now())";
+    $query_log = $conn->prepare($log);
+    $query_log->execute();
 } else {
     //Si l'id n'est pas récupérée, on stock un message d'erreur dans la session PHP :
     $_SESSION['action'] = [
         'ERROR ID' => "Une erreur est survenue lors de la suppression du Pokémon"
     ];
+    die("Une erreur est survenue lors de la suppression du Pokémon");
 }
 
 //On redirige l'utilisateur vers la page précédente :
