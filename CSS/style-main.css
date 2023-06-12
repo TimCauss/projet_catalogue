@@ -898,3 +898,9 @@ header {
         border: none;
     }
 }
+
+.del-btn {
+    background-color: #ffffff;
+    border: none;
+    color: #0069d1;
+}

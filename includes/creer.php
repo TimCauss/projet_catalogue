@@ -1,6 +1,6 @@
 <?php
 
-//TODO finish the form security specially error messages !!!
+//TODO finish the form security specially error messages & datas verifications
 
 require_once("connect.php");
 
