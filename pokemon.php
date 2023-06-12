@@ -67,7 +67,6 @@ session_start()
                 <ul>
                     <li>Taille: <span class="vert"><?php echo $taille; ?>m</span></li>
                     <li>Poids: <span class="vert"><?php echo $poids; ?>kg</span></li>
-
                 </ul>
                 <div class="type-container">
                     <h6>Type</h6>

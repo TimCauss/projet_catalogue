@@ -904,3 +904,50 @@ header {
     border: none;
     color: #0069d1;
 }
+
+/** STYLE DASHBOARD PAGE END */
+
+
+/**STYLE EDIT PAGE START */
+
+
+
+#retour,
+#valider {
+    background-color: #A4A4A4;
+    width: 33%;
+    height: 80px;
+    font-size: 2em;
+    color: white;
+    text-align: left;
+    padding-left: 20px;
+}
+
+#valider {
+    text-align: right;
+    padding-right: 20px;
+}
+
+.input-h1 {
+    position: relative;
+    z-index: 2;
+    background-color: #FFF;
+    margin-top: -50px;
+    font-size: 36px;
+    font-weight: 520;
+    text-align: center;
+    padding: 10px;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+    font-family: "Flexo-Medium", arial, sans-serif;
+}
+
+.input-h4 {
+    text-align: center;
+    color: #616161;
+    font-weight: 200;
+    font-size: 16px;
+}

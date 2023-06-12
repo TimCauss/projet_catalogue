@@ -20,7 +20,8 @@ h1 {
     width: 800px;
     margin-left: auto;
     margin-right: auto;
-    border-radius: 15px;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
     font-family: "Flexo-Medium", arial, sans-serif;
 }
 
@@ -35,12 +36,18 @@ h4 {
 #suivant {
     background-color: #A4A4A4;
     width: 49%;
-    height: 120px;
+    height: 80px;
     font-size: 2em;
+    color: white;
+}
+
+#precedent {
+    padding-left: 25%;
 }
 
 #suivant {
     text-align: right;
+    padding-right: 27%;
 }
 
 .ind-wrapper {
@@ -72,6 +79,10 @@ h4 {
 
 .p-header-nav a:last-child {
     text-align: right;
+}
+
+.p-header-title {
+    margin-top: -30px;
 }
 
 #section1 {
@@ -124,9 +135,8 @@ h6 {
 .type {
 
     width: 130px;
-    height: 20px;
+    height: 28px;
     color: #fffbfb;
-    display: inline-block;
     text-align: center;
     border-radius: 5px;
     padding: 5px;
@@ -137,7 +147,7 @@ h6 {
 .evo-type {
     font-size: 13px;
     width: 85px;
-    height: 12px;
+    height: 24px;
     color: #fffbfb;
     display: inline-block;
     text-align: center;
