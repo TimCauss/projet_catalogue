@@ -180,9 +180,13 @@ if ($_POST) {
                     </div>
                 </div>
                 <div class="row mb-4">
-                    <div class="form-outline">
+                    <div class="form-outline col col-form-r">
                         <input type="text" name="type" id="type" class="form-control">
                         <label for="type" class="form-label">Type</label>
+                    </div>
+                    <div class="form-outline col">
+                        <input type="text" name="type-2" id="type-2" class="form-control">
+                        <label for="type-2" class="form-label">Type-2</label>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center">

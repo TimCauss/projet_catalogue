@@ -3,10 +3,10 @@
 //On prépare une variable $sql pour stocker la requête SQL
 if ($_SESSION['user']['user_role'] === 1) {
     $isadmin = true;
-    $sql = "SELECT p_id, nom, numero, p_type, `p_type-2`, evolutions, created_by, created_on  FROM pokemon";
+    $sql = "SELECT p_id, nom, numero, p_type, `p_type-2`, evolutions, created_by, created_on  FROM pokemon ORDER BY numero ASC";
 } else {
     $isadmin = false;
-    $sql = "SELECT p_id, nom, numero, p_type, `p_type-2`, evolutions, created_on FROM pokemon WHERE created_by = " . $_SESSION['user']['user_id'];
+    $sql = "SELECT p_id, nom, numero, p_type, `p_type-2`, evolutions, created_on FROM pokemon ORDER BY numero ASC WHERE created_by = " . $_SESSION['user']['user_id'];
 }
 
 //on se connect à la db (Pour changer on utilise mysqli au lieu de PDO)
@@ -21,29 +21,9 @@ $resultCheck = mysqli_num_rows($result);
 
 ?>
 
-<!-- Modal START -->
-<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Suppression</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Etes-vous sur de vouloir supprimer ce pokemon ?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="./includes/p_delete.php?p_id=<?= $row['p_id'] ?>"><button type="button" class="btn btn-danger">Valider</button></a>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal END -->
 
-<section class="dash-wrapper"></section>
+
+
 <h1>Tableau de bord</h1>
 
 <table class="table dash-table">
@@ -87,12 +67,40 @@ $resultCheck = mysqli_num_rows($result);
                     ?>
                     <td><?= $row['created_on'] ?></td>
                     <td><a href="p_edit.php">Editer</a></td>
-                    <td><a class="del-btn" data-toggle="modal" href="#delModal">Supprimer</a></td>
+                    <td><button type="button" class="del-btn" data-id="<?= $row['p_id'] ?>">Supprimer</button></td>
                 </tr>
         <?php
             }
         } ?>
+        <!-- Modal START -->
+        <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Suppression</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Etes-vous sur de vouloir supprimer ce pokemon ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
 
+                        <button type="button" class="btn btn-danger go-del">Supprimer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal END -->
     </tbody>
 
 </table>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
+<script src="./JS/modal-profil.js"></script>

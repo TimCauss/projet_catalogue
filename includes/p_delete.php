@@ -34,9 +34,14 @@ if (isset($_GET['p_id'])) {
     } else {
         //Si non, on stock un message d'erreur dans la session PHP :
         $_SESSION['action'] = [
-            'ERROR' => "Une erreur est survenue lors de la suppression du Pokémon"
+            'ERROR RESULT' => "Une erreur est survenue lors de la suppression du Pokémon"
         ];
     }
+} else {
+    //Si l'id n'est pas récupérée, on stock un message d'erreur dans la session PHP :
+    $_SESSION['action'] = [
+        'ERROR ID' => "Une erreur est survenue lors de la suppression du Pokémon"
+    ];
 }
 
 //On redirige l'utilisateur vers la page précédente :

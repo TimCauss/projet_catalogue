@@ -898,8 +898,3 @@ header {
         border: none;
     }
 }
-
-
-.modal {
-    z-index: 99;
-}
