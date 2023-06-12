@@ -1,5 +1,6 @@
 <section id="types" class="section-types">
     <div class="type-card card-feu">
+        <img id="feu" src="./img/icons/fire.svg">
         Feu
     </div>
     <div class="type-card card-plante">
@@ -24,6 +25,7 @@
         Insecte
     </div>
     <div class="type-card card-Psy">
+         
         Psy
     </div>
     <div class="type-card card-Combat">

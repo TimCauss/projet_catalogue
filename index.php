@@ -8,9 +8,10 @@
     <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./CSS/style-main.css">
     <link rel="stylesheet" href="./CSS/flickity.css">
+    <link rel="stylesheet" href="type-card.css">
     <title>Pokeliste - Home</title>
 </head>
-<a href="0001.php">bulbizarre</a> 
+<a href="pokemon.php?id=1">bulbizarre</a> 
 <body>
 
     <!-- /** includes Header and Nav */ -->

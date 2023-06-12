@@ -1,0 +1,73 @@
+.type-card {
+    width: 250px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+    cursor: pointer;
+    transition: opacity 200ms ease-in-out, scale 200ms ease-in-out;
+    flex-direction: column;
+}
+
+.type-card:hover {
+    opacity: 0.5;
+    scale: 1.1;
+    
+}
+
+.card-feu {
+    background-color: #E3350D;
+    
+}
+.feu {
+    height: 50px;
+}
+.card-plante {
+    background-color: #68D037;
+}
+
+.card-Eau {
+    background-color: #1E90FF;
+}
+
+.card-Glace {
+    background-color: #1DFFFF;
+}
+
+.card-Normal {
+    background-color: #CD853F;
+}
+
+.card-Electrik {
+    background-color: #FFDB1D;
+}
+
+.card-Poison {
+    background-color: #800080;
+}
+
+.card-Insecte {
+    background-color: #729f3f;
+}
+
+.card-Psy {
+    background-color: #EE82EE;
+}
+
+.card-Combat {
+    background-color: #8B0000;
+}
+
+.card-Acier {
+    background-color: #C0C0C0;
+}
+
+.card-Tenebres {
+    background-color: #3D3D3D;
+}

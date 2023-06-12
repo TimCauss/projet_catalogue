@@ -19,7 +19,7 @@ require_once "connect.php";
 if(isset($_GET['id'])) {
     $id = $_GET['id'];
 //requête sql
-    $query = "SELECT * FROM pokemon WHERE id = :id";
+    $query = "SELECT * FROM pokemon WHERE p_id = :id";
 
     $sql = $db->prepare($query);
 
@@ -33,11 +33,11 @@ if(isset($_GET['id'])) {
         $nom = $row['nom'];
         $numero = $row['numero'];
         $img = $row['img'];
-        $description = $row['description'];
+        $description = $row['p_description'];
         $taille = $row['taille'];
         $poids = $row['poids'];
-        $type = $row['type'];
-        $type2 = $row['type-2'];
+        $type = $row['p_type'];
+        $type2 = $row['p_type-2'];
         $evolutions = explode(",", $row['evolutions']);
        
     } else {
@@ -77,7 +77,7 @@ if(isset($_GET['id'])) {
         <div class="evo-container">
             <?php
         foreach ($evolutions as $evo_nom) {
-    //requête SQL pour récupérer les informations de l'évolution courante
+    //Exécutez une requête SQL pour récupérer les informations de l'évolution courante
     $query = "SELECT * FROM pokemon WHERE nom = :nom";
     $sql = $db->prepare($query);
     $sql->bindParam(':nom', $evo_nom);
@@ -88,17 +88,18 @@ if(isset($_GET['id'])) {
    // Vérifiez si la requête SQL a renvoyé des résultats
    if ($row !== false) {
     // Récupérez les informations de l'évolution courante
+    $evo_id = $row['p_id'];
     $evo_nom = $row['nom'];
     $evo_numero = $row['numero'];
     $evo_img = $row['img'];
-    $evo_type = $row['type'];
-    $evo_type2 = $row['type-2'];
+    $evo_type = $row['p_type'];
+    $evo_type2 = $row['p_type-2'];
     echo "<div class=\"evo\">";
-                    echo "<img src=\"$evo_img\">";
-                    echo "<span class=\"poke\">$evo_nom</span>";
+                    echo "<a href='pokemon.php?id=$evo_id'> <img src=\"$evo_img\">";
+                    echo "<span class=\"poke\">$evo_nom</span></a>";
                     echo "<span class=\"evo-type $evo_type\">$evo_type</span>";
                     echo "<span class=\"evo-type $evo_type2\">$evo_type2</span>";
-                    echo "</div>";
+                    echo " </div> ";
     
 } else {
     // La requête SQL n'a renvoyé aucun résultat

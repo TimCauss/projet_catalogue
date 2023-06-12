@@ -34,7 +34,6 @@ h4 {
     display: inline-flex;
     height: 120px;
     font-size: 2em;
-
 }
 
 #section1 {
@@ -115,6 +114,9 @@ h6{
 .vol {
     background-color: rgb(0, 183, 255);
 }
+.electrik  {
+    background-color: gold;
+}
 .type-container {
     display: flex;
     flex-direction: column;
@@ -155,7 +157,11 @@ h2{
     text-align: center;
     margin: 0px 50px;
 }
-
+.evo a {
+display:flex;
+flex-direction: column;
+text-decoration: none;
+}
 .arrow {
     font-size: 80px;
     margin-left: 10px;
