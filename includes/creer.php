@@ -23,8 +23,6 @@ $result_all = $query_all->fetchAll(PDO::FETCH_ASSOC);
 if ($_POST) {
     /* On vérifie si les champs necessaire sont remplis : */
     if (!empty($_POST['nom']) && !empty($_POST['numero'])) {
-        /* On unset les potentiels précédents message d'erreur stockés dans la session php*/
-        unset($_SESSION['er_msg']['form_01']);
         /* On Vérifie que le Pokémon n'est pas déjà présent dans la base de donée
         Si le nom ou le numero existe déjà, on stock un message d'erreur
         dans la session PHP */

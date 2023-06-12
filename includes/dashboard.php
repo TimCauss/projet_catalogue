@@ -21,6 +21,28 @@ $resultCheck = mysqli_num_rows($result);
 
 ?>
 
+<!-- Modal START -->
+<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Suppression</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Etes-vous sur de vouloir supprimer ce pokemon ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="./includes/p_delete.php?p_id=<?= $row['p_id'] ?>"><button type="button" class="btn btn-danger">Valider</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal END -->
+
 <section class="dash-wrapper"></section>
 <h1>Tableau de bord</h1>
 
@@ -55,6 +77,7 @@ $resultCheck = mysqli_num_rows($result);
                         //Si l'utilisateur est admin, on affiche la colonne "Créé par"
                         //On fetch les mails des utilisateurs pour les afficher
                         $sql = "SELECT email FROM users WHERE user_id = " . $row['created_by'];
+
                         $result2 = mysqli_query($conn, $sql);
                         $row2 = mysqli_fetch_assoc($result2);
                     ?>
@@ -64,11 +87,11 @@ $resultCheck = mysqli_num_rows($result);
                     ?>
                     <td><?= $row['created_on'] ?></td>
                     <td><a href="p_edit.php">Editer</a></td>
-                    <td><a href="p_edit.php">Supprimer</a></td>
+                    <td><a class="del-btn" data-toggle="modal" href="#delModal">Supprimer</a></td>
                 </tr>
         <?php
             }
-        }        ?>
+        } ?>
 
     </tbody>
 

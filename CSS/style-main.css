@@ -8,6 +8,7 @@ body * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
 }
 
 body {
@@ -896,4 +897,9 @@ header {
     .dash-table tbody td {
         border: none;
     }
+}
+
+
+.modal {
+    z-index: 99;
 }
