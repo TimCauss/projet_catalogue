@@ -8,6 +8,17 @@ if (!isset($_SESSION['user'])) {
 }
 
 
+function pNumeroCheck($numero)
+{
+    if (strlen($numero) == 1) {
+        return "000" . $numero;
+    } elseif (strlen($numero) == 2) {
+        return "00" . $numero;
+    } elseif (strlen($numero) == 3) {
+        return "0" . $numero;
+    }
+}
+
 //On se connecte à la base de donnée
 try {
     $conn = mysqli_connect("localhost", "root", "", "projet_catalogue");
@@ -55,59 +66,68 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
 
 if (isset($_POST['valider'])) {
+    if (!empty($_GET['id']) && !empty($_POST['nom']) && !empty($_POST['numero']) && !empty($_POST['description']) && !empty($_POST['taille']) && !empty($_POST['poids']) && !empty($_POST['type1'])) {
+        //On récupère les données du formulaire :
+        $p_id = strip_tags($_GET['id']);
+        $nom = strip_tags($_POST['nom']);
+        $numero = pNumeroCheck(strip_tags($_POST['numero']));
+        $description = strip_tags($_POST['description']);
+        $taille = strip_tags($_POST['taille']);
+        $poids = strip_tags($_POST['poids']);
+        $type = strip_tags($_POST['type1']);
+        $type2 = strip_tags($_POST['type2']);
 
+        //On récupère et trie les évolutions :
+        if (isset($_POST['evo1'])) {
+            $evo = $_POST['evo1'] . ",";
+        }
+        if (isset($_POST['evo2'])) {
+            $evo .= $_POST['evo2'] . ",";
+        }
+        if (isset($_POST['evo3'])) {
+            $evo .= $_POST['evo3'];
+        }
 
-    //On récupère les données du formulaire :
-    $p_id = strip_tags($_GET['id']);
-    $nom = strip_tags($_POST['nom']);
-    $numero = strip_tags($_POST['numero']);
-    $description = strip_tags($_POST['description']);
-    $taille = strip_tags($_POST['taille']);
-    $poids = strip_tags($_POST['poids']);
-    $type = strip_tags($_POST['type1']);
-    $type2 = strip_tags($_POST['type2']);
+        //On vérifie si un fichier à été posté :
+        /*         if (isset($_FILES)) {
+            var_dump($_FILES);
+        } else {
+            die("Aucun fichier posté");
+        }
+ */
+        //On prépare une requête SQL pour mettre à jour les données du pokémon :
+        $sql = "UPDATE pokemon SET nom = '$nom', numero = '$numero', p_description = '$description', taille = $taille, poids = $poids, p_type = '$type', `p_type-2` = '$type2', evolutions = '$evo' WHERE p_id = $p_id";
+        //on execute la requête :
+        $result = mysqli_query($conn, $sql);
+        //On vérifie que la requête s'est bien executée :
+        if ($result) {
+            //Si oui, on stock un message de succès dans la session PHP :
+            $_SESSION['action'] = [
+                'SUCCESS EDIT' => "Le Pokémon a bien été modifié"
+            ];
+            //On logs l'action da,s la BDD logs :
+            $user_id = $_SESSION['user']['user_id'];
+            $log = "INSERT INTO `logs`(`log_user`,`log_description`, `log_pokemon` ,`log_date`) VALUES ($user_id, ' a modifié le Pokémon ', '$p_id', now())";
+            $logs = mysqli_query($conn, $log);
 
-    //On récupère et trie les évolutions :
-    if (isset($_POST['evo1'])) {
-        $evo = $_POST['evo1'] . ",";
-    }
-    if (isset($_POST['evo2'])) {
-        $evo .= $_POST['evo2'] . ",";
-    }
-    if (isset($_POST['evo3'])) {
-        $evo .= $_POST['evo3'];
-    }
-
-    //On prépare une requête SQL pour mettre à jour les données du pokémon :
-    $sql = "UPDATE pokemon SET nom = '$nom', numero = $numero, p_description = '$description', taille = $taille, poids = $poids, p_type = '$type', `p_type-2` = '$type2', evolutions = '$evo' WHERE p_id = $p_id";
-    //on execute la requête :
-    $result = mysqli_query($conn, $sql);
-    //On vérifie que la requête s'est bien executée :
-    if ($result) {
-        //Si oui, on stock un message de succès dans la session PHP :
-        $_SESSION['action'] = [
-            'SUCCESS EDIT' => "Le Pokémon a bien été modifié"
-        ];
-        //On logs l'action da,s la BDD logs :
-        $user_id = $_SESSION['user']['user_id'];
-        $log = "INSERT INTO `logs`(`log_user`,`log_description`, `log_pokemon` ,`log_date`) VALUES ($user_id, ' a modifié le Pokémon ', '$p_id', now())";
-        $logs = mysqli_query($conn, $log);
-
-        //On redirige vers la page profil.php :
-        header('Location: profil.php');
+            //On redirige vers la page profil.php :
+            header('Location: profil.php');
+        } else {
+            //Si non, on stock un message d'erreur dans la session PHP :
+            $_SESSION['action'] = [
+                'ERROR EDIT' => "Une erreur est survenue inpossible de modifier le Pokémon"
+            ];
+            //On redirige vers la page profil.php :
+            header('Location: profil.php');
+        }
+        echo "<pre>";
+        print_r($_POST);
+        print_r($evolutions);
+        echo "</pre>";
+        die();
     } else {
-        //Si non, on stock un message d'erreur dans la session PHP :
-        $_SESSION['action'] = [
-            'ERROR EDIT' => "Une erreur est survenue inpossible de modifier le Pokémon"
-        ];
-        //On redirige vers la page profil.php :
-        header('Location: profil.php');
+        die("Tous les champs ne sont pas remplis");
     }
-    echo "<pre>";
-    print_r($_POST);
-    print_r($evolutions);
-    echo "</pre>";
-    die();
 }
 
 ?>

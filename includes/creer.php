@@ -12,6 +12,20 @@ if (!isset($_SESSION['user'])) {
 
 define('MB', 1048576); //on Définir la valeur d'un MB
 
+
+//Fonction qui permet de rajouter des 0 devant un numéro de Pokémon
+function pNumeroCheck($numero)
+{
+    if (strlen($numero) == 1) {
+        return "000" . $numero;
+    } elseif (strlen($numero) == 2) {
+        return "00" . $numero;
+    } elseif (strlen($numero) == 3) {
+        return "0" . $numero;
+    }
+}
+
+
 /* On fetch la base de donnée des pokémons pour la comparer au données entrées dans le formulaire */
 
 $sql_all = "SELECT nom, numero FROM pokemon";
@@ -27,12 +41,23 @@ if ($_POST) {
         /* On Vérifie que le Pokémon n'est pas déjà présent dans la base de donée
         Si le nom ou le numero existe déjà, on stock un message d'erreur
         dans la session PHP */
+
+        /* On nettoies les post puis on stock le résultat de ce netooyage dans une variable */
+        $nom = strip_tags($_POST['nom']);
+        $numero = pNumeroCheck(strip_tags($_POST["numero"]));
+        $p_description = strip_tags($_POST['description']);
+        $taille = strip_tags($_POST['taille']);
+        $poids = strip_tags($_POST['poids']);
+        $evolutions = strip_tags($_POST['evolutions']);
+        $p_type = strip_tags($_POST['type']);
+        $p_type_2 = strip_tags($_POST['type-2']);
+
         foreach ($result_all as $result) {
-            //Si le nom ou le numéro existe déjà, on stock un message d'erreur dans la session PHP
+            //Si le nom ou le numéro existe déjà, un message d'erreur apparait.
             if (strtoupper($result["nom"]) == strtoupper($_POST["nom"])) {
                 die("Ce Pokémon existe déjà");
             }
-            if ($result["numero"] == $_POST["numero"]) {
+            if ($result["numero"] == $numero) {
                 die("Ce numéro de Pokémon existe déjà");
             }
         }
@@ -62,16 +87,6 @@ if ($_POST) {
             if ($filesize > 1 * MB) {
                 die("Fichier image trop volumineux (1mo max)");
             }
-
-            /* On nettoies les post puis on stock le résultat de ce netooyage dans une variable */
-            $nom = strip_tags($_POST['nom']);
-            $numero = strip_tags($_POST['numero']);
-            $p_description = strip_tags($_POST['description']);
-            $taille = strip_tags($_POST['taille']);
-            $poids = strip_tags($_POST['poids']);
-            $evolutions = strip_tags($_POST['evolutions']);
-            $p_type = strip_tags($_POST['type']);
-            $p_type_2 = strip_tags($_POST['type-2']);
 
             //On génère le chemin complet de l'image
             $newfilename = __DIR__ . "/../uploads/$nom.$extension";
