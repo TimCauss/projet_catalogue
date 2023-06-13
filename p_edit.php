@@ -89,8 +89,9 @@ if (isset($_POST['valider'])) {
             'SUCCESS EDIT' => "Le Pokémon a bien été modifié"
         ];
         //On logs l'action da,s la BDD logs :
-        $log = "INSERT INTO `logs`(`log_user`,`log_description`, `log_pokemon` ,`log_date`) VALUES ('$user_id', ' a modifié le Pokémon ', '$nom', now())";
-        $result = mysqli_query($conn, $sql);
+        $user_id = $_SESSION['user']['user_id'];
+        $log = "INSERT INTO `logs`(`log_user`,`log_description`, `log_pokemon` ,`log_date`) VALUES ($user_id, ' a modifié le Pokémon ', '$p_id', now())";
+        $logs = mysqli_query($conn, $log);
 
         //On redirige vers la page profil.php :
         header('Location: profil.php');
