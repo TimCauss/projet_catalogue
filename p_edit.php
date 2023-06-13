@@ -7,6 +7,8 @@ if (!isset($_SESSION['user'])) {
     die();
 }
 
+$_POST['evo'] = [];
+
 //On se connecte à la base de donnée
 try {
     $conn = mysqli_connect("localhost", "root", "", "projet_catalogue");
@@ -52,6 +54,23 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     header('Location: profil.php');
 }
 
+
+if (isset($_POST['valider'])) {
+    //On récupère les données du formulaire :
+    $nom = $_POST['nom'];
+    $numero = $_POST['numero'];
+    $description = $_POST['description'];
+    $taille = $_POST['taille'];
+    $poids = $_POST['poids'];
+    $type = $_POST['type1'];
+    $type2 = $_POST['type2'];
+
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
+    die();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -83,10 +102,10 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
                 </div>
 
                 <div class="p-header-title">
-                    <input class="input-h1" type="text" class="input-nbr" value="<?= $nom ?>" required>
+                    <input class="input-h1" type="text" name="nom" class="input-nbr" value="<?= $nom ?>" required>
                 </div>
             </div>
-            <h4>n°<input type="text" class="input-nbr" value="<?= $numero ?>"></h4>
+            <h4>n°<input type="number" name="numero" class="input-nbr" value="<?= $numero ?>"></h4>
             <section id="section1">
 
                 <!-- Section image -->
@@ -110,7 +129,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
                     </div>
                     <div class="type-container">
                         <h6>Type</h6>
-                        <select class="type-select-size col" name="type" id="type" required>
+                        <select class="type-select-size col" name="type1" id="type" required>
                             <option selected><?= $type ?></option>
                             <option value="feu">Feu</option>
                             <option value="plante">Plante</option>
@@ -129,7 +148,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
                             <option value="roche">Roche</option>
                             <option value="vol">Vol</option>
                         </select>
-                        <select class="type-select-size col" name="type" id="type">
+                        <select class="type-select-size col" name="type2" id="type">
                             <option selected><?= $type2 ?></option>
                             <option value="feu">Feu</option>
                             <option value="plante">Plante</option>
@@ -162,34 +181,38 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
                         $result = mysqli_query($conn, $sql);
                         // Récupérez la ligne de résultat sous forme de tableau associatif
                         $row = mysqli_fetch_assoc($result);
-
                         // Vérifiez si la requête SQL a renvoyé des résultats
-                        if ($row !== false) {
+                        if ($row !== false && $row !== null) {
                             // Récupérez les informations de l'évolution courante
-                            $evo_id = $row['p_id'];
                             $evo_nom = $row['nom'];
-                            $evo_numero = $row['numero'];
-                            $evo_type = $row['p_type'];
-                            $evo_type2 = $row['p_type-2'];
+                            // On prépare le tableau des evolutions pour l'édition :
                     ?>
                             <div class="evo">
-                                <img src="uploads/<?= $evo_nom ?>.png">
-                                <span class="poke"><input value="<?= $evo_nom ?>"></span>
+                                <span class="poke"><input id="pInput" value="<?= $evo_nom ?>"></span>
                             </div>
-                    <?php
+                        <?php
+
                         } else {
                             // La requête SQL n'a renvoyé aucun résultat
-                            echo "Aucun résultat pour l'évolution '$evo_nom'.";
+                        ?>
+                            <div class="evo">
+                                <span class="poke"><input value="Aucun Résultat"></span>
+                            </div>
+                    <?php
                         }
                         if (next($evolutions)) {
                             echo "<span class=\"arrow\">→</span>";
                         }
                     }
+
                     ?>
                 </div>
 
             </section>
         </div>
+
+        <!-- Input caché stockant les noms des évolutions : -->
+        <input type="hidden" id="hInput" name="evolutions" value="">
     </form>
 
     <script src="./JS/edit.js"></script>
