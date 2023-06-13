@@ -11,7 +11,9 @@
     padding: 30px;
     margin: 0 auto;
 }
-
+a {
+    text-decoration: none;
+}
 .type-card {
     width: 180px;
     height: 250px;
@@ -30,6 +32,7 @@
     padding: 10px;
     position: relative;
     overflow: hidden;
+    color: #242424;
 }
 
 .type-card:hover {

@@ -12,6 +12,7 @@ session_start()
     <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./CSS/style-main.css">
     <link rel="stylesheet" href="./CSS/flickity.css">
+    <link rel="stylesheet" href="./CSS/type-card.css">
     <title>Pokeliste - Home</title>
 </head>
 
