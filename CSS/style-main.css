@@ -983,7 +983,9 @@ select.type-select-size {
     border-radius: 5px;
 }
 
-
+.evo input {
+    text-align: center;
+}
 
 .type-container {
     display: flex;
@@ -997,4 +999,8 @@ select.type-select-size {
     color: #616161;
     font-weight: 200;
     font-size: 16px;
+}
+
+.image-upload>input {
+    display: none;
 }

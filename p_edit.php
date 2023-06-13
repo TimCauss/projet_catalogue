@@ -88,7 +88,16 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
             </div>
             <h4>n°<input type="text" class="input-nbr" value="<?= $numero ?>"></h4>
             <section id="section1">
-                <img id="pokemon" src="./uploads/<?= $nom ?>.png" alt="<?= $nom ?>">
+
+                <!-- Section image -->
+                <div class="image-upload">
+                    <label for="file-input">
+                        <img id="pokemon" src="./uploads/<?= $nom ?>.png" alt="<?= $nom ?>">
+                    </label>
+                    <input onchange="readURL(this);" type="file" id="file-input">
+                </div>
+
+
                 <div class="desc">
                     <div class="p-input-wrapper">
                         <textarea class="p-input-desc" name="description" rows="5" cols="35" required maxlength="255"><?= $description ?></textarea>
@@ -182,6 +191,8 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
             </section>
         </div>
     </form>
+
+    <script src="./JS/edit.js"></script>
 </body>
 
 </html>
