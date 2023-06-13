@@ -7,7 +7,6 @@ if (!isset($_SESSION['user'])) {
     die();
 }
 
-$_POST['evo'] = [];
 
 //On se connecte à la base de donnée
 try {
@@ -57,6 +56,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
 if (isset($_POST['valider'])) {
     //On récupère les données du formulaire :
+    $p_id = $_GET['id'];
     $nom = $_POST['nom'];
     $numero = $_POST['numero'];
     $description = $_POST['description'];
@@ -65,8 +65,44 @@ if (isset($_POST['valider'])) {
     $type = $_POST['type1'];
     $type2 = $_POST['type2'];
 
+    //On récupère et trie les évolutions :
+    if (isset($_POST['evo1'])) {
+        $evo = $_POST['evo1'] . ",";
+    }
+    if (isset($_POST['evo2'])) {
+        $evo .= $_POST['evo2'] . ",";
+    }
+    if (isset($_POST['evo3'])) {
+        $evo .= $_POST['evo3'];
+    }
+
+    //On prépare une requête SQL pour mettre à jour les données du pokémon :
+    $sql = "UPDATE pokemon SET nom = '$nom', numero = $numero, p_description = '$description', taille = $taille, poids = $poids, p_type = '$type', `p_type-2` = '$type2', evolutions = '$evo' WHERE p_id = $p_id";
+    //on execute la requête :
+    $result = mysqli_query($conn, $sql);
+    //On vérifie que la requête s'est bien executée :
+    if ($result) {
+        //Si oui, on stock un message de succès dans la session PHP :
+        $_SESSION['action'] = [
+            'SUCCESS EDIT' => "Le Pokémon a bien été modifié"
+        ];
+        //On logs l'action da,s la BDD logs :
+        $log = "INSERT INTO `logs`(`log_user`,`log_description`, `log_pokemon` ,`log_date`) VALUES ('$user_id', ' a modifié le Pokémon ', '$nom', now())";
+        $result = mysqli_query($conn, $sql);
+
+        //On redirige vers la page profil.php :
+        header('Location: profil.php');
+    } else {
+        //Si non, on stock un message d'erreur dans la session PHP :
+        $_SESSION['action'] = [
+            'ERROR EDIT' => "Une erreur est survenue inpossible de modifier le Pokémon"
+        ];
+        //On redirige vers la page profil.php :
+        header('Location: profil.php');
+    }
     echo "<pre>";
     print_r($_POST);
+    print_r($evolutions);
     echo "</pre>";
     die();
 }
@@ -174,7 +210,9 @@ if (isset($_POST['valider'])) {
                 <h2>Evolutions:</h2>
                 <div class="evo-container">
                     <?php
+                    $i = 0;
                     foreach ($evolutions as $evo_nom) {
+                        $i++;
                         // Préparez une requête SQL pour récupérer les informations de l'évolution courante
                         $sql = "SELECT * FROM pokemon WHERE nom = '$evo_nom'";
                         // Exécutez la requête SQL
@@ -188,7 +226,7 @@ if (isset($_POST['valider'])) {
                             // On prépare le tableau des evolutions pour l'édition :
                     ?>
                             <div class="evo">
-                                <span class="poke"><input id="pInput" value="<?= $evo_nom ?>"></span>
+                                <span class="poke"><input id="pInput" name="evo<?= $i ?>" value="<?= $evo_nom ?>"></span>
                             </div>
                         <?php
 
@@ -196,7 +234,7 @@ if (isset($_POST['valider'])) {
                             // La requête SQL n'a renvoyé aucun résultat
                         ?>
                             <div class="evo">
-                                <span class="poke"><input value="Aucun Résultat"></span>
+                                <span class="poke"><input value="Aucune Evolution"></span>
                             </div>
                     <?php
                         }
@@ -212,7 +250,7 @@ if (isset($_POST['valider'])) {
         </div>
 
         <!-- Input caché stockant les noms des évolutions : -->
-        <input type="hidden" id="hInput" name="evolutions" value="">
+        <!-- <input type="hidden" id="hInput" name="evolutions" value=""> -->
     </form>
 
     <script src="./JS/edit.js"></script>

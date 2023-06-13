@@ -74,6 +74,7 @@ if ($_POST) {
             $poids = strip_tags($_POST['poids']);
             $evolutions = strip_tags($_POST['evolutions']);
             $p_type = strip_tags($_POST['type']);
+            $p_type_2 = strip_tags($_POST['type-2']);
 
             //On génère le chemin complet de l'image
             $newfilename = __DIR__ . "/../uploads/$nom.$extension";
@@ -85,7 +86,7 @@ if ($_POST) {
             //On récupère l'id de l'utilisateur connecté
             $user_id = $_SESSION['user']['user_id'];
 
-            $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`, `created_by`, `created_on`) VALUES (:nom, :numero, :p_description, :taille, :poids, :evolutions, :p_type, '$user_id', NOW())";
+            $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`, `p_type-2`, `created_by`, `created_on`) VALUES (:nom, :numero, :p_description, :taille, :poids, :evolutions, :p_type, '$p_type_2', '$user_id', NOW())";
             $query = $db->prepare($sql);
 
             $query->bindValue(':nom', $nom);
@@ -107,7 +108,7 @@ if ($_POST) {
             $last_id = $db->lastInsertId();
 
             //on log la création en db :
-            $log = "INSERT INTO `logs`(`log_user`,`log_description`, `log_pokemon` ,`log_date`) VALUES ('$user_id', 'Ajout du Pokémon', '$last_id', now())";
+            $log = "INSERT INTO `logs`(`log_user`,`log_description`, `log_pokemon` ,`log_date`) VALUES ('$user_id', ' a ajouté le Pokémon ', '$last_id', now())";
             $query_log = $db->prepare($log);
             $query_log->execute();
 
@@ -182,44 +183,44 @@ if ($_POST) {
                     </div>
                 </div>
                 <div class="row mb-4">
-                        <select class="custom-select col col-form-r" name="type" id="type" required>
-                            <option selected>Type</option>
-                            <option value="feu">Feu</option>
-                            <option value="plante">Plante</option>
-                            <option value="eau">Eau</option>
-                            <option value="glace">Glace</option>
-                            <option value="insecte">Insecte</option>
-                            <option value="normal">Normal</option>
-                            <option value="electrik">Electrik</option>
-                            <option value="poison">Poison</option>
-                            <option value="psy">Psy</option>
-                            <option value="combat">Combat</option>
-                            <option value="acier">Acier</option>
-                            <option value="tenebres">Tenèbres</option>
-                            <option value="spectre">Spectre</option>
-                            <option value="sol">Sol</option>
-                            <option value="roche">Roche</option>
-                            <option value="vol">Vol</option>
-                        </select>
-                        <select class="custom-select col" name="type" id="type">
-                            <option selected>Type</option>
-                            <option value="feu">Feu</option>
-                            <option value="plante">Plante</option>
-                            <option value="eau">Eau</option>
-                            <option value="glace">Glace</option>
-                            <option value="insecte">Insecte</option>
-                            <option value="normal">Normal</option>
-                            <option value="electrik">Electrik</option>
-                            <option value="poison">Poison</option>
-                            <option value="psy">Psy</option>
-                            <option value="combat">Combat</option>
-                            <option value="acier">Acier</option>
-                            <option value="tenebres">Tenèbres</option>
-                            <option value="spectre">Spectre</option>
-                            <option value="sol">Sol</option>
-                            <option value="roche">Roche</option>
-                            <option value="vol">Vol</option>
-                        </select>
+                    <select class="custom-select col col-form-r" name="type" id="type" required>
+                        <option selected>Type</option>
+                        <option value="feu">Feu</option>
+                        <option value="plante">Plante</option>
+                        <option value="eau">Eau</option>
+                        <option value="glace">Glace</option>
+                        <option value="insecte">Insecte</option>
+                        <option value="normal">Normal</option>
+                        <option value="electrik">Electrik</option>
+                        <option value="poison">Poison</option>
+                        <option value="psy">Psy</option>
+                        <option value="combat">Combat</option>
+                        <option value="acier">Acier</option>
+                        <option value="tenebres">Tenèbres</option>
+                        <option value="spectre">Spectre</option>
+                        <option value="sol">Sol</option>
+                        <option value="roche">Roche</option>
+                        <option value="vol">Vol</option>
+                    </select>
+                    <select class="custom-select col" name="type-2" id="type">
+                        <option selected>Type</option>
+                        <option value="feu">Feu</option>
+                        <option value="plante">Plante</option>
+                        <option value="eau">Eau</option>
+                        <option value="glace">Glace</option>
+                        <option value="insecte">Insecte</option>
+                        <option value="normal">Normal</option>
+                        <option value="electrik">Electrik</option>
+                        <option value="poison">Poison</option>
+                        <option value="psy">Psy</option>
+                        <option value="combat">Combat</option>
+                        <option value="acier">Acier</option>
+                        <option value="tenebres">Tenèbres</option>
+                        <option value="spectre">Spectre</option>
+                        <option value="sol">Sol</option>
+                        <option value="roche">Roche</option>
+                        <option value="vol">Vol</option>
+                    </select>
                 </div>
                 <div class="d-flex justify-content-center">
                     <input type="submit" class="btn btn-form" value="Ajouter">
