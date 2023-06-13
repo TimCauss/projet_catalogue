@@ -55,15 +55,17 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
 
 if (isset($_POST['valider'])) {
+
+
     //On récupère les données du formulaire :
-    $p_id = $_GET['id'];
-    $nom = $_POST['nom'];
-    $numero = $_POST['numero'];
-    $description = $_POST['description'];
-    $taille = $_POST['taille'];
-    $poids = $_POST['poids'];
-    $type = $_POST['type1'];
-    $type2 = $_POST['type2'];
+    $p_id = strip_tags($_GET['id']);
+    $nom = strip_tags($_POST['nom']);
+    $numero = strip_tags($_POST['numero']);
+    $description = strip_tags($_POST['description']);
+    $taille = strip_tags($_POST['taille']);
+    $poids = strip_tags($_POST['poids']);
+    $type = strip_tags($_POST['type1']);
+    $type2 = strip_tags($_POST['type2']);
 
     //On récupère et trie les évolutions :
     if (isset($_POST['evo1'])) {

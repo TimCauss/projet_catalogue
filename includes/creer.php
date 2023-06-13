@@ -23,18 +23,17 @@ $result_all = $query_all->fetchAll(PDO::FETCH_ASSOC);
 if ($_POST) {
     /* On vérifie si les champs necessaire sont remplis : */
     if (!empty($_POST['nom']) && !empty($_POST['numero'])) {
+
         /* On Vérifie que le Pokémon n'est pas déjà présent dans la base de donée
         Si le nom ou le numero existe déjà, on stock un message d'erreur
         dans la session PHP */
         foreach ($result_all as $result) {
+            //Si le nom ou le numéro existe déjà, on stock un message d'erreur dans la session PHP
             if (strtoupper($result["nom"]) == strtoupper($_POST["nom"])) {
-                $_SESSION['er_msg'] = [
-                    'p_name' => "Ce nom de Pokemon est déjà pris"
-                ];
-            } elseif ($result["numero"] == $_POST["numero"]) {
-                $_SESSION['er_msg'] = [
-                    'p_nbr' => "Ce numéro de Pokémon est déjà pris"
-                ];
+                die("Ce Pokémon existe déjà");
+            }
+            if ($result["numero"] == $_POST["numero"]) {
+                die("Ce numéro de Pokémon existe déjà");
             }
         }
 
@@ -44,8 +43,6 @@ if ($_POST) {
             /* On procède aux vérifications de l'image : */
             // On vérifie l'extension & le type MIME :
             $allowed = [
-                "jpg" => "image/jpeg",
-                "jpeg" => "image/jpeg",
                 "png" => "image/png"
             ];
 
