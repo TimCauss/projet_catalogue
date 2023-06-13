@@ -12,18 +12,7 @@ if (!isset($_SESSION['user'])) {
 
 define('MB', 1048576); //on Définir la valeur d'un MB
 
-
-//Fonction qui permet de rajouter des 0 devant un numéro de Pokémon
-function pNumeroCheck($numero)
-{
-    if (strlen($numero) == 1) {
-        return "000" . $numero;
-    } elseif (strlen($numero) == 2) {
-        return "00" . $numero;
-    } elseif (strlen($numero) == 3) {
-        return "0" . $numero;
-    }
-}
+include_once "./includes/fonctions.php";
 
 
 /* On fetch la base de donnée des pokémons pour la comparer au données entrées dans le formulaire */
@@ -37,6 +26,13 @@ $result_all = $query_all->fetchAll(PDO::FETCH_ASSOC);
 if ($_POST) {
     /* On vérifie si les champs necessaire sont remplis : */
     if (!empty($_POST['nom']) && !empty($_POST['numero'])) {
+
+        if ($_POST['type-2'] == "Type") {
+            $_POST['type-2'] = NULL;
+        }
+        if ($_POST['type'] == "Type") {
+            die("Veuillez choisir un type pour le Pokémon");
+        }
 
         /* On Vérifie que le Pokémon n'est pas déjà présent dans la base de donée
         Si le nom ou le numero existe déjà, on stock un message d'erreur

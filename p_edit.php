@@ -7,17 +7,7 @@ if (!isset($_SESSION['user'])) {
     die();
 }
 
-
-function pNumeroCheck($numero)
-{
-    if (strlen($numero) == 1) {
-        return "000" . $numero;
-    } elseif (strlen($numero) == 2) {
-        return "00" . $numero;
-    } elseif (strlen($numero) == 3) {
-        return "0" . $numero;
-    }
-}
+include_once "./includes/fonctions.php";
 
 //On se connecte à la base de donnée
 try {
@@ -26,6 +16,7 @@ try {
     echo "Echec de connexion à la BDD : " . $e->getMessage();
 }
 
+/* -------------------------GET----------------------- */
 //On vérifie que le GET existe et qu'il n'est pas vide
 if (isset($_GET['id']) && !empty($_GET['id'])) {
     //On stocke l'id récupérée dans le GET dans une variable :
@@ -40,7 +31,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
         $row = mysqli_fetch_assoc($result);
         //On stock les infos du pokémon dans des variables :
         $nom = $row['nom'];
-        $numero = $row['numero'];
+        $numero = pNumeroUncheck($row['numero']);
         $description = $row['p_description'];
         $taille = $row['taille'];
         $poids = $row['poids'];
@@ -64,9 +55,16 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     header('Location: profil.php');
 }
 
-
+/* -------------------------POST----------------------- */
 if (isset($_POST['valider'])) {
     if (!empty($_GET['id']) && !empty($_POST['nom']) && !empty($_POST['numero']) && !empty($_POST['description']) && !empty($_POST['taille']) && !empty($_POST['poids']) && !empty($_POST['type1'])) {
+
+        if ($_POST['type-2'] == "Type") {
+            $_POST['type-2'] = NULL;
+        }
+        if ($_POST['type'] == "Type") {
+            die("Veuillez choisir un type pour le Pokémon");
+        }
         //On récupère les données du formulaire :
         $p_id = strip_tags($_GET['id']);
         $nom = strip_tags($_POST['nom']);
@@ -89,12 +87,12 @@ if (isset($_POST['valider'])) {
         }
 
         //On vérifie si un fichier à été posté :
-        /*         if (isset($_FILES)) {
+        if (isset($_FILES)) {
             var_dump($_FILES);
         } else {
             die("Aucun fichier posté");
         }
- */
+
         //On prépare une requête SQL pour mettre à jour les données du pokémon :
         $sql = "UPDATE pokemon SET nom = '$nom', numero = '$numero', p_description = '$description', taille = $taille, poids = $poids, p_type = '$type', `p_type-2` = '$type2', evolutions = '$evo' WHERE p_id = $p_id";
         //on execute la requête :
@@ -272,8 +270,7 @@ if (isset($_POST['valider'])) {
             </section>
         </div>
 
-        <!-- Input caché stockant les noms des évolutions : -->
-        <!-- <input type="hidden" id="hInput" name="evolutions" value=""> -->
+
     </form>
 
     <script src="./JS/edit.js"></script>
