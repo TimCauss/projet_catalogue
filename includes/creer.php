@@ -182,8 +182,7 @@ if ($_POST) {
                     </div>
                 </div>
                 <div class="row mb-4">
-                    <div class="col col-form-r">
-                        <select class="custom-select" name="type" id="type" required>
+                        <select class="custom-select col col-form-r" name="type" id="type" required>
                             <option selected>Type</option>
                             <option value="feu">Feu</option>
                             <option value="plante">Plante</option>
@@ -202,9 +201,7 @@ if ($_POST) {
                             <option value="roche">Roche</option>
                             <option value="vol">Vol</option>
                         </select>
-                    </div>
-                    <div class="col">
-                        <select class="custom-select" name="type" id="type">
+                        <select class="custom-select col" name="type" id="type">
                             <option selected>Type</option>
                             <option value="feu">Feu</option>
                             <option value="plante">Plante</option>
@@ -223,7 +220,6 @@ if ($_POST) {
                             <option value="roche">Roche</option>
                             <option value="vol">Vol</option>
                         </select>
-                    </div>
                 </div>
                 <div class="d-flex justify-content-center">
                     <input type="submit" class="btn btn-form" value="Ajouter">

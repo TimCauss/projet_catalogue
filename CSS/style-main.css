@@ -915,7 +915,7 @@ header {
 #retour,
 #valider {
     background-color: #A4A4A4;
-    width: 33%;
+    width: 49%;
     height: 80px;
     font-size: 2em;
     color: white;
@@ -926,6 +926,36 @@ header {
 #valider {
     text-align: right;
     padding-right: 20px;
+
+}
+
+
+
+.p-input-desc {
+    padding: 10px;
+    resize: none;
+}
+
+.input-taille,
+.input-poids {
+    width: 40px;
+    height: 25px;
+}
+
+.input-taille[value],
+.input-poids {
+    font-size: 18px;
+}
+
+.ind-wrapper h4 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-nbr {
+    text-align: center;
+    width: 30%;
 }
 
 .input-h1 {
@@ -945,6 +975,22 @@ header {
     border: none;
 }
 
+select.type-select-size {
+    text-align: center;
+    width: 100px;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+}
+
+
+
+.type-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
 
 .input-h4 {
     text-align: center;
