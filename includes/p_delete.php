@@ -41,7 +41,7 @@ if (isset($_GET['p_id'])) {
     //on log la suppréssion en db :
     $user_id = $_SESSION['user']['user_id'];
 
-    $log = "INSERT INTO `logs`(`log_user`,`log_description`, `log_pokemon` ,`log_date`) VALUES ('$user_id', ' a supprimé le Pokémon', '$p_id', now())";
+    $log = "INSERT INTO `logs`(`user_id`,`log_description`, `log_pokemon` ,`log_date`) VALUES ('$user_id', ' a supprimé le Pokémon ', '$p_name', now())";
     $query_log = $conn->prepare($log);
     $query_log->execute();
 } else {

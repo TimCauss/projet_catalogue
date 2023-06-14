@@ -115,10 +115,9 @@ if ($_POST) {
             ];
 
             /*On récupère l'id du dernier Pokémon ajouté*/
-            $last_id = $db->lastInsertId();
 
             //on log la création en db :
-            $log = "INSERT INTO `logs`(`log_user`,`log_description`, `log_pokemon` ,`log_date`) VALUES ('$user_id', ' a ajouté le Pokémon ', '$last_id', now())";
+            $log = "INSERT INTO `logs`(`user_id`,`log_description`, `log_pokemon` ,`log_date`) VALUES ('$user_id', ' a ajouté le Pokémon ', '$nom', now())";
             $query_log = $db->prepare($log);
             $query_log->execute();
 

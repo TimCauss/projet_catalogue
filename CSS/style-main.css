@@ -1010,3 +1010,11 @@ select.type-select-size {
 .image-upload>input {
     display: none;
 }
+
+table.table-log {
+    max-width: 1440px;
+}
+
+.table-log {
+    width: 100%;
+}

@@ -41,7 +41,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     } else {
         //Si non, on stock un message d'erreur dans la session PHP :
         $_SESSION['action'] = [
-            'ERROR EDIT' => "Une erreur est survenue inpossible de récupérer les données du Pokémon"
+            'ERROR EDIT' => "Une erreur est survenue impossible de récupérer les données du Pokémon"
         ];
         die();
         header('Location: profil.php');
@@ -136,7 +136,7 @@ if (isset($_POST['valider'])) {
             ];
             //On logs l'action da,s la BDD logs :
             $user_id = $_SESSION['user']['user_id'];
-            $log = "INSERT INTO `logs`(`log_user`,`log_description`, `log_pokemon` ,`log_date`) VALUES ($user_id, ' a modifié le Pokémon ', '$p_id', now())";
+            $log = "INSERT INTO `logs`(`user_id`,`log_description`, `log_pokemon` ,`log_date`) VALUES ($user_id, ' a modifié le Pokémon ', '$nom', now())";
             $logs = mysqli_query($conn, $log);
 
             //On redirige vers la page profil.php :
