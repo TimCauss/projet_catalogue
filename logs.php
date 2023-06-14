@@ -71,7 +71,7 @@ $resultCheck = mysqli_num_rows($result);
 
                     <tr>
                         <td scope="row"><?= $i ?></td>
-                        <td><?php echo $log_date . " - " . $loggerInfos . " " . $row[2] . $pName["nom"] . "[" . $log_pokemon . "]" ?></td>
+                        <td><?php echo $log_date . " - " . $loggerInfos . " " . $row[2] . "[" . $log_pokemon . "]" ?></td>
                     </tr>
                 <?php
                     $i++;
