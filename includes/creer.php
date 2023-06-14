@@ -27,13 +27,6 @@ if ($_POST) {
     /* On vérifie si les champs necessaire sont remplis : */
     if (!empty($_POST['nom']) && !empty($_POST['numero'])) {
 
-        if ($_POST['type-2'] == "Type") {
-            $_POST['type-2'] = NULL;
-        }
-        if ($_POST['type'] == "Type") {
-            die("Veuillez choisir un type pour le Pokémon");
-        }
-
         /* On Vérifie que le Pokémon n'est pas déjà présent dans la base de donée
         Si le nom ou le numero existe déjà, on stock un message d'erreur
         dans la session PHP */
@@ -45,8 +38,16 @@ if ($_POST) {
         $taille = strip_tags($_POST['taille']);
         $poids = strip_tags($_POST['poids']);
         $evolutions = strip_tags($_POST['evolutions']);
-        $p_type = strip_tags($_POST['type']);
-        $p_type_2 = strip_tags($_POST['type-2']);
+        if ($_POST['type-2'] == "Type") {
+            $p_type2 = "";
+        } else {
+            $p_type2 = strip_tags($_POST['type-2']);
+        }
+        if ($_POST['type'] == "Type") {
+            die("Veuillez choisir un type pour le Pokémon");
+        } else {
+            $p_type = strip_tags($_POST['type']);
+        }
 
         foreach ($result_all as $result) {
             //Si le nom ou le numéro existe déjà, un message d'erreur apparait.
@@ -94,7 +95,7 @@ if ($_POST) {
             //On récupère l'id de l'utilisateur connecté
             $user_id = $_SESSION['user']['user_id'];
 
-            $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`, `p_type-2`, `created_by`, `created_on`) VALUES (:nom, :numero, :p_description, :taille, :poids, :evolutions, :p_type, '$p_type_2', '$user_id', NOW())";
+            $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`, `p_type-2`, `created_by`, `created_on`) VALUES (:nom, :numero, :p_description, :taille, :poids, :evolutions, :p_type, :p_type2, '$user_id', NOW())";
             $query = $db->prepare($sql);
 
             $query->bindValue(':nom', $nom);
@@ -104,6 +105,7 @@ if ($_POST) {
             $query->bindValue(':poids', $poids);
             $query->bindValue(':evolutions', $evolutions);
             $query->bindValue(':p_type', $p_type);
+            $query->bindValue(':p_type2', $p_type2);
 
             $query->execute();
 
