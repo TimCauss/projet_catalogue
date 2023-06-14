@@ -176,7 +176,7 @@ if (isset($_POST['valider'])) {
 
             <div class="ind-container">
                 <div class="p-header-nav">
-                    <input type="submit" id="retour" name="retour" value="Retour">
+                    <input id="retour" onclick="window.location.href = 'profil.php'" value="Retour">
                     <input type="submit" id="valider" name="valider" value="Valider">
                 </div>
 
