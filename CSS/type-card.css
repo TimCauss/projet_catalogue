@@ -1,0 +1,238 @@
+.section-types {
+    margin-top: 50px;
+    margin-bottom: 75px;
+    max-width: 1440px;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-around;
+    gap: 50px;
+    background: #f2f4f8;
+    padding: 30px;
+    margin: 0 auto;
+}
+
+a {
+    text-decoration: none;
+}
+
+.type-card {
+    width: 180px;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+    cursor: pointer;
+    transition: 200ms ease-in-out, scale 200ms ease-in-out;
+    flex-direction: column;
+    padding: 10px;
+    position: relative;
+    overflow: hidden;
+    color: #242424;
+}
+
+.type-card:hover {
+    filter: saturate(150%);
+    scale: 1.05;
+    color: #FFFFFF;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+.type-card:before {
+    content: "";
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 250px;
+    height: 250px;
+    transition: transform 1s ease;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.type-card:hover::before {
+    transform: translate(-50%, -50%) scale(2);
+}
+
+.svg {
+
+    border-radius: 100%;
+    height: 100px;
+    width: 100px;
+    margin: auto;
+    padding: 10px;
+}
+
+.feu {
+    background: #FBA54C;
+    box-shadow: 0 0 20px #FBA54C;
+}
+
+.card-feu:hover::before {
+    background-color: #c0462b;
+
+}
+
+.card-plante:hover::before {
+    background: #519e2e;
+}
+
+.plante {
+    background: #92BC2C;
+    box-shadow: 0 0 20px #92BC2C;
+}
+
+.card-Eau:hover::before {
+    background-color: #1a64ad;
+}
+
+.eau {
+    background: #539DDF;
+    box-shadow: 0 0 20px #539DDF;
+}
+
+.card-Glace:hover::before {
+    background-color: #289e9e;
+}
+
+.glace {
+    background: #75D0C1;
+    box-shadow: 0 0 20px #75D0C1;
+}
+
+.card-Normal:hover::before {
+    background-color: #d7d6d4;
+}
+
+.normal {
+    background: #A0A29F;
+    box-shadow: 0 0 20px #A0A29F;
+}
+
+.card-Electrik:hover::before {
+    background-color: #d0b118;
+}
+
+.electrik {
+    background: #F2D94E;
+    box-shadow: 0 0 20px #F2D94E;
+}
+
+.card-Poison:hover::before {
+    background-color: #800080;
+}
+
+.poison {
+    background: #B763CF;
+    box-shadow: 0 0 20px #B763CF;
+}
+
+.card-Insecte:hover::before {
+    background-color: #729f3f;
+}
+
+.insecte {
+    background: #92BC2C;
+    box-shadow: 0 0 20px #92BC2C;
+}
+
+.card-Psy:hover::before {
+    background-color: #a549a5;
+}
+
+.psy {
+    background: #f081fa;
+    box-shadow: 0 0 20px #fa81d6;
+}
+
+.card-Combat:hover::before {
+    background-color: #700000;
+}
+
+.combat {
+    background: #D3425F;
+    box-shadow: 0 0 20px #D3425F;
+}
+
+.card-Acier:hover::before {
+    background-color: #3d5256;
+}
+
+.acier {
+    background: #5695A3;
+    box-shadow: 0 0 20px #5695A3;
+}
+
+.card-Tenebres:hover::before {
+    background-color: #242424;
+}
+
+.tenebres {
+    background: #595761;
+    box-shadow: 0 0 20px #595761;
+}
+
+.card-Roche:hover::before {
+    background-color: #80744a;
+}
+
+.roche {
+    background: #C9BB8A;
+    box-shadow: 0 0 20px #C9BB8A;
+}
+
+.card-Sol:hover::before {
+    background: #865036;
+
+}
+
+.sol {
+    background: #DA7C4D;
+    box-shadow: 0 0 20px #DA7C4D;
+}
+
+.card-Spectre:hover::before {
+    background: #353e71;
+
+}
+
+.spectre {
+    background: #5F6DBC;
+    box-shadow: 0 0 20px #5F6DBC;
+}
+
+.card-Vol:hover::before {
+    background: #5d75a1;
+
+}
+
+.vol {
+    background: #A1BBEC;
+    box-shadow: 0 0 20px #A1BBEC;
+}
+
+.card-Dragon:hover::before {
+    background: #123a61;
+}
+
+.dragon {
+    background: #0C69C8;
+    box-shadow: 0 0 20px #0C69C8;
+}
+
+.card-Fee:hover::before {
+    background: #eda4e7;
+
+}
+
+.fee {
+    background: #ecb4e7;
+    box-shadow: 0 0 20px #EE90E6;
+}

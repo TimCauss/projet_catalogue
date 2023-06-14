@@ -1,3 +1,7 @@
+<?php
+session_start()
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -8,6 +12,7 @@
     <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./CSS/style-main.css">
     <link rel="stylesheet" href="./CSS/flickity.css">
+    <link rel="stylesheet" href="./CSS/type-card.css">
     <title>Pokeliste - Home</title>
 </head>
 
@@ -15,7 +20,6 @@
 
     <!-- /** includes Header and Nav */ -->
     <?php
-
     include_once "./includes/header.php";
     include_once "./includes/nav.php";
     include_once "./includes/slider.php";

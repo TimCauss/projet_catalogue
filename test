@@ -1,0 +1,15 @@
+ array(11) { ["p_id"]=> string(1) "2" ["nom"]=> string(10) "Salamèche" ["numero"]=> string(4) "0004" ["p_description"]=> string(93) "Il préfère ce qui est chaud. En cas de pluie, de la vapeur se forme autour de sa queue. " ["taille"]=> string(3) "0.6" ["p_type"]=> string(3) "feu" ["p_type-2"]=> string(0) "" ["poids"]=> string(3) "8.5" ["evolutions"]=> string(30) "Salamèche,Reptincel,Dracaufeu" ["created_by"]=> string(1) "8" ["created_on"]=> string(19) "2023-06-05 09:23:32" }
+→NULL
+Warning
+: Trying to access array offset on value of type null in
+C:\laragon\www\projet_catalogue\p_edit.php
+on line
+188
+
+→NULL
+Warning
+: Trying to access array offset on value of type null in
+C:\laragon\www\projet_catalogue\p_edit.php
+on line
+188
+
