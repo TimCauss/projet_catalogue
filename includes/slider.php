@@ -48,8 +48,8 @@ $rows = $result->fetchAll(PDO::FETCH_ASSOC)
             echo '<div class="crsl-ft-r2">';
             echo ' <div class="crsl-ft-type">Type</div>';
             echo ' <div>
-                        <div class="type-label type-colors-' . $type . '">' . $type . '</div>
-                        <div class="type-label type-colors-' . $type2 . '">' . $type2 . '</div>
+                        <div class="type-label type-colors-' . $type . '">' . strtoupper($type) . '</div>
+                        <div class="type-label type-colors-' . $type2 . '">' . strtoupper($type2) . '</div>
                     </div>
                 </div>
             </div>
