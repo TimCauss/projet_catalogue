@@ -203,8 +203,8 @@ header {
 
 .carousel-container {
     max-width: 1440px;
-    height: 650px;
-    padding: 100px 0;
+    height: 520px;
+    padding: 50px 0;
     overflow: hidden;
 }
 
@@ -413,6 +413,53 @@ header {
     background-color: #a4acaf;
 }
 
+.type-colors-glace {
+    background-color: #289e9e;
+}
+
+.type-colors-electrik {
+    background-color: #d0b118;
+}
+
+.type-colors-psy {
+    background-color: #a549a5;
+}
+
+.type-colors-acier {
+    background-color: #3d5256;
+}
+
+.type-colors-combat {
+    background-color: #700000;
+}
+
+.type-colors-ténèbres {
+    background-color: #242424;
+}
+
+.type-colors-roche {
+    background-color: #80744a;
+}
+
+.type-colors-sol {
+    background-color: #865036;
+}
+
+.type-colors-spectre {
+    background-color: #353e71;
+}
+
+.type-colors-vol {
+    background-color: #5d75a1;
+}
+
+.type-colors-dragon {
+    background-color: #0C69C8;
+}
+
+.type-colors-fée {
+    background-color: #EE90E6;
+}
 
 /** STYLE TYPES PAGES START  */
 
