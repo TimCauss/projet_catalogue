@@ -90,36 +90,38 @@ if (isset($_POST['valider'])) {
         }
 
         //On vérifie si un fichier à été posté :
-        if (isset($_FILES["p_img"])) {
-            //On set le path :
-            $path = "uploads/" . $nom . ".png";
-            //On supprime le fichier image s'il existe :
-            if (file_exists($path)) {
-                unlink($path);
-            }
-            //On récupère le fichier image :
-            $file = $_FILES["p_img"];
+        if (!empty($_FILES["p_img"]["name"])) {
+            if (isset($_FILES["p_img"])) {
+                //On set le path :
+                $path = "uploads/" . $nom . ".png";
+                //On supprime le fichier image s'il existe :
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+                //On récupère le fichier image :
+                $file = $_FILES["p_img"];
 
-            //On récupère et on filtre les données du fichier :
-            $fileName = $file['name'];
-            $fileType = $file['type'];
-            $fileTmpName = $file['tmp_name'];
-            $fileExt = explode('.', $fileName);
-            $fileExt = strtolower(end($fileExt));
-            $allowedExt = 'png';
-            //On vérifie si l'extension du fichier est autorisée :
-            if ($fileExt == $allowedExt) {
-                //On génère un nom unique pour le fichier :
-                $fileNameNew = $nom . "." . $fileExt;
-                //On set le path du fichier :
-                $path = "uploads/" . $fileNameNew;
-                //On déplace le fichier dans le dossier uploads :
-                move_uploaded_file($fileTmpName, $path);
+                //On récupère et on filtre les données du fichier :
+                $fileName = $file['name'];
+                $fileType = $file['type'];
+                $fileTmpName = $file['tmp_name'];
+                $fileExt = explode('.', $fileName);
+                $fileExt = strtolower(end($fileExt));
+                $allowedExt = 'png';
+                //On vérifie si l'extension du fichier est autorisée :
+                if ($fileExt == $allowedExt) {
+                    //On génère un nom unique pour le fichier :
+                    $fileNameNew = $nom . "." . $fileExt;
+                    //On set le path du fichier :
+                    $path = "uploads/" . $fileNameNew;
+                    //On déplace le fichier dans le dossier uploads :
+                    move_uploaded_file($fileTmpName, $path);
+                } else {
+                    die("Format de fichier non autorisé");
+                }
             } else {
-                die("Format de fichier non autorisé");
+                die("Fail " . $path);
             }
-        } else {
-            die("Fail " . $path);
         }
 
         //On prépare une requête SQL pour mettre à jour les données du pokémon :
