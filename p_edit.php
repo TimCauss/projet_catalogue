@@ -7,6 +7,7 @@ if (!isset($_SESSION['user'])) {
     die();
 }
 
+include_once "./includes/fonctions.php";
 
 //On se connecte à la base de donnée
 try {
@@ -15,6 +16,7 @@ try {
     echo "Echec de connexion à la BDD : " . $e->getMessage();
 }
 
+/* -------------------------GET----------------------- */
 //On vérifie que le GET existe et qu'il n'est pas vide
 if (isset($_GET['id']) && !empty($_GET['id'])) {
     //On stocke l'id récupérée dans le GET dans une variable :
@@ -29,7 +31,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
         $row = mysqli_fetch_assoc($result);
         //On stock les infos du pokémon dans des variables :
         $nom = $row['nom'];
-        $numero = $row['numero'];
+        $numero = pNumeroUncheck($row['numero']);
         $description = $row['p_description'];
         $taille = $row['taille'];
         $poids = $row['poids'];
@@ -53,61 +55,97 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     header('Location: profil.php');
 }
 
-
+/* -------------------------POST----------------------- */
 if (isset($_POST['valider'])) {
+    if (!empty($_GET['id']) && !empty($_POST['nom']) && !empty($_POST['numero']) && !empty($_POST['description']) && !empty($_POST['taille']) && !empty($_POST['poids']) && !empty($_POST['type1'])) {
 
 
-    //On récupère les données du formulaire :
-    $p_id = strip_tags($_GET['id']);
-    $nom = strip_tags($_POST['nom']);
-    $numero = strip_tags($_POST['numero']);
-    $description = strip_tags($_POST['description']);
-    $taille = strip_tags($_POST['taille']);
-    $poids = strip_tags($_POST['poids']);
-    $type = strip_tags($_POST['type1']);
-    $type2 = strip_tags($_POST['type2']);
+        //On récupère les données du formulaire :
+        $p_id = strip_tags($_GET['id']);
+        $nom = strip_tags($_POST['nom']);
+        $numero = pNumeroCheck(strip_tags($_POST['numero']));
+        $description = strip_tags($_POST['description']);
+        $taille = strip_tags($_POST['taille']);
+        $poids = strip_tags($_POST['poids']);
+        if ($_POST['type2'] == "Type") {
+            $_POST['type2'] = NULL;
+        } else {
+            $type2 = strip_tags($_POST['type2']);
+        }
+        if ($_POST['type1'] == "Type") {
+            die("Veuillez choisir un type pour le Pokémon");
+        } else {
+            $type = strip_tags($_POST['type1']);
+        }
 
-    //On récupère et trie les évolutions :
-    if (isset($_POST['evo1'])) {
-        $evo = $_POST['evo1'] . ",";
-    }
-    if (isset($_POST['evo2'])) {
-        $evo .= $_POST['evo2'] . ",";
-    }
-    if (isset($_POST['evo3'])) {
-        $evo .= $_POST['evo3'];
-    }
+        //On récupère et trie les évolutions :
+        if (isset($_POST['evo1'])) {
+            $evo = $_POST['evo1'] . ",";
+        }
+        if (isset($_POST['evo2'])) {
+            $evo .= $_POST['evo2'] . ",";
+        }
+        if (isset($_POST['evo3'])) {
+            $evo .= $_POST['evo3'];
+        }
 
-    //On prépare une requête SQL pour mettre à jour les données du pokémon :
-    $sql = "UPDATE pokemon SET nom = '$nom', numero = $numero, p_description = '$description', taille = $taille, poids = $poids, p_type = '$type', `p_type-2` = '$type2', evolutions = '$evo' WHERE p_id = $p_id";
-    //on execute la requête :
-    $result = mysqli_query($conn, $sql);
-    //On vérifie que la requête s'est bien executée :
-    if ($result) {
-        //Si oui, on stock un message de succès dans la session PHP :
-        $_SESSION['action'] = [
-            'SUCCESS EDIT' => "Le Pokémon a bien été modifié"
-        ];
-        //On logs l'action da,s la BDD logs :
-        $user_id = $_SESSION['user']['user_id'];
-        $log = "INSERT INTO `logs`(`log_user`,`log_description`, `log_pokemon` ,`log_date`) VALUES ($user_id, ' a modifié le Pokémon ', '$p_id', now())";
-        $logs = mysqli_query($conn, $log);
+        //On vérifie si un fichier à été posté :
+        if (isset($_FILES["p_img"])) {
+            //On set le path :
+            $path = "uploads/" . $nom . ".png";
+            //On supprime le fichier image s'il existe :
+            if (file_exists($path)) {
+                unlink($path);
+            }
+            //On récupère le fichier image :
+            $file = $_FILES["p_img"];
 
-        //On redirige vers la page profil.php :
-        header('Location: profil.php');
+            //On récupère et on filtre les données du fichier :
+            $fileName = $file['name'];
+            $fileType = $file['type'];
+            $fileTmpName = $file['tmp_name'];
+            $fileExt = explode('.', $fileName);
+            $fileExt = strtolower(end($fileExt));
+            $allowedExt = 'png';
+            //On vérifie si l'extension du fichier est autorisée :
+            if ($fileExt == $allowedExt) {
+                //On génère un nom unique pour le fichier :
+                $fileNameNew = $nom . "." . $fileExt;
+                //On set le path du fichier :
+                $path = "uploads/" . $fileNameNew;
+                //On déplace le fichier dans le dossier uploads :
+                move_uploaded_file($fileTmpName, $path);
+            } else {
+                die("Format de fichier non autorisé");
+            }
+        } else {
+            die("Fail " . $path);
+        }
+
+        //On prépare une requête SQL pour mettre à jour les données du pokémon :
+        $sql = "UPDATE pokemon SET nom = '$nom', numero = '$numero', p_description = '$description', taille = $taille, poids = $poids, p_type = '$type', `p_type-2` = '$type2', evolutions = '$evo' WHERE p_id = $p_id";
+        //on execute la requête :
+        $result = mysqli_query($conn, $sql);
+        //On vérifie que la requête s'est bien executée :
+        if ($result) {
+            //On ajoute un repère de l'action dans la Session
+            $_SESSION['action'] = [
+                "Création Réussi" => "Pokémon ajouté avec succès"
+            ];
+            //On logs l'action da,s la BDD logs :
+            $user_id = $_SESSION['user']['user_id'];
+            $log = "INSERT INTO `logs`(`log_user`,`log_description`, `log_pokemon` ,`log_date`) VALUES ($user_id, ' a modifié le Pokémon ', '$p_id', now())";
+            $logs = mysqli_query($conn, $log);
+
+            //On redirige vers la page profil.php :
+            header('Location: profil.php');
+        } else {
+            //Si non, on stock un message d'erreur dans la session PHP :
+            die("Erreur SQL : " . $sql . "<br>" . mysqli_error($conn));
+        }
     } else {
-        //Si non, on stock un message d'erreur dans la session PHP :
-        $_SESSION['action'] = [
-            'ERROR EDIT' => "Une erreur est survenue inpossible de modifier le Pokémon"
-        ];
-        //On redirige vers la page profil.php :
-        header('Location: profil.php');
+        die("Tous les champs ne sont pas remplis");
     }
-    echo "<pre>";
-    print_r($_POST);
-    print_r($evolutions);
-    echo "</pre>";
-    die();
 }
 
 ?>
@@ -131,7 +169,7 @@ if (isset($_POST['valider'])) {
     include_once './includes/nav.php';
     ?>
 
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         <div class="ind-wrapper">
 
             <div class="ind-container">
@@ -152,7 +190,7 @@ if (isset($_POST['valider'])) {
                     <label for="file-input">
                         <img id="pokemon" src="./uploads/<?= $nom ?>.png" alt="<?= $nom ?>">
                     </label>
-                    <input onchange="readURL(this);" type="file" id="file-input">
+                    <input name="p_img" type="file" onchange="readURL(this);" id="file-input" accept="image/png">
                 </div>
 
 
@@ -252,8 +290,7 @@ if (isset($_POST['valider'])) {
             </section>
         </div>
 
-        <!-- Input caché stockant les noms des évolutions : -->
-        <!-- <input type="hidden" id="hInput" name="evolutions" value=""> -->
+
     </form>
 
     <script src="./JS/edit.js"></script>

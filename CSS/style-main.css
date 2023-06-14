@@ -870,6 +870,11 @@ header {
     color: rgb(255, 255, 255);
 }
 
+#btnReset {
+    border: none;
+    color: #ed4c4c;
+}
+
 /** STYLE GRID PAGE END */
 
 /** STYLE DASHBOARD PAGE START */

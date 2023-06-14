@@ -110,7 +110,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 "user_id" => $userResult["user_id"],
                 "prenom" => $prenom,
                 "lastname" => $lastname,
-                "email" => $email
+                "email" => $email,
+                "user_role" => 0
             ];
             header("Location: index.php");
         } else {

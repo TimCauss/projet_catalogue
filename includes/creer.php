@@ -12,6 +12,9 @@ if (!isset($_SESSION['user'])) {
 
 define('MB', 1048576); //on Définir la valeur d'un MB
 
+include_once "./includes/fonctions.php";
+
+
 /* On fetch la base de donnée des pokémons pour la comparer au données entrées dans le formulaire */
 
 $sql_all = "SELECT nom, numero FROM pokemon";
@@ -27,12 +30,31 @@ if ($_POST) {
         /* On Vérifie que le Pokémon n'est pas déjà présent dans la base de donée
         Si le nom ou le numero existe déjà, on stock un message d'erreur
         dans la session PHP */
+
+        /* On nettoies les post puis on stock le résultat de ce netooyage dans une variable */
+        $nom = strip_tags($_POST['nom']);
+        $numero = pNumeroCheck(strip_tags($_POST["numero"]));
+        $p_description = strip_tags($_POST['description']);
+        $taille = strip_tags($_POST['taille']);
+        $poids = strip_tags($_POST['poids']);
+        $evolutions = strip_tags($_POST['evolutions']);
+        if ($_POST['type-2'] == "Type") {
+            $p_type2 = "";
+        } else {
+            $p_type2 = strip_tags($_POST['type-2']);
+        }
+        if ($_POST['type'] == "Type") {
+            die("Veuillez choisir un type pour le Pokémon");
+        } else {
+            $p_type = strip_tags($_POST['type']);
+        }
+
         foreach ($result_all as $result) {
-            //Si le nom ou le numéro existe déjà, on stock un message d'erreur dans la session PHP
+            //Si le nom ou le numéro existe déjà, un message d'erreur apparait.
             if (strtoupper($result["nom"]) == strtoupper($_POST["nom"])) {
                 die("Ce Pokémon existe déjà");
             }
-            if ($result["numero"] == $_POST["numero"]) {
+            if ($result["numero"] == $numero) {
                 die("Ce numéro de Pokémon existe déjà");
             }
         }
@@ -63,16 +85,6 @@ if ($_POST) {
                 die("Fichier image trop volumineux (1mo max)");
             }
 
-            /* On nettoies les post puis on stock le résultat de ce netooyage dans une variable */
-            $nom = strip_tags($_POST['nom']);
-            $numero = strip_tags($_POST['numero']);
-            $p_description = strip_tags($_POST['description']);
-            $taille = strip_tags($_POST['taille']);
-            $poids = strip_tags($_POST['poids']);
-            $evolutions = strip_tags($_POST['evolutions']);
-            $p_type = strip_tags($_POST['type']);
-            $p_type_2 = strip_tags($_POST['type-2']);
-
             //On génère le chemin complet de l'image
             $newfilename = __DIR__ . "/../uploads/$nom.$extension";
             //On déplace le fichier tmp vers upload sous son nouveau nom :
@@ -83,7 +95,7 @@ if ($_POST) {
             //On récupère l'id de l'utilisateur connecté
             $user_id = $_SESSION['user']['user_id'];
 
-            $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`, `p_type-2`, `created_by`, `created_on`) VALUES (:nom, :numero, :p_description, :taille, :poids, :evolutions, :p_type, '$p_type_2', '$user_id', NOW())";
+            $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`, `p_type-2`, `created_by`, `created_on`) VALUES (:nom, :numero, :p_description, :taille, :poids, :evolutions, :p_type, :p_type2, '$user_id', NOW())";
             $query = $db->prepare($sql);
 
             $query->bindValue(':nom', $nom);
@@ -93,6 +105,7 @@ if ($_POST) {
             $query->bindValue(':poids', $poids);
             $query->bindValue(':evolutions', $evolutions);
             $query->bindValue(':p_type', $p_type);
+            $query->bindValue(':p_type2', $p_type2);
 
             $query->execute();
 
@@ -154,7 +167,7 @@ if ($_POST) {
                         Image :
                     </label>
                     <div class="form-outline">
-                        <input type="file" name="p_img" id="p_img" class="form-control" accept="image/png, image/jpeg" value="Image">
+                        <input type="file" name="p_img" id="p_img" class="form-control" accept="image/png" value="Image">
                     </div>
                 </div>
                 <div class="row mb-4">

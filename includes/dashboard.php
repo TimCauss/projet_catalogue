@@ -1,12 +1,11 @@
 <?php
-//On prépare une variable $isadmin pour stocker si l'utilisateur est admin ou non
-//On prépare une variable $sql pour stocker la requête SQL
-if ($_SESSION['user']['user_role'] === 1) {
+
+$user_id = $_SESSION['user']['user_id'];
+
+if ($_SESSION['user']['user_role'] == 1) {
     $isadmin = true;
-    $sql = "SELECT p_id, nom, numero, p_type, `p_type-2`, evolutions, created_by, created_on  FROM pokemon ORDER BY numero ASC";
 } else {
     $isadmin = false;
-    $sql = "SELECT p_id, nom, numero, p_type, `p_type-2`, evolutions, created_on FROM pokemon ORDER BY numero ASC WHERE created_by = " . $_SESSION['user']['user_id'];
 }
 
 //on se connect à la db (Pour changer on utilise mysqli au lieu de PDO)
@@ -16,15 +15,49 @@ try {
     echo "Echec de connexion à la BDD : " . $e->getMessage();
 }
 
+$error = "";
+
+//On prépare une variable $isadmin pour stocker si l'utilisateur est admin ou non
+//On prépare une variable $sql pour stocker la requête SQL
+if ($isadmin && empty($_GET['search'])) {
+    $sql = "SELECT p_id, nom, numero, p_type, `p_type-2`, evolutions, created_by, created_on FROM pokemon ORDER BY numero ASC";
+    if (mysqli_num_rows(mysqli_query($conn, $sql)) == 0) {
+        $error = "<h3>Vous n'avez pas encore ajouté de Pokémon</h3>";
+    }
+} elseif (!$isadmin && empty($_GET['search'])) {
+    $sql = "SELECT p_id, nom, numero, p_type, `p_type-2`, evolutions, created_on FROM pokemon WHERE created_by = '$user_id' ORDER BY numero ASC";
+    if (mysqli_num_rows(mysqli_query($conn, $sql)) == 0) {
+        $error = "<h3>Vous n'avez pas encore ajouté de Pokémon</h3>";
+    }
+} elseif ($isadmin && !empty($_GET['search'])) {
+    $search = $_GET['search'];
+    $sql = "SELECT * FROM pokemon, users WHERE (nom LIKE '%$search%') OR (numero LIKE '%$search%') OR (`p_type` LIKE '%$search%') OR (`p_type-2` LIKE '%$search%') ORDER BY numero ASC";
+    //si la recherche ne donne rien, on affiche un message d'erreur
+    if (mysqli_num_rows(mysqli_query($conn, $sql)) == 0) {
+        $error = "<h3>Aucun résultat pour votre recherche</h3>";
+    }
+    unset($_GET);
+} elseif (!$isadmin && !empty($_GET['search'])) {
+    $search = $_GET['search'];
+    $sql = "SELECT * FROM pokemon WHERE (nom LIKE '%$search%') OR (numero LIKE '%$search%') OR (`p_type` LIKE '%$search%') OR (`p_type-2` LIKE '%$search%') AND created_by = '$user_id' ORDER BY numero ASC";
+    if (mysqli_num_rows(mysqli_query($conn, $sql)) == 0) {
+        $error = "<h3>Aucun résultat pour votre recherche</h3>";
+    }
+    unset($_GET);
+}
+
+
 $result = mysqli_query($conn, $sql);
+//On vériifie si la requête a retourné des résultats
 $resultCheck = mysqli_num_rows($result);
 
+if ($error != "") {
+    echo $error;
+} else {
+    echo "<h1>Tableau de bord</h1>";
+}
+
 ?>
-
-
-
-
-<h1>Tableau de bord</h1>
 
 <table class="table dash-table">
     <thead>
