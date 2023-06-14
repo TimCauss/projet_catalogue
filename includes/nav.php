@@ -24,11 +24,6 @@
             </a>
         </li>
         <li>
-            <a href="#types">
-                <div class="nav-item ni-2">Types</div>
-            </a>
-        </li>
-        <li>
             <a href="pokedex.php">
                 <div class="nav-item ni-3">Pokedex</div>
             </a>

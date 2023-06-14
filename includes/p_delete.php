@@ -21,6 +21,14 @@ try {
 if (isset($_GET['p_id'])) {
     //On stock l'id récupérée dans le GET dans une variable :
     $p_id = $_GET['p_id'];
+
+    //On récupère le nom du pokemon à supprimer
+    $sql = "SELECT p_name FROM pokemon WHERE p_id = $p_id";
+    $result = mysqli_query($conn, $sql);
+    $resultCheck = mysqli_num_rows($result);
+    $row = mysqli_fetch_assoc($result);
+    $p_name = $row['p_name'];
+
     //On prépare la requête SQL :
     $sql = "DELETE FROM pokemon WHERE p_id = $p_id";
     //On execute la requête :
@@ -41,7 +49,7 @@ if (isset($_GET['p_id'])) {
     //on log la suppréssion en db :
     $user_id = $_SESSION['user']['user_id'];
 
-    $log = "INSERT INTO `logs`(`log_user`,`log_description`, `log_pokemon` ,`log_date`) VALUES ('$user_id', ' a supprimé le Pokémon', '$p_id', now())";
+    $log = "INSERT INTO `logs`(`user_id`,`log_description`, `log_pokemon` ,`log_date`) VALUES ('$user_id', ' a supprimé le Pokémon ', '$p_name', now())";
     $query_log = $conn->prepare($log);
     $query_log->execute();
 } else {

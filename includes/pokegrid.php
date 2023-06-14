@@ -32,7 +32,6 @@ $p_query->execute();
 $p_result = $p_query->fetchAll(PDO::FETCH_ASSOC);
 
 
-//TODO: Add a search bar to search for a pokemon by name or number or type
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">

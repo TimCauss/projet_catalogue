@@ -41,7 +41,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     } else {
         //Si non, on stock un message d'erreur dans la session PHP :
         $_SESSION['action'] = [
-            'ERROR EDIT' => "Une erreur est survenue inpossible de récupérer les données du Pokémon"
+            'ERROR EDIT' => "Une erreur est survenue impossible de récupérer les données du Pokémon"
         ];
         die();
         header('Location: profil.php');
@@ -90,36 +90,38 @@ if (isset($_POST['valider'])) {
         }
 
         //On vérifie si un fichier à été posté :
-        if (isset($_FILES["p_img"])) {
-            //On set le path :
-            $path = "uploads/" . $nom . ".png";
-            //On supprime le fichier image s'il existe :
-            if (file_exists($path)) {
-                unlink($path);
-            }
-            //On récupère le fichier image :
-            $file = $_FILES["p_img"];
+        if (!empty($_FILES["p_img"]["name"])) {
+            if (isset($_FILES["p_img"])) {
+                //On set le path :
+                $path = "uploads/" . $nom . ".png";
+                //On supprime le fichier image s'il existe :
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+                //On récupère le fichier image :
+                $file = $_FILES["p_img"];
 
-            //On récupère et on filtre les données du fichier :
-            $fileName = $file['name'];
-            $fileType = $file['type'];
-            $fileTmpName = $file['tmp_name'];
-            $fileExt = explode('.', $fileName);
-            $fileExt = strtolower(end($fileExt));
-            $allowedExt = 'png';
-            //On vérifie si l'extension du fichier est autorisée :
-            if ($fileExt == $allowedExt) {
-                //On génère un nom unique pour le fichier :
-                $fileNameNew = $nom . "." . $fileExt;
-                //On set le path du fichier :
-                $path = "uploads/" . $fileNameNew;
-                //On déplace le fichier dans le dossier uploads :
-                move_uploaded_file($fileTmpName, $path);
+                //On récupère et on filtre les données du fichier :
+                $fileName = $file['name'];
+                $fileType = $file['type'];
+                $fileTmpName = $file['tmp_name'];
+                $fileExt = explode('.', $fileName);
+                $fileExt = strtolower(end($fileExt));
+                $allowedExt = 'png';
+                //On vérifie si l'extension du fichier est autorisée :
+                if ($fileExt == $allowedExt) {
+                    //On génère un nom unique pour le fichier :
+                    $fileNameNew = $nom . "." . $fileExt;
+                    //On set le path du fichier :
+                    $path = "uploads/" . $fileNameNew;
+                    //On déplace le fichier dans le dossier uploads :
+                    move_uploaded_file($fileTmpName, $path);
+                } else {
+                    die("Format de fichier non autorisé");
+                }
             } else {
-                die("Format de fichier non autorisé");
+                die("Fail " . $path);
             }
-        } else {
-            die("Fail " . $path);
         }
 
         //On prépare une requête SQL pour mettre à jour les données du pokémon :
@@ -134,7 +136,7 @@ if (isset($_POST['valider'])) {
             ];
             //On logs l'action da,s la BDD logs :
             $user_id = $_SESSION['user']['user_id'];
-            $log = "INSERT INTO `logs`(`log_user`,`log_description`, `log_pokemon` ,`log_date`) VALUES ($user_id, ' a modifié le Pokémon ', '$p_id', now())";
+            $log = "INSERT INTO `logs`(`user_id`,`log_description`, `log_pokemon` ,`log_date`) VALUES ($user_id, ' a modifié le Pokémon ', '$nom', now())";
             $logs = mysqli_query($conn, $log);
 
             //On redirige vers la page profil.php :
@@ -174,7 +176,7 @@ if (isset($_POST['valider'])) {
 
             <div class="ind-container">
                 <div class="p-header-nav">
-                    <input type="submit" id="retour" name="retour" value="Retour">
+                    <input id="retour" onclick="window.location.href = 'profil.php'" value="Retour">
                     <input type="submit" id="valider" name="valider" value="Valider">
                 </div>
 
