@@ -165,7 +165,7 @@ if ($_POST) {
                         Image :
                     </label>
                     <div class="form-outline">
-                        <input type="file" name="p_img" id="p_img" class="form-control" accept="image/png, image/jpeg" value="Image">
+                        <input type="file" name="p_img" id="p_img" class="form-control" accept="image/png" value="Image">
                     </div>
                 </div>
                 <div class="row mb-4">

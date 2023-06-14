@@ -2,12 +2,28 @@
 
 require_once "connect.php";
 
+try {
+    $conn = mysqli_connect("localhost", "root", "", "projet_catalogue");
+} catch (PDOException $e) {
+    echo "Echec de connexion à la BDD : " . $e->getMessage();
+}
+
 if (isset($_GET['type'])) {
     $type = $_GET['type'];
     $p_sql = "SELECT * FROM pokemon WHERE (p_type = '$type') OR (`p_type-2` ='$type') ORDER BY numero ";
     unset($_GET);
 } else {
     $p_sql = "SELECT * FROM pokemon ORDER BY numero ASC";
+}
+
+if (!empty($_GET['search'])) {
+    $search = $_GET['search'];
+    $p_sql = "SELECT * FROM pokemon WHERE (nom LIKE '%$search%') OR (numero LIKE '%$search%') OR (`p_type` LIKE '%$search%') OR (`p_type-2` LIKE '%$search%') ORDER BY numero ASC";
+    //si la recherche ne donne rien, on affiche un message d'erreur
+    if (mysqli_num_rows(mysqli_query($conn, $p_sql)) == 0) {
+        $error = "<h3>Aucun résultat pour votre recherche</h3>";
+    }
+    unset($_GET);
 }
 
 
@@ -19,7 +35,20 @@ $p_result = $p_query->fetchAll(PDO::FETCH_ASSOC);
 //TODO: Add a search bar to search for a pokemon by name or number or type
 ?>
 
-
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <form method="GET" class="d-flex">
+                <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Rechercher</button>
+                <button class="btn btn-outline-success" id="btnReset" onclick="window.location.href='pokedex.php'">Reset</button>
+            </form>
+        </div>
+    </div>
+</nav>
 
 <section class="container-grid p-grid pb-5">
     <div class="d-flex flex-row flex-wrap justify-content-center gap-5">

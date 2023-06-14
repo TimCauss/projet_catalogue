@@ -59,12 +59,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 if (isset($_POST['valider'])) {
     if (!empty($_GET['id']) && !empty($_POST['nom']) && !empty($_POST['numero']) && !empty($_POST['description']) && !empty($_POST['taille']) && !empty($_POST['poids']) && !empty($_POST['type1'])) {
 
-        if ($_POST['type-2'] == "Type") {
-            $_POST['type-2'] = NULL;
-        }
-        if ($_POST['type'] == "Type") {
-            die("Veuillez choisir un type pour le Pokémon");
-        }
+
         //On récupère les données du formulaire :
         $p_id = strip_tags($_GET['id']);
         $nom = strip_tags($_POST['nom']);
@@ -72,8 +67,16 @@ if (isset($_POST['valider'])) {
         $description = strip_tags($_POST['description']);
         $taille = strip_tags($_POST['taille']);
         $poids = strip_tags($_POST['poids']);
-        $type = strip_tags($_POST['type1']);
-        $type2 = strip_tags($_POST['type2']);
+        if ($_POST['type2'] == "Type") {
+            $_POST['type2'] = NULL;
+        } else {
+            $type2 = strip_tags($_POST['type2']);
+        }
+        if ($_POST['type1'] == "Type") {
+            die("Veuillez choisir un type pour le Pokémon");
+        } else {
+            $type = strip_tags($_POST['type1']);
+        }
 
         //On récupère et trie les évolutions :
         if (isset($_POST['evo1'])) {
@@ -87,10 +90,36 @@ if (isset($_POST['valider'])) {
         }
 
         //On vérifie si un fichier à été posté :
-        if (isset($_FILES)) {
-            var_dump($_FILES);
+        if (isset($_FILES["p_img"])) {
+            //On set le path :
+            $path = "uploads/" . $nom . ".png";
+            //On supprime le fichier image s'il existe :
+            if (file_exists($path)) {
+                unlink($path);
+            }
+            //On récupère le fichier image :
+            $file = $_FILES["p_img"];
+
+            //On récupère et on filtre les données du fichier :
+            $fileName = $file['name'];
+            $fileType = $file['type'];
+            $fileTmpName = $file['tmp_name'];
+            $fileExt = explode('.', $fileName);
+            $fileExt = strtolower(end($fileExt));
+            $allowedExt = 'png';
+            //On vérifie si l'extension du fichier est autorisée :
+            if ($fileExt == $allowedExt) {
+                //On génère un nom unique pour le fichier :
+                $fileNameNew = $nom . "." . $fileExt;
+                //On set le path du fichier :
+                $path = "uploads/" . $fileNameNew;
+                //On déplace le fichier dans le dossier uploads :
+                move_uploaded_file($fileTmpName, $path);
+            } else {
+                die("Format de fichier non autorisé");
+            }
         } else {
-            die("Aucun fichier posté");
+            die("Fail " . $path);
         }
 
         //On prépare une requête SQL pour mettre à jour les données du pokémon :
@@ -99,9 +128,9 @@ if (isset($_POST['valider'])) {
         $result = mysqli_query($conn, $sql);
         //On vérifie que la requête s'est bien executée :
         if ($result) {
-            //Si oui, on stock un message de succès dans la session PHP :
+            //On ajoute un repère de l'action dans la Session
             $_SESSION['action'] = [
-                'SUCCESS EDIT' => "Le Pokémon a bien été modifié"
+                "Création Réussi" => "Pokémon ajouté avec succès"
             ];
             //On logs l'action da,s la BDD logs :
             $user_id = $_SESSION['user']['user_id'];
@@ -112,17 +141,8 @@ if (isset($_POST['valider'])) {
             header('Location: profil.php');
         } else {
             //Si non, on stock un message d'erreur dans la session PHP :
-            $_SESSION['action'] = [
-                'ERROR EDIT' => "Une erreur est survenue inpossible de modifier le Pokémon"
-            ];
-            //On redirige vers la page profil.php :
-            header('Location: profil.php');
+            die("Erreur SQL : " . $sql . "<br>" . mysqli_error($conn));
         }
-        echo "<pre>";
-        print_r($_POST);
-        print_r($evolutions);
-        echo "</pre>";
-        die();
     } else {
         die("Tous les champs ne sont pas remplis");
     }
@@ -149,7 +169,7 @@ if (isset($_POST['valider'])) {
     include_once './includes/nav.php';
     ?>
 
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         <div class="ind-wrapper">
 
             <div class="ind-container">
@@ -170,7 +190,7 @@ if (isset($_POST['valider'])) {
                     <label for="file-input">
                         <img id="pokemon" src="./uploads/<?= $nom ?>.png" alt="<?= $nom ?>">
                     </label>
-                    <input onchange="readURL(this);" type="file" id="file-input">
+                    <input name="p_img" type="file" onchange="readURL(this);" id="file-input" accept="image/png">
                 </div>
 
 
