@@ -61,79 +61,79 @@ if ($_POST) {
 
 
         /* On vérifie ensuite la receptionde l'image, et s'il elle ne contient pas d'erreur:*/
-        if (isset($_FILES["p_img"]) && $_FILES["p_img"]["error"] === 0) {
-            /* On procède aux vérifications de l'image : */
-            // On vérifie l'extension & le type MIME :
-            $allowed = [
-                "png" => "image/png"
-            ];
+        // if (isset($_FILES["p_img"]) && $_FILES["p_img"]["error"] === 0) {
+        // /* On procède aux vérifications de l'image : */
+        // On vérifie l'extension & le type MIME :
+        // $allowed = [
+        //     "png" => "image/png"
+        // ];
 
-            $filename = $_FILES["p_img"]["name"]; //On stock le nom du fichier dans une variable
-            $filetype = $_FILES["p_img"]["type"]; //On stok le type
-            $filesize = $_FILES["p_img"]["size"]; //On stock la taille
-            $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION)); //On récupère l'extension
+        // $filename = $_FILES["p_img"]["name"]; //On stock le nom du fichier dans une variable
+        // $filetype = $_FILES["p_img"]["type"]; //On stok le type
+        // $filesize = $_FILES["p_img"]["size"]; //On stock la taille
+        // $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION)); //On récupère l'extension
 
-            //On vérifie l'absence de l'extension dans les clé du tableau $allowed ou l'absence du type MIME:
-            if (!array_key_exists($extension, $allowed) || !in_array($filetype, $allowed)) {
-                //ici soit l'extension soit le type n'est pas trouvable dans le tableau $allowed
-                die("Erreur, formats de fichier autorisés : .jpg, .jpeg ou .png");
-            }
+        //On vérifie l'absence de l'extension dans les clé du tableau $allowed ou l'absence du type MIME:
+        // if (!array_key_exists($extension, $allowed) || !in_array($filetype, $allowed)) {
+        //ici soit l'extension soit le type n'est pas trouvable dans le tableau $allowed
+        //     die("Erreur, formats de fichier autorisés : .jpg, .jpeg ou .png");
+        // }
 
-            //A ce stade, l'image est correct
-            //on limite la taille de l'image à 1Mo
-            if ($filesize > 1 * MB) {
-                die("Fichier image trop volumineux (1mo max)");
-            }
+        //A ce stade, l'image est correct
+        //on limite la taille de l'image à 1Mo
+        // if ($filesize > 1 * MB) {
+        //     die("Fichier image trop volumineux (1mo max)");
+        // }
 
-            //On génère le chemin complet de l'image
-            $newfilename = __DIR__ . "/../uploads/$nom.$extension";
-            //On déplace le fichier tmp vers upload sous son nouveau nom :
-            if (!move_uploaded_file($_FILES["p_img"]["tmp_name"], $newfilename)) {
-                die("Le transfert de fichier à échoué, veuillez contacter un administrateur");
-            }
+        //On génère le chemin complet de l'image
+        // $newfilename = __DIR__ . "/../uploads/$nom.$extension";
+        //On déplace le fichier tmp vers upload sous son nouveau nom :
+        // if (!move_uploaded_file($_FILES["p_img"]["tmp_name"], $newfilename)) {
+        //     die("Le transfert de fichier à échoué, veuillez contacter un administrateur");
+        // }
 
-            //On récupère l'id de l'utilisateur connecté
-            $user_id = $_SESSION['user']['user_id'];
+        //On récupère l'id de l'utilisateur connecté
+        $user_id = $_SESSION['user']['user_id'];
 
-            $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`, `p_type-2`, `created_by`, `created_on`) VALUES (:nom, :numero, :p_description, :taille, :poids, :evolutions, :p_type, :p_type2, '$user_id', NOW())";
-            $query = $db->prepare($sql);
+        $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `p_description`, `taille`, `poids`, `evolutions`, `p_type`, `p_type-2`, `created_by`, `created_on`) VALUES (:nom, :numero, :p_description, :taille, :poids, :evolutions, :p_type, :p_type2, '$user_id', NOW())";
+        $query = $db->prepare($sql);
 
-            $query->bindValue(':nom', $nom);
-            $query->bindValue(':numero', $numero);
-            $query->bindValue(':p_description', $p_description);
-            $query->bindValue(':taille', $taille);
-            $query->bindValue(':poids', $poids);
-            $query->bindValue(':evolutions', $evolutions);
-            $query->bindValue(':p_type', $p_type);
-            $query->bindValue(':p_type2', $p_type2);
+        $query->bindValue(':nom', $nom);
+        $query->bindValue(':numero', $numero);
+        $query->bindValue(':p_description', $p_description);
+        $query->bindValue(':taille', $taille);
+        $query->bindValue(':poids', $poids);
+        $query->bindValue(':evolutions', $evolutions);
+        $query->bindValue(':p_type', $p_type);
+        $query->bindValue(':p_type2', $p_type2);
 
-            $query->execute();
+        $query->execute();
 
-            //On ajoute un repère de l'action dans la Session
-            $_SESSION['action'] = [
-                "Création Réussi" => "Pokémon ajouté avec succès"
-            ];
-
-            /*On récupère l'id du dernier Pokémon ajouté*/
-
-            //on log la création en db :
-            $log = "INSERT INTO `logs`(`user_id`,`log_description`, `log_pokemon` ,`log_date`) VALUES ('$user_id', ' a ajouté le Pokémon ', '$nom', now())";
-            $query_log = $db->prepare($log);
-            $query_log->execute();
-
-            //On vide les erreurs de la Session php
-            unset($_SESSION["er_msg"]);
-            //On déconnecte la db
-            unset($db);
-            //On redirige vers la page de profil
-            header("Location: profil.php");
-        }
-        /* Si on ne reçoit pas d'image ou que l'image contient des erreurs: */
-    } else {
-        $_SESSION['er_msg'] = [
-            'form_img' => "Image envoyée non conforme"
+        //On ajoute un repère de l'action dans la Session
+        $_SESSION['action'] = [
+            "Création Réussi" => "Pokémon ajouté avec succès"
         ];
+
+        /*On récupère l'id du dernier Pokémon ajouté*/
+
+        //on log la création en db :
+        $log = "INSERT INTO `logs`(`user_id`,`log_description`, `log_pokemon` ,`log_date`) VALUES ('$user_id', ' a ajouté le Pokémon ', '$nom', now())";
+        $query_log = $db->prepare($log);
+        $query_log->execute();
+
+        //On vide les erreurs de la Session php
+        unset($_SESSION["er_msg"]);
+        //On déconnecte la db
+        unset($db);
+        //On redirige vers la page de profil
+        header("Location: profil.php");
     }
+    /* Si on ne reçoit pas d'image ou que l'image contient des erreurs: */
+    // } else {
+    //     $_SESSION['er_msg'] = [
+    //         'form_img' => "Image envoyée non conforme"
+    //     ];
+    // }
     /*Si on ne capture pas de POST */
 }
 ?>
@@ -205,11 +205,13 @@ if ($_POST) {
                         <option value="psy">Psy</option>
                         <option value="combat">Combat</option>
                         <option value="acier">Acier</option>
-                        <option value="tenebres">Tenèbres</option>
+                        <option value="tenebres">Ténèbres</option>
                         <option value="spectre">Spectre</option>
                         <option value="sol">Sol</option>
                         <option value="roche">Roche</option>
                         <option value="vol">Vol</option>
+                        <option value="fée">Fée</option>
+
                     </select>
                     <select class="custom-select col" name="type-2" id="type">
                         <option selected>Type</option>
@@ -224,11 +226,12 @@ if ($_POST) {
                         <option value="psy">Psy</option>
                         <option value="combat">Combat</option>
                         <option value="acier">Acier</option>
-                        <option value="tenebres">Tenèbres</option>
+                        <option value="tenebres">Ténèbres</option>
                         <option value="spectre">Spectre</option>
                         <option value="sol">Sol</option>
                         <option value="roche">Roche</option>
                         <option value="vol">Vol</option>
+                        <option value="fée">Fée</option>
                     </select>
                 </div>
                 <div class="d-flex justify-content-center">
