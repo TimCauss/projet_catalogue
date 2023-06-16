@@ -112,6 +112,7 @@ header {
 }
 
 .login-buttons {
+    opacity: 0;
     border: #bfbfbf 1px solid;
     padding: 10px;
     background-color: #FFFFFF;
@@ -119,12 +120,15 @@ header {
     z-index: 9;
     transform: translateY(-48px);
     transition: transform ease-in-out 200ms,
-        z-index ease-in-out 500ms;
+        z-index ease-in-out 500ms,
+        opacity ease-in-out 100ms;
+
 }
 
 .login-buttons-show {
     transform: translateY(0px);
     z-index: 0;
+    opacity: 1;
 }
 
 .ni-1 {
@@ -196,6 +200,74 @@ header {
     border-color: #f5f845;
     color: #8d8d8d;
 }
+.menu-nav {
+    display: flex;
+}
+.burger {
+    display:none;
+    cursor: pointer;
+    position: fixed;
+    top:59px;
+    left:0px;
+    background-color: #e9e4e4 ;
+    padding: 5px 10px;
+    z-index: 100;
+}
+.bar{
+    display: block;
+    width: 40px;
+    height: 6px;
+    margin: 5px auto;
+    transition: all 0.3s ease;
+    background-color: rgb(0, 0, 0);
+  }
+
+  
+/** NAV RESPONSIVE */
+
+@media(max-width: 650px) {
+        .burger{
+          display: block;
+        }
+      
+        .burger.active .bar:nth-child(2){
+          opacity: 0;
+        }
+        .burger.active .bar:nth-child(1){
+          transform: translateY(10px) rotate(45deg);
+        }
+        .burger.active .bar:nth-child(3){
+          transform: translateY(-10px) rotate(-45deg);
+        }
+        .menu-nav {
+            position: fixed;
+            left: -100%;
+            top: 77px;
+            gap: 0;
+            display:block;
+            background-color: #c0c2c500 ;
+            width: 100%;
+            text-align: center;
+            transition: 0.3s;
+          }
+          .nav-item{
+            margin: 0;
+          }
+        
+          .menu-nav.active{
+            left: 0;
+          }
+          .menu-nav {
+            z-index: 100;
+           padding: 30px 0px;
+           
+          }
+          .bouttons-connexion {
+            display: flex;
+            flex-direction: column;
+          }
+}
+
 
 /** STYLE NAV END */
 
