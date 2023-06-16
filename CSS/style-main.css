@@ -1197,6 +1197,18 @@ table.table-log {
     .navbar-expand-xl .navbar-collapse {
         display: flex !important;
     }
+
+    .navbar-collapse {
+        display: flex !important;
+        flex-direction: column;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .navbar-collapse ul {
+        flex-direction: row;
+
+    }
 }
 
 /* Media query en dessous de 350px */
