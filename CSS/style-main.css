@@ -1097,3 +1097,19 @@ table.table-log {
 .table-log {
     width: 100%;
 }
+
+/** Search Bar */
+
+/* Media query en dessous de 1200px */
+@media screen and (max-width: 1200px) {
+    .navbar-expand-xl .navbar-collapse {
+        display: flex !important;
+    }
+}
+
+/* Media query en dessous de 350px */
+@media screen and (max-width: 350px) {
+    .navbar-expand-xl .navbar-collapse {
+        flex-direction: column !important;
+    }
+}

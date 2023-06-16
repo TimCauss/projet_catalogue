@@ -49,6 +49,10 @@ function verifTagType(type) {
     type.style.background = "#808080";
   } else if (type.innerHTML == "VOL") {
     type.style.background = "#82BAEF";
+  } else if (type.innerHTML == "FEE") {
+    type.style.background = "#FFB6C1";
+  } else if (type.innerHTML == "DRAGON") {
+    type.style.background = "#0000FF";
   } else {
     type.style.display = "none";
   }
@@ -87,6 +91,10 @@ function VerifType(elem, key) {
     circle[key].style.background = "#80808090";
   } else if (elem.getAttribute("data-p_type") == "vol") {
     circle[key].style.background = "#82BAEF90";
+  } else if (elem.getAttribute("data-p_type") == "fee") {
+    circle[key].style.background = "#FFB6C190";
+  } else if (elem.getAttribute("data-p_type") == "dragon") {
+    circle[key].style.background = "#0000FF90";
   } else {
     circle.style.background = "#000000";
   }
