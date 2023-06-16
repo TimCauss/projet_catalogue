@@ -25,33 +25,33 @@ require_once "connect.php";
                     echo "<a href='./login.php'>Se connecter</a>";
                 } ?>
             </div>
-            
         </li>
         <div class="menu-nav">
-        <li>
-            <a href="index.php">
-                <div class="nav-item ni-1">Accueil</div>
-            </a>
-        </li>
-        <li>
-            <a href="pokedex.php">
-                <div class="nav-item ni-3">Pokedex</div>
-            </a>
-        </li>
-        <li>
+            <li>
+                <a href="index.php">
+                    <div class="nav-item ni-1">Accueil</div>
+                </a>
+            </li>
+            <li>
+                <a href="pokedex.php">
+                    <div class="nav-item ni-3">Pokedex</div>
+                </a>
+            </li>
+            <li>
             <a href="pokemon.php?id=<?= $result['p_id']?> ">
-            <div class="nav-item ni-4">Random</div></a>
-        </li>
-        <?php if (isset($_SESSION["user"]["email"])) {
-            include_once "profile_btn.php";
-        } ?>
-    </ul>
-        <div class="burger">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
+                <div class="nav-item ni-4">Random</div></a>
+            </li>
+            <?php if (isset($_SESSION["user"]["email"])) {
+                include_once "profile_btn.php";
+            } ?>
         </div>
-     </div>
+    </ul>
+    <div class="burger">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
+
 </nav>
 
 <script src="./JS/burger.js"></script>
