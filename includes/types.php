@@ -1,5 +1,5 @@
 <section id="types" class="section-types">
-    <div class="type-card card-feu">
+        <div class="type-card card-feu">
         <img class="feu svg" src="./img/icons/fire.svg">
         <span id="feu">Feu</span>
     </div>

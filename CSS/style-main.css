@@ -207,7 +207,7 @@ header {
     display:none;
     cursor: pointer;
     position: fixed;
-    top:59px;
+    top:0px;
     left:0px;
     background-color: #e9e4e4 ;
     padding: 5px 10px;
@@ -242,7 +242,7 @@ header {
         .menu-nav {
             position: fixed;
             left: -100%;
-            top: 77px;
+            top: 0px;
             gap: 0;
             display:block;
             background-color: #c0c2c500 ;
