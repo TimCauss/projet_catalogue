@@ -80,12 +80,18 @@ if ($error != "") {
         <?php
         if ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) { ?>
-                <tr>
+                <tr class="dash-tr">
                     <th scope='row'><?= $row['numero'] ?></th>
                     <td><img class='dash-p-img' src='./uploads/<?= $row['nom'] ?>.png' alt="Image d'un pokemon"></td>
-                    <td><?= $row['nom'] ?></td>
-                    <td><?= $row['p_type'] ?></td>
-                    <td><?= $row['p_type-2'] ?></td>
+                    <td id="#td">
+                        <div class="resp_th">Nom: </div><?= $row['nom'] ?>
+                    </td>
+                    <td>
+                        <div class="resp_th">Type 1: </div><?= $row['p_type'] ?>
+                    </td>
+                    <td>
+                        <div class="resp_th">Type 2: </div><?= $row['p_type-2'] ?>
+                    </td>
                     <?php if ($isadmin) {
                         //Si l'utilisateur est admin, on affiche la colonne "Créé par"
                         //On fetch les mails des utilisateurs pour les afficher
@@ -94,13 +100,19 @@ if ($error != "") {
                         $result2 = mysqli_query($conn, $sql);
                         $row2 = mysqli_fetch_assoc($result2);
                     ?>
-                        <td><?= $row2['email'] ?></td>
+                        <td>
+                            <div class="resp_th">Créé par: </div><?= $row2['email'] ?>
+                        </td>
                     <?php
                     }
                     ?>
-                    <td><?= $row['created_on'] ?></td>
-                    <td><a href="p_edit.php?id=<?= $row['p_id'] ?>">Editer</a></td>
-                    <td><button type="button" class="del-btn" data-id="<?= $row['p_id'] ?>">Supprimer</button></td>
+                    <td>
+                        <div class="resp_th">Créé le: </div><?= $row['created_on'] ?>
+                    </td>
+                    <div class="btn-wrapper">
+                        <td><a href="p_edit.php?id=<?= $row['p_id'] ?>">Editer</a></td>
+                        <td><button type="button" class="del-btn" data-id="<?= $row['p_id'] ?>">Supprimer</button></td>
+                    </div>
                 </tr>
         <?php
             }
