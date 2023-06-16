@@ -17,7 +17,9 @@
                     echo "<a href='./login.php'>Se connecter</a>";
                 } ?>
             </div>
+            
         </li>
+        <div class="menu-nav">
         <li>
             <a href="index.php">
                 <div class="nav-item ni-1">Accueil</div>
@@ -35,9 +37,14 @@
             include_once "profile_btn.php";
         } ?>
     </ul>
-
+        <div class="burger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+     </div>
 </nav>
 
-
+<script src="./JS/burger.js"></script>
 
 <script src="./JS/nav.js"></script>
