@@ -17,9 +17,7 @@ try {
 }
 
 //On récupères les logs de la db:
-$sql = "SELECT * FROM logs ORDER BY l_id DESC";
-$result = mysqli_query($conn, $sql);
-$resultCheck = mysqli_num_rows($result);
+
 ?>
 
 <!DOCTYPE html>
@@ -38,10 +36,15 @@ $resultCheck = mysqli_num_rows($result);
     include_once "./includes/header.php";
     include_once "./includes/nav.php";
 
-    if ($resultCheck > 0) {
-        //On stock toutes les valeurs de la bdd dans des variables :
+    $sql = "SELECT * FROM logs ORDER BY l_id DESC";
+    $result = mysqli_query($conn, $sql);
+    $resultCheck = mysqli_num_rows($result);
 
+    if ($resultCheck > 0) {
+
+        //On stock toutes les valeurs de la bdd dans des variables :
         $rows = mysqli_fetch_all($result);
+
         $i = 0;
     ?>
         <table class="table table-log table-striped">
@@ -60,13 +63,6 @@ $resultCheck = mysqli_num_rows($result);
 
                     $loggerInfos = $loggerData["prenom"] . " " . $loggerData["lastname"] . " [" . $loggerData["email"] . "]";
 
-                    $pSql = "SELECT nom FROM pokemon WHERE p_id = '$log_pokemon' ";
-                    $pResult = mysqli_query($conn, $pSql);
-                    $pName = mysqli_fetch_assoc($pResult);
-
-                    if (empty($pName["nom"])) {
-                        $pName["nom"] = " Not found ";
-                    }
                 ?>
 
                     <tr>
