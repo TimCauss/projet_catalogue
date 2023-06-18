@@ -2,11 +2,7 @@
 
 require_once "connect.php";
 
-try {
-    $conn = mysqli_connect("localhost", "root", "", "projet_catalogue");
-} catch (PDOException $e) {
-    echo "Echec de connexion à la BDD : " . $e->getMessage();
-}
+
 
 if (isset($_GET['type'])) {
     $type = $_GET['type'];
@@ -17,6 +13,11 @@ if (isset($_GET['type'])) {
 }
 
 if (!empty($_GET['search'])) {
+    try {
+        $conn = mysqli_connect("localhost", "root", "", "projet_catalogue");
+    } catch (PDOException $e) {
+        echo "Echec de connexion à la BDD : " . $e->getMessage();
+    }
     $search = $_GET['search'];
     $p_sql = "SELECT * FROM pokemon WHERE (nom LIKE '%$search%') OR (numero LIKE '%$search%') OR (`p_type` LIKE '%$search%') OR (`p_type-2` LIKE '%$search%') ORDER BY numero ASC";
     //si la recherche ne donne rien, on affiche un message d'erreur

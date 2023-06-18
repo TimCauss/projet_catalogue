@@ -1,3 +1,11 @@
+<?php 
+require_once "connect.php";
+
+        $query = "SELECT p_id FROM pokemon ORDER BY RAND() LIMIT 1";
+        $sql = $db->prepare($query);
+        $sql->execute();
+        $result = $sql->fetch(PDO::FETCH_ASSOC);
+        ?>
 <nav class="main-nav">
     <ul>
 
@@ -30,7 +38,8 @@
                 </a>
             </li>
             <li>
-                <div class="nav-item ni-4">Random</div>
+            <a href="pokemon.php?id=<?= $result['p_id']?> ">
+                <div class="nav-item ni-4">Random</div></a>
             </li>
             <?php if (isset($_SESSION["user"]["email"])) {
                 include_once "profile_btn.php";
