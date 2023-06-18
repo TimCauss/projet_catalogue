@@ -211,6 +211,7 @@ if ($_POST) {
                         <option value="roche">Roche</option>
                         <option value="vol">Vol</option>
                         <option value="fée">Fée</option>
+                        <option value="dragon">Dragon</option>
 
                     </select>
                     <select class="custom-select col" name="type-2" id="type">
@@ -232,6 +233,7 @@ if ($_POST) {
                         <option value="roche">Roche</option>
                         <option value="vol">Vol</option>
                         <option value="fée">Fée</option>
+                        <option value="dragon">Dragon</option>
                     </select>
                 </div>
                 <div class="d-flex justify-content-center">
