@@ -33,20 +33,16 @@ $p_result = $p_query->fetchAll(PDO::FETCH_ASSOC);
 
 
 ?>
+<nav class="navbar navbar-expand-xl navbar-light bg-light">
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <form method="GET" class="d-flex">
-                <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Rechercher</button>
-                <button class="btn btn-outline-success" id="btnReset" onclick="window.location.href='pokedex.php'">Reset</button>
-            </form>
-        </div>
+    <div class="collapse navbar-collapse">
+        <form method="GET" class="d-flex">
+            <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Rechercher</button>
+            <button class="btn btn-outline-success" id="btnReset" onclick="window.location.href='pokedex.php'">Reset</button>
+        </form>
     </div>
+
 </nav>
 
 <section class="container-grid p-grid pb-5">

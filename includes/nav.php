@@ -1,3 +1,11 @@
+<?php 
+require_once "connect.php";
+
+        $query = "SELECT p_id FROM pokemon ORDER BY RAND() LIMIT 1";
+        $sql = $db->prepare($query);
+        $sql->execute();
+        $result = $sql->fetch(PDO::FETCH_ASSOC);
+        ?>
 <nav class="main-nav">
     <ul>
 
@@ -18,26 +26,34 @@
                 } ?>
             </div>
         </li>
-        <li>
-            <a href="index.php">
-                <div class="nav-item ni-1">Accueil</div>
-            </a>
-        </li>
-        <li>
-            <a href="pokedex.php">
-                <div class="nav-item ni-3">Pokedex</div>
-            </a>
-        </li>
-        <li>
-            <div class="nav-item ni-4">Random</div>
-        </li>
-        <?php if (isset($_SESSION["user"]["email"])) {
-            include_once "profile_btn.php";
-        } ?>
+        <div class="menu-nav">
+            <li>
+                <a href="index.php">
+                    <div class="nav-item ni-1">Accueil</div>
+                </a>
+            </li>
+            <li>
+                <a href="pokedex.php">
+                    <div class="nav-item ni-3">Pokedex</div>
+                </a>
+            </li>
+            <li>
+            <a href="pokemon.php?id=<?= $result['p_id']?> ">
+                <div class="nav-item ni-4">Random</div></a>
+            </li>
+            <?php if (isset($_SESSION["user"]["email"])) {
+                include_once "profile_btn.php";
+            } ?>
+        </div>
     </ul>
+    <div class="burger">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
 
 </nav>
 
-
+<script src="./JS/burger.js"></script>
 
 <script src="./JS/nav.js"></script>
