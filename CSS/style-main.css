@@ -525,8 +525,8 @@ header {
     background-color: #700000;
 }
 
-.type-colors-ténèbres {
-    background-color: #242424;
+.type-colors-tenebres {
+    background-color: #1a1a1a;
 }
 
 .type-colors-roche {
@@ -1220,4 +1220,11 @@ table.table-log {
     .navbar-expand-xl .navbar-collapse form {
         flex-direction: column !important;
     }
+}
+
+
+/**STYLE Footer START */
+
+.footer-container {
+    max-width: 1440px;
 }
