@@ -24,12 +24,21 @@ session_start()
         $id = $_GET['id'];
         //requête sql
         $query = "SELECT * FROM pokemon WHERE p_id = $id";
+       
+    }
+    elseif (isset($_GET['numero'])) {
+        $numero = $_GET['numero'];
+        $query = "SELECT * FROM pokemon WHERE numero = $numero";
+    }
+        else {
+            echo "<p>Aucun résultat pour le pokemon demandé, <a href='profil.php'>ajoutez le!</a></p>";
+            exit;
+        }
         $sql = $db->prepare($query);
         $sql->execute();
-
-        //récupération des informations du pokemon
         $row = $sql->fetch(PDO::FETCH_ASSOC);
-        if ($row) {
+        //récupération des informations du pokemon
+        if ($row !== false) {
             $nom = $row['nom'];
             $numero = $row['numero'];
             $description = $row['p_description'];
@@ -38,10 +47,19 @@ session_start()
             $type = $row['p_type'];
             $type2 = $row['p_type-2'];
             $evolutions = explode(",", $row['evolutions']);
-        } else {
-            echo "Aucun résultat.";
+            $num_prev = $numero - 1;
+            $num_next = $numero + 1;
+            $url_prev = "pokemon.php?numero=$num_prev";
+            $url_next = "pokemon.php?numero=$num_next";
+
         }
-    }
+        else {
+            echo "<p>Aucun résultat pour le pokemon demandé, <a href='profil.php'>ajoutez le!</a></p>";
+            exit;
+        }
+        
+    
+   
 
     //affichage header/navbar
     include_once "./includes/header.php";
@@ -51,8 +69,8 @@ session_start()
     <div class="ind-wrapper">
         <div class="ind-container">
             <div class="p-header-nav">
-                <a href="" id="precedent">Précédent</a>
-                <a href="" id="suivant">Suivant</a>
+                <a href="<?= $url_prev ?>" id="precedent">Précédent</a>
+                <a href="<?= $url_next ?>" id="suivant">Suivant</a>
             </div>
             <div class="p-header-title">
                 <h1><?= $nom ?></h1>
@@ -77,6 +95,7 @@ session_start()
         </section>
         <section class="evolutions">
             <h2>Evolutions:</h2>
+            <div class="arrow-container">
             <div class="evo-container">
                 <?php
                 foreach ($evolutions as $evo_nom) {
@@ -101,7 +120,7 @@ session_start()
                         echo "<span class=\"poke\">$evo_nom</span></a>";
                         echo "<span class=\"evo-type type-colors-$evo_type\">$evo_type</span>";
                         echo "<span class=\"evo-type type-colors-$evo_type2\">$evo_type2</span>";
-                        echo "</div>";
+                        echo "</div> ";
                     } else {
                         // La requête SQL n'a renvoyé aucun résultat
                         echo "Aucun résultat pour l'évolution '$evo_nom'.";
@@ -109,6 +128,7 @@ session_start()
                     if (next($evolutions)) {
                         echo "<span class=\"arrow\">→</span>";
                     }
+                    
                 }
                 ?>
             </div>
