@@ -122,33 +122,30 @@ $p_result = $p_query->fetchAll(PDO::FETCH_ASSOC);
 </section>
 
 <section class="paginations">
-    <div class="pagination">
-
-        <div class="pagination">
-
-            <?php if ($currentPage > 1) : ?>
-                <a href="pokedex.php?page=<?= $currentPage - 1 ?>"><-- &nbsp</a>
-                    <?php else : ?>
-                        <div class="inline">&nbsp</div>
-                    <?php endif ?>
-                    <div>
-                        <?php for ($page = max(1, $currentPage - 3); $page <= min($currentPage + 3, $pages); $page++) : ?>
-                            <a href="pokedex.php?page=<?= $page ?>"><?= $page ?></a>
-                        <?php endfor ?>
-                    </div>
-                    <?php if ($currentPage < $pages) : ?>
-                        <a class="inline" href="pokedex.php?page=<?= $currentPage + 1 ?>">&nbsp--></a>
-        </div>
-    <?php else : ?>
-        <div class="inline">&nbsp</div>
-    <?php endif ?>
-    </div>
-
-    <div class="currentPage pb-5">
-        <form action="pokedex.php" method="get">
+    <div class="currentPage pt-2">
+        <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="get">
             Page<input type="text" id="inputPage" name="page" placeholder="<?= $currentPage ?>"> /<?= $pages ?>
         </form>
     </div>
+    <div class="pagination">
 
-    <script src="./JS/poke-grid.js"></script>
-    <script src="./JS/pagination.js"></script>
+        <?php if ($currentPage > 1) : ?>
+            <a href="pokedex.php?page=<?= $currentPage - 1 ?>"><-- &nbsp</a>
+                <?php else : ?>
+                    <div class="inline">&nbsp</div>
+                <?php endif ?>
+                <div>
+                    <?php for ($page = max(1, $currentPage - 3); $page <= min($currentPage + 3, $pages); $page++) : ?>
+                        <a href="pokedex.php?&page= <?= $page ?>"><?= $page ?></a>
+                    <?php endfor ?>
+                </div>
+                <?php if ($currentPage < $pages) : ?>
+                    <a class="inline" href="pokedex.php?page=<?= $currentPage + 1 ?>">&nbsp--></a>
+                <?php else : ?>
+                    <div class="inline">&nbsp</div>
+                <?php endif ?>
+    </div>
+</section>
+
+<script src="./JS/poke-grid.js"></script>
+<script src="./JS/pagination.js"></script>
