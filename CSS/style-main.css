@@ -22,6 +22,8 @@ body {
 
 body>* {
     border-inline: #bfbfbf 1px solid;
+    width: 100%;
+    max-width: 1440px;
 }
 
 h5 {
@@ -92,7 +94,6 @@ header {
     background: #ffffff;
     color: #464646;
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
@@ -101,11 +102,21 @@ header {
     /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
 }
 
+
 #navbarSupportedContent .nav-item {
     z-index: 1;
 }
 
 .ni-login {
+    background: #3D3D3D;
+    width: 60px;
+    height: 50px;
+    position: relative;
+    justify-content: center;
+    align-content: center;
+}
+
+.ni-login svg {
     background: #3D3D3D;
     width: 50px;
     height: 49px;
@@ -295,6 +306,7 @@ header {
 
 .carousel-container {
     max-width: 1440px;
+    width: auto;
     height: 520px;
     padding: 50px 0;
     overflow: hidden;
@@ -555,14 +567,9 @@ header {
 
 /** STYLE TYPES PAGES START  */
 
-.section-types {
-    margin-bottom: 75px;
-    max-width: 1440px;
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    justify-content: space-around;
-    gap: 50px;
+#inputPage {
+    width: 20px;
+    display: inline;
 }
 
 .type-card {
@@ -1192,11 +1199,22 @@ table.table-log {
 
 /** Search Bar */
 
+.nav-link {
+    justify-self: center;
+}
+
+.navbar-expand-xl .navbar-collapse {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.navbar-expand-lg .navbar-collapse {
+    justify-content: center !important;
+}
+
 /* Media query en dessous de 1200px */
 @media screen and (max-width: 1200px) {
-    .navbar-expand-xl .navbar-collapse {
-        display: flex !important;
-    }
 
     .navbar-collapse {
         display: flex !important;
@@ -1227,4 +1245,14 @@ table.table-log {
 
 .footer-container {
     max-width: 1440px;
+}
+
+
+/** Style Pagination START */
+
+.pagination,
+.currentPage {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
 }

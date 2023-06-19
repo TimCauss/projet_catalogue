@@ -1,6 +1,4 @@
 .section-types {
-    margin-top: 50px;
-    margin-bottom: 75px;
     max-width: 1440px;
     display: flex;
     flex-flow: row wrap;
@@ -8,8 +6,8 @@
     justify-content: space-around;
     gap: 50px;
     background: #f2f4f8;
-    padding: 30px;
-    margin: 0 auto;
+    padding: 50px 30px;
+
 }
 
 a {

@@ -178,11 +178,13 @@ h2 {
     margin: 20px;
     font-size: 2em;
 }
+
 .evo a {
     text-decoration: none;
     flex-direction: column;
     display: flex;
 }
+
 .evolutions {
     display: flex;
     flex-direction: column;
@@ -341,18 +343,6 @@ header {
 
 #navbarSupportedContent .nav-item {
     z-index: 1;
-}
-
-.ni-login {
-    background: #3D3D3D;
-    width: 50px;
-    height: 49px;
-    position: relative;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-content: center;
 }
 
 /* .ni-login svg {

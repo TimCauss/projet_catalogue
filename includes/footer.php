@@ -1,5 +1,5 @@
 <!-- Footer -->
-<footer class="bg-dark text-center text-white mt-5">
+<footer class="bg-dark text-center text-white">
     <!-- Grid container -->
     <div class="container footer-container p-4">
         <!-- Section: Social media -->

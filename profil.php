@@ -38,7 +38,8 @@ if (!isset($_SESSION['user'])) {
         include_once "./includes/users.php";
     }
 
-    include_once "./includes/dashboard.php"
+    include_once "./includes/dashboard.php";
+    include_once "./includes/footer.php";
     ?>
 
     <!-- Toast notifications START -->
