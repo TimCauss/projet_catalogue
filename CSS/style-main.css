@@ -129,7 +129,7 @@ header {
     padding: 10px;
     background-color: #FFFFFF;
     position: absolute;
-    z-index: 9;
+    z-index: -1;
     transform: translateY(-48px);
     transition: transform ease-in-out 200ms,
         z-index ease-in-out 500ms,
@@ -139,7 +139,7 @@ header {
 
 .login-buttons-show {
     transform: translateY(0px);
-    z-index: 0;
+    z-index: 99;
     opacity: 1;
 }
 
@@ -238,6 +238,9 @@ header {
     background-color: rgb(0, 0, 0);
 }
 
+.profil-nav-item {
+    z-index: 0;
+}
 
 /** NAV RESPONSIVE */
 
@@ -272,7 +275,7 @@ header {
         width: 100%;
         text-align: center;
         transition: 0.3s;
-        z-index: 100;
+        z-index: 99;
         padding: 0px 0px;
     }
 
@@ -847,6 +850,7 @@ header {
 .dash-table {
     max-width: 1440px;
     border-top: #bfbfbf 1px solid;
+    margin-bottom: 0;
 }
 
 .toast {

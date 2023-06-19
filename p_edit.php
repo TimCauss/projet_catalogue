@@ -132,7 +132,7 @@ if (isset($_POST['valider'])) {
         if ($result) {
             //On ajoute un repère de l'action dans la Session
             $_SESSION['action'] = [
-                "Création Réussi" => "Pokémon ajouté avec succès"
+                "Edition Réussie" => "Pokémon modifié avec succès"
             ];
             //On logs l'action da,s la BDD logs :
             $user_id = $_SESSION['user']['user_id'];
