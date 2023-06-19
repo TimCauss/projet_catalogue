@@ -69,7 +69,7 @@ if ($isadmin && empty($_GET['search'])) {
     $search = $_GET['search'];
     $sql = "SELECT * FROM pokemon WHERE (nom LIKE '%$search%') OR (numero LIKE '%$search%') OR (`p_type` LIKE '%$search%') OR (`p_type-2` LIKE '%$search%') AND created_by = '$user_id' ORDER BY numero ASC LIMIT $premier, $parPage";
     if (mysqli_num_rows(mysqli_query($conn, $sql)) == 0) {
-        $error = "<h3>Aucun résultat pour votre recherche</h3>";
+        $error = "<h3 style='text-align: center; padding-top: 15px;'>Aucun résultat pour votre recherche</h3>";
     }
     unset($_GET);
 }
@@ -85,31 +85,33 @@ if ($error != "") {
     echo "<h1 style='text-align: center; padding-top: 15px;'>Tableau de bord</h1>";
 }
 ?>
-<div class="currentPage pt-2">
-    <form action="profil.php" method="get">
-        Page<input type="text" id="inputPage" name="page" placeholder="<?= $currentPage ?>"> /<?= $pages ?>
-    </form>
-</div>
-<div class="pagination">
 
-    <?php if ($currentPage > 1) : ?>
-        <a href="profil.php?page=<?= $currentPage - 1 ?>"><-- &nbsp</a>
-            <?php else : ?>
-                <div class="inline">&nbsp</div>
-            <?php endif ?>
-            <div>
-                <?php for ($page = max(1, $currentPage - 3); $page <= min($currentPage + 3, $pages); $page++) : ?>
-                    <a href="profil.php?page=<?= $page ?>"><?= $page ?></a>
-                <?php endfor ?>
-            </div>
-            <?php if ($currentPage < $pages) : ?>
-                <a class="inline" href="profil.php?page=<?= $currentPage + 1 ?>">&nbsp--></a>
-</div>
+<section class="paginations">
+    <div class="currentPage pt-2">
+        <form action="profil.php" method="get">
+            Page<input type="text" id="inputPage" name="page" placeholder="<?= $currentPage ?>"> /<?= $pages ?>
+        </form>
+    </div>
+    <div class="pagination">
+
+        <?php if ($currentPage > 1) : ?>
+            <a href="profil.php?page=<?= $currentPage - 1 ?>"><-- &nbsp</a>
+                <?php else : ?>
+                    <div class="inline">&nbsp</div>
+                <?php endif ?>
+                <div>
+                    <?php for ($page = max(1, $currentPage - 3); $page <= min($currentPage + 3, $pages); $page++) : ?>
+                        <a href="profil.php?page=<?= $page ?>"><?= $page ?></a>
+                    <?php endfor ?>
+                </div>
+                <?php if ($currentPage < $pages) : ?>
+                    <a class="inline" href="profil.php?page=<?= $currentPage + 1 ?>">&nbsp--></a>
+    </div>
 <?php else : ?>
     <div class="inline">&nbsp</div>
 <?php endif ?>
 </div>
-
+</section>
 
 <table class="table dash-table">
     <thead>
@@ -196,21 +198,22 @@ if ($error != "") {
 
 </table>
 
-<div class="pagination">
+<section class="paginations">
+    <div class="pagination">
 
-    <?php if ($currentPage > 1) : ?>
-        <a href="profil.php?page=<?= $currentPage - 1 ?>"><-- &nbsp</a>
-            <?php else : ?>
-                <div class="inline">&nbsp</div>
-            <?php endif ?>
-            <div>
-                <?php for ($page = max(1, $currentPage - 3); $page <= min($currentPage + 3, $pages); $page++) : ?>
-                    <a href="profil.php?page=<?= $page ?>"><?= $page ?></a>
-                <?php endfor ?>
-            </div>
-            <?php if ($currentPage < $pages) : ?>
-                <a class="inline" href="profil.php?page=<?= $currentPage + 1 ?>">&nbsp--></a>
-</div>
+        <?php if ($currentPage > 1) : ?>
+            <a href="profil.php?page=<?= $currentPage - 1 ?>"><-- &nbsp</a>
+                <?php else : ?>
+                    <div class="inline">&nbsp</div>
+                <?php endif ?>
+                <div>
+                    <?php for ($page = max(1, $currentPage - 3); $page <= min($currentPage + 3, $pages); $page++) : ?>
+                        <a href="profil.php?page=<?= $page ?>"><?= $page ?></a>
+                    <?php endfor ?>
+                </div>
+                <?php if ($currentPage < $pages) : ?>
+                    <a class="inline" href="profil.php?page=<?= $currentPage + 1 ?>">&nbsp--></a>
+    </div>
 <?php else : ?>
     <div class="inline">&nbsp</div>
 <?php endif ?>
@@ -220,8 +223,10 @@ if ($error != "") {
         Page<input type="text" id="inputPage" name="page" placeholder="<?= $currentPage ?>"> /<?= $pages ?>
     </form>
 </div>
+</section>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
 <script src="./JS/modal-profil.js"></script>
+<script src="./JS/pagination.js"></script>

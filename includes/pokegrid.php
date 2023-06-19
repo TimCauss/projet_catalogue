@@ -33,7 +33,7 @@ $premier = ($currentPage * $parPage) - $parPage;
 
 if (isset($_GET['type'])) {
     $type = $_GET['type'];
-    $p_sql = "SELECT * FROM pokemon WHERE (p_type = '$type') OR (`p_type-2` ='$type') ORDER BY numero ASC";
+    $p_sql = "SELECT * FROM pokemon WHERE (p_type = '$type') OR (`p_type-2` ='$type')  ORDER BY numero ASC";
     unset($_GET);
 } else {
     $p_sql = "SELECT * FROM pokemon ORDER BY numero ASC LIMIT $premier, $parPage";
@@ -66,36 +66,37 @@ $p_result = $p_query->fetchAll(PDO::FETCH_ASSOC);
         <form method="GET" class="d-flex">
             <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Rechercher</button>
-            <button class="btn btn-outline-success" id="btnReset" onclick="window.location.href='pokedex.php'">Reset</button>
         </form>
+        <button class="btn btn-outline-success" id="btnReset" onclick="window.location.href='pokedex.php'" value='reset'>Reset</button>
     </div>
 </nav>
 
 
-<div class="currentPage pt-2">
-    <form action="pokedex.php" method="get">
-        Page<input type="text" id="inputPage" name="page" placeholder="<?= $currentPage ?>"> /<?= $pages ?>
-    </form>
-</div>
-<div class="pagination">
+<section class="paginations">
+    <div class="currentPage pt-2">
+        <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="get">
+            Page<input type="text" id="inputPage" name="page" placeholder="<?= $currentPage ?>"> /<?= $pages ?>
+        </form>
+    </div>
+    <div class="pagination">
 
-    <?php if ($currentPage > 1) : ?>
-        <a href="pokedex.php?page=<?= $currentPage - 1 ?>"><-- &nbsp</a>
-            <?php else : ?>
-                <div class="inline">&nbsp</div>
-            <?php endif ?>
-            <div>
-                <?php for ($page = max(1, $currentPage - 3); $page <= min($currentPage + 3, $pages); $page++) : ?>
-                    <a href="pokedex.php?page=<?= $page ?>"><?= $page ?></a>
-                <?php endfor ?>
-            </div>
-            <?php if ($currentPage < $pages) : ?>
-                <a class="inline" href="pokedex.php?page=<?= $currentPage + 1 ?>">&nbsp--></a>
-</div>
-<?php else : ?>
-    <div class="inline">&nbsp</div>
-<?php endif ?>
-</div>
+        <?php if ($currentPage > 1) : ?>
+            <a href="pokedex.php?page=<?= $currentPage - 1 ?>"><-- &nbsp</a>
+                <?php else : ?>
+                    <div class="inline">&nbsp</div>
+                <?php endif ?>
+                <div>
+                    <?php for ($page = max(1, $currentPage - 3); $page <= min($currentPage + 3, $pages); $page++) : ?>
+                        <a href="pokedex.php?&page= <?= $page ?>"><?= $page ?></a>
+                    <?php endfor ?>
+                </div>
+                <?php if ($currentPage < $pages) : ?>
+                    <a class="inline" href="pokedex.php?page=<?= $currentPage + 1 ?>">&nbsp--></a>
+                <?php else : ?>
+                    <div class="inline">&nbsp</div>
+                <?php endif ?>
+    </div>
+</section>
 
 <section class="container-grid p-grid pb-5">
     <div class="d-flex flex-row flex-wrap justify-content-center gap-5">
@@ -120,32 +121,34 @@ $p_result = $p_query->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </section>
 
-<div class="pagination">
-
+<section class="paginations">
     <div class="pagination">
 
-        <?php if ($currentPage > 1) : ?>
-            <a href="pokedex.php?page=<?= $currentPage - 1 ?>"><-- &nbsp</a>
-                <?php else : ?>
-                    <div class="inline">&nbsp</div>
-                <?php endif ?>
-                <div>
-                    <?php for ($page = max(1, $currentPage - 3); $page <= min($currentPage + 3, $pages); $page++) : ?>
-                        <a href="pokedex.php?page=<?= $page ?>"><?= $page ?></a>
-                    <?php endfor ?>
-                </div>
-                <?php if ($currentPage < $pages) : ?>
-                    <a class="inline" href="pokedex.php?page=<?= $currentPage + 1 ?>">&nbsp--></a>
+        <div class="pagination">
+
+            <?php if ($currentPage > 1) : ?>
+                <a href="pokedex.php?page=<?= $currentPage - 1 ?>"><-- &nbsp</a>
+                    <?php else : ?>
+                        <div class="inline">&nbsp</div>
+                    <?php endif ?>
+                    <div>
+                        <?php for ($page = max(1, $currentPage - 3); $page <= min($currentPage + 3, $pages); $page++) : ?>
+                            <a href="pokedex.php?page=<?= $page ?>"><?= $page ?></a>
+                        <?php endfor ?>
+                    </div>
+                    <?php if ($currentPage < $pages) : ?>
+                        <a class="inline" href="pokedex.php?page=<?= $currentPage + 1 ?>">&nbsp--></a>
+        </div>
+    <?php else : ?>
+        <div class="inline">&nbsp</div>
+    <?php endif ?>
     </div>
-<?php else : ?>
-    <div class="inline">&nbsp</div>
-<?php endif ?>
-</div>
 
-<div class="currentPage pb-5">
-    <form action="pokedex.php" method="get">
-        Page<input type="text" id="inputPage" name="page" placeholder="<?= $currentPage ?>"> /<?= $pages ?>
-    </form>
-</div>
+    <div class="currentPage pb-5">
+        <form action="pokedex.php" method="get">
+            Page<input type="text" id="inputPage" name="page" placeholder="<?= $currentPage ?>"> /<?= $pages ?>
+        </form>
+    </div>
 
-<script src="./JS/poke-grid.js"></script>
+    <script src="./JS/poke-grid.js"></script>
+    <script src="./JS/pagination.js"></script>
