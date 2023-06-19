@@ -15,23 +15,51 @@ try {
     echo "Echec de connexion à la BDD : " . $e->getMessage();
 }
 
+/* ----------------PAGINATION--------------------- */
+// On determine sur quelle page nous sommes :
+if (isset($_GET['page']) && !empty($_GET['page'])) {
+    $currentPage = (int) strip_tags($_GET['page']);
+} else {
+    $currentPage = 1;
+}
+
+// On détermine le nombre total de pokemon
+$sql = 'SELECT COUNT(*) AS nb_pokemon FROM `pokemon`';
+$query = $db->prepare($sql);
+$query->execute();
+$nbResult = $query->fetch();
+$nbPokemon = (int) $nbResult['nb_pokemon'];
+
+// On détermine le nombre de pokemon par page
+$parPage = 15;
+
+//On calcule le nombre de pages total :
+$pages = ceil($nbPokemon / $parPage);
+
+// Calcul du 1er article de la page
+$premier = ($currentPage * $parPage) - $parPage;
+
+
+/* ----------------PAGINATION-END----------------- */
+
+
 $error = "";
 
 //On prépare une variable $isadmin pour stocker si l'utilisateur est admin ou non
 //On prépare une variable $sql pour stocker la requête SQL
 if ($isadmin && empty($_GET['search'])) {
-    $sql = "SELECT p_id, nom, numero, p_type, `p_type-2`, evolutions, created_by, created_on FROM pokemon ORDER BY numero ASC";
+    $sql = "SELECT p_id, nom, numero, p_type, `p_type-2`, evolutions, created_by, created_on FROM pokemon ORDER BY numero ASC LIMIT $premier, $parPage";
     if (mysqli_num_rows(mysqli_query($conn, $sql)) == 0) {
         $error = "<h3>Vous n'avez pas encore ajouté de Pokémon</h3>";
     }
 } elseif (!$isadmin && empty($_GET['search'])) {
-    $sql = "SELECT p_id, nom, numero, p_type, `p_type-2`, evolutions, created_on FROM pokemon WHERE created_by = '$user_id' ORDER BY numero ASC";
+    $sql = "SELECT p_id, nom, numero, p_type, `p_type-2`, evolutions, created_on FROM pokemon WHERE created_by = '$user_id' ORDER BY numero ASC LIMIT $premier, $parPage";
     if (mysqli_num_rows(mysqli_query($conn, $sql)) == 0) {
         $error = "<h3>Vous n'avez pas encore ajouté de Pokémon</h3>";
     }
 } elseif ($isadmin && !empty($_GET['search'])) {
     $search = $_GET['search'];
-    $sql = "SELECT * FROM pokemon, users WHERE (nom LIKE '%$search%') OR (numero LIKE '%$search%') OR (`p_type` LIKE '%$search%') OR (`p_type-2` LIKE '%$search%') ORDER BY numero ASC";
+    $sql = "SELECT * FROM pokemon, users WHERE (nom LIKE '%$search%') OR (numero LIKE '%$search%') OR (`p_type` LIKE '%$search%') OR (`p_type-2` LIKE '%$search%') ORDER BY numero ASC LIMIT $premier, $parPage";
     //si la recherche ne donne rien, on affiche un message d'erreur
     if (mysqli_num_rows(mysqli_query($conn, $sql)) == 0) {
         $error = "<h3>Aucun résultat pour votre recherche</h3>";
@@ -39,7 +67,7 @@ if ($isadmin && empty($_GET['search'])) {
     unset($_GET);
 } elseif (!$isadmin && !empty($_GET['search'])) {
     $search = $_GET['search'];
-    $sql = "SELECT * FROM pokemon WHERE (nom LIKE '%$search%') OR (numero LIKE '%$search%') OR (`p_type` LIKE '%$search%') OR (`p_type-2` LIKE '%$search%') AND created_by = '$user_id' ORDER BY numero ASC";
+    $sql = "SELECT * FROM pokemon WHERE (nom LIKE '%$search%') OR (numero LIKE '%$search%') OR (`p_type` LIKE '%$search%') OR (`p_type-2` LIKE '%$search%') AND created_by = '$user_id' ORDER BY numero ASC LIMIT $premier, $parPage";
     if (mysqli_num_rows(mysqli_query($conn, $sql)) == 0) {
         $error = "<h3>Aucun résultat pour votre recherche</h3>";
     }
@@ -54,13 +82,38 @@ $resultCheck = mysqli_num_rows($result);
 if ($error != "") {
     echo $error;
 } else {
-    echo "<h1>Tableau de bord</h1>";
+    echo "<h1 style='text-align: center; padding-top: 15px;'>Tableau de bord</h1>";
 }
-
 ?>
+<div class="currentPage pt-2">
+    <form action="profil.php" method="get">
+        Page<input type="text" id="inputPage" name="page" placeholder="<?= $currentPage ?>"> /<?= $pages ?>
+    </form>
+</div>
+<div class="pagination">
+
+    <?php if ($currentPage > 1) : ?>
+        <a href="profil.php?page=<?= $currentPage - 1 ?>"><-- &nbsp</a>
+            <?php else : ?>
+                <div class="inline">&nbsp</div>
+            <?php endif ?>
+            <div>
+                <?php for ($page = max(1, $currentPage - 3); $page <= min($currentPage + 3, $pages); $page++) : ?>
+                    <a href="profil.php?page=<?= $page ?>"><?= $page ?></a>
+                <?php endfor ?>
+            </div>
+            <?php if ($currentPage < $pages) : ?>
+                <a class="inline" href="profil.php?page=<?= $currentPage + 1 ?>">&nbsp--></a>
+</div>
+<?php else : ?>
+    <div class="inline">&nbsp</div>
+<?php endif ?>
+</div>
+
 
 <table class="table dash-table">
     <thead>
+
         <tr>
             <th scope="col">#</th>
             <th scope="col">Image</th>
@@ -143,6 +196,30 @@ if ($error != "") {
 
 </table>
 
+<div class="pagination">
+
+    <?php if ($currentPage > 1) : ?>
+        <a href="profil.php?page=<?= $currentPage - 1 ?>"><-- &nbsp</a>
+            <?php else : ?>
+                <div class="inline">&nbsp</div>
+            <?php endif ?>
+            <div>
+                <?php for ($page = max(1, $currentPage - 3); $page <= min($currentPage + 3, $pages); $page++) : ?>
+                    <a href="profil.php?page=<?= $page ?>"><?= $page ?></a>
+                <?php endfor ?>
+            </div>
+            <?php if ($currentPage < $pages) : ?>
+                <a class="inline" href="profil.php?page=<?= $currentPage + 1 ?>">&nbsp--></a>
+</div>
+<?php else : ?>
+    <div class="inline">&nbsp</div>
+<?php endif ?>
+</div>
+<div class="currentPage pt-2">
+    <form action="profil.php" method="get">
+        Page<input type="text" id="inputPage" name="page" placeholder="<?= $currentPage ?>"> /<?= $pages ?>
+    </form>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

@@ -306,6 +306,7 @@ header {
 
 .carousel-container {
     max-width: 1440px;
+    width: auto;
     height: 520px;
     padding: 50px 0;
     overflow: hidden;
@@ -566,14 +567,9 @@ header {
 
 /** STYLE TYPES PAGES START  */
 
-.section-types {
-    margin-bottom: 75px;
-    max-width: 1440px;
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    justify-content: space-around;
-    gap: 50px;
+#inputPage {
+    width: 20px;
+    display: inline;
 }
 
 .type-card {
@@ -1249,4 +1245,14 @@ table.table-log {
 
 .footer-container {
     max-width: 1440px;
+}
+
+
+/** Style Pagination START */
+
+.pagination,
+.currentPage {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
 }
