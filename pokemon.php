@@ -70,8 +70,8 @@ session_start()
                 </ul>
                 <div class="type-container">
                     <h6>Type</h6>
-                    <div class="type <?= $type ?>"><?php echo $type ?></div>
-                    <div class="type <?= $type2 ?>"><?php echo $type2 ?></div>
+                    <div class="type type-colors-<?= $type ?>"><?php echo $type ?></div>
+                    <div class="type type-colors-<?= $type2 ?>"><?php echo $type2 ?></div>
                 </div>
             </div>
         </section>
@@ -99,8 +99,8 @@ session_start()
                         echo "<div class=\"evo\">";
                         echo "<a href='./pokemon.php?id=$evo_id'><img src=\"uploads/$evo_nom.png\">";
                         echo "<span class=\"poke\">$evo_nom</span></a>";
-                        echo "<span class=\"evo-type $evo_type\">$evo_type</span>";
-                        echo "<span class=\"evo-type $evo_type2\">$evo_type2</span>";
+                        echo "<span class=\"evo-type type-colors-$evo_type\">$evo_type</span>";
+                        echo "<span class=\"evo-type type-colors-$evo_type2\">$evo_type2</span>";
                         echo "</div>";
                     } else {
                         // La requête SQL n'a renvoyé aucun résultat
