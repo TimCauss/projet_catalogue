@@ -43,15 +43,16 @@ header {
     border-bottom: none;
 }
 
-.header-img-ctn {
-    object-fit: cover;
-}
-
-.title-container img {
-    width: 500px;
+header img {
+    max-width: 1440px;
 }
 
 
+@media screen and (max-width: 555px) {
+    header img {
+        width: 900px;
+    }
+}
 
 /** STYLE HEADER END */
 
@@ -62,6 +63,10 @@ header {
     border: #bfbfbf 1px solid;
     margin-bottom: 0px;
     border-top: none;
+    position: sticky;
+    z-index: 10;
+    top: 0;
+    background: #fff;
 }
 
 .main-nav ul {
