@@ -34,34 +34,40 @@ session_start()
     } elseif (isset($_GET['numero'])) {
         $numero = $_GET['numero'];
         $query = "SELECT * FROM pokemon WHERE numero = $numero";
-    } else {
-        echo "<p>Aucun résultat pour le pokemon demandé, <a href='profil.php'>ajoutez le!</a></p>";
-        exit;
     }
-    $sql = $db->prepare($query);
-    $sql->execute();
-    $row = $sql->fetch(PDO::FETCH_ASSOC);
-    //récupération des informations du pokemon
-    if ($row !== false) {
-        $nom = $row['nom'];
-        $numero = $row['numero'];
-        $description = $row['p_description'];
-        $taille = $row['taille'];
-        $poids = $row['poids'];
-        $type = $row['p_type'];
-        $type2 = $row['p_type-2'];
-        $evolutions = explode(",", $row['evolutions']);
-        $num_prev = $numero - 1;
-        $num_next = $numero + 1;
-        $url_prev = "pokemon.php?numero=$num_prev";
-        $url_next = "pokemon.php?numero=$num_next";
-    } else {
-        echo "<p>Aucun résultat pour le pokemon demandé, <a href='profil.php'>ajoutez le!</a></p>";
-        exit;
-    }
+        else {
+            echo "<p class='erreur'>Aucun résultat pour le pokemon demandé, <a href='profil.php'>ajoutez le!</a></p>";
+            exit;
+        }
+        $sql = $db->prepare($query);
+        $sql->execute();
+        $row = $sql->fetch(PDO::FETCH_ASSOC);
+        //récupération des informations du pokemon
+        if ($row !== false) {
+            $nom = $row['nom'];
+            $numero = $row['numero'];
+            $description = $row['p_description'];
+            $taille = $row['taille'];
+            $poids = $row['poids'];
+            $type = $row['p_type'];
+            $type2 = $row['p_type-2'];
+            $evolutions = explode(",", $row['evolutions']);
+            $num_prev = $numero - 1;
+            $num_next = $numero + 1;
+            $url_prev = "pokemon.php?numero=$num_prev";
+            $url_next = "pokemon.php?numero=$num_next";
 
-
-
+        }
+        else {
+            include_once "./includes/header.php";
+            include_once "./includes/nav.php";
+            echo "<p class='erreur'>Aucun résultat pour le pokemon demandé, <a href='profil.php'>ajoutez le!</a></p>";
+            exit;
+        }
+            
+        
+    
+   
 
     //affichage header/navbar
     include_once "./includes/header.php";

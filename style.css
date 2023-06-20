@@ -131,11 +131,11 @@ h6 {
     margin-top: 50px;
     margin-bottom: 30px;
 }
-
-/* body p {
+.erreur {
     font-size: 2em;
-    margin: 20% 0;
-} */
+    margin: 15%;
+    margin-left: 50%;
+}
 .type {
 
     width: 130px;
