@@ -14,5 +14,6 @@
             <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Rechercher</button>
         </form>
+        <button class="btn btn-outline-success" id="btnReset" onclick="window.location.href='profil.php'" value='reset'>Reset</button>
     </div>
 </nav>
