@@ -107,7 +107,6 @@ def scrapper(range_start, range_end):
             By.XPATH, ("//*[contains(text(),'Poids')]/following-sibling::span")).text
         p_type = d.find_element(
             By.XPATH, ("//*[contains(text(),'Type')]/following-sibling::ul/li[1]/a")).text
-
         # On gère le cas où le pokemon n'a pas de second type:
         ptype2_xpath = "//*[contains(text(),'Type')]/following-sibling::ul/li[2]/a"
         if (check_exists(ptype2_xpath, d) == True):
@@ -154,6 +153,10 @@ def scrapper(range_start, range_end):
 
         if p_type == "Électrik":
             p_type = "Electrik"
+        elif (p_type == "Fée"):
+            p_type = "Fee"
+        elif (p_type == "Ténèbres"):
+            p_type = "Tenebres"
 
         type_select = d.find_element(By.NAME, "type")
         select = Select(type_select)
@@ -163,6 +166,10 @@ def scrapper(range_start, range_end):
             p_type2 = "Type"
         elif p_type2 == "Électrik":
             p_type2 = "Electrik"
+        elif (p_type2 == "Fée"):
+            p_type2 = "Fee"
+        elif (p_type2 == "Ténèbres"):
+            p_type2 = "Tenebres"
 
         type2_select = d.find_element(By.NAME, "type-2")
         select2 = Select(type2_select)
@@ -171,10 +178,10 @@ def scrapper(range_start, range_end):
         d.find_element(By.ID, "evolutions").send_keys(
             remove_last_comma(p_evo))
 
-        d.find_element(By.ID, "p_img").send_keys("C:\\laragon\\www\\projet_catalogue\\img\\pokemon\\" + p_nom + ".png")
+        d.find_element(By.ID, "p_img").send_keys(
+            "C:\\laragon\\www\\projet_catalogue\\img\\pokemon\\" + p_nom + ".png")
         d.find_element(By.ID, "submit").submit()
-        
-        
+
 
 """         d.find_element(
             By.XPATH, "/html/body/section/div/div[2]/form/div[7]/input").click() """

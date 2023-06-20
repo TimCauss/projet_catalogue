@@ -199,12 +199,12 @@ if ($_POST) {
                         <option value="psy">Psy</option>
                         <option value="combat">Combat</option>
                         <option value="acier">Acier</option>
-                        <option value="tenebres">Ténèbres</option>
+                        <option value="tenebres">Tenebres</option>
                         <option value="spectre">Spectre</option>
                         <option value="sol">Sol</option>
                         <option value="roche">Roche</option>
                         <option value="vol">Vol</option>
-                        <option value="fée">Fée</option>
+                        <option value="fee">Fee</option>
                         <option value="dragon">Dragon</option>
 
                     </select>
@@ -221,12 +221,12 @@ if ($_POST) {
                         <option value="psy">Psy</option>
                         <option value="combat">Combat</option>
                         <option value="acier">Acier</option>
-                        <option value="tenebres">Ténèbres</option>
+                        <option value="tenebres">Tenebres</option>
                         <option value="spectre">Spectre</option>
                         <option value="sol">Sol</option>
                         <option value="roche">Roche</option>
                         <option value="vol">Vol</option>
-                        <option value="fée">Fée</option>
+                        <option value="fee">Fee</option>
                         <option value="dragon">Dragon</option>
                     </select>
                 </div>
