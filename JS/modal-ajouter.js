@@ -32,3 +32,4 @@ function closeModal() {
   addBtnElement.classList.remove("onuse");
   overlayElement.classList.remove("active");
 }
+
