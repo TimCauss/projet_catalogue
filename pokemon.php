@@ -54,9 +54,12 @@ session_start()
 
         }
         else {
+            include_once "./includes/header.php";
+            include_once "./includes/nav.php";
             echo "<p>Aucun résultat pour le pokemon demandé, <a href='profil.php'>ajoutez le!</a></p>";
             exit;
         }
+            
         
     
    
