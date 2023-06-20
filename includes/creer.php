@@ -231,7 +231,7 @@ if ($_POST) {
                     </select>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <input type="submit" class="btn btn-form" value="Ajouter">
+                    <input type="submit" id="submit" class="btn btn-form" value="Ajouter">
                 </div>
 
             </form>

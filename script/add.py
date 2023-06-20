@@ -120,7 +120,7 @@ def scrapper(range_start, range_end):
         img = d.find_element(
             By.XPATH, "//img[@alt='" + p_nom + "']")
         urllib.request.urlretrieve(img.get_attribute("src"),
-                                   "C:\\laragon\\www\\projet_catalogue\\uploads\\" + p_nom + ".png")
+                                   "C:\\laragon\\www\\projet_catalogue\\img\\pokemon\\" + p_nom + ".png")
 
         # On gère les évo, on créer une boucle de 3:
         p_evo = ""
@@ -171,8 +171,13 @@ def scrapper(range_start, range_end):
         d.find_element(By.ID, "evolutions").send_keys(
             remove_last_comma(p_evo))
 
-        d.find_element(
-            By.XPATH, "/html/body/section/div/div[2]/form/div[7]/input").click()
+        d.find_element(By.ID, "p_img").send_keys("C:\\laragon\\www\\projet_catalogue\\img\\pokemon\\" + p_nom + ".png")
+        d.find_element(By.ID, "submit").submit()
+        
+        
+
+"""         d.find_element(
+            By.XPATH, "/html/body/section/div/div[2]/form/div[7]/input").click() """
 
 
 # Section des threads:
