@@ -31,7 +31,7 @@ session_start()
         $query = "SELECT * FROM pokemon WHERE numero = $numero";
     }
         else {
-            echo "<p>Aucun résultat pour le pokemon demandé, <a href='profil.php'>ajoutez le!</a></p>";
+            echo "<p class='erreur'>Aucun résultat pour le pokemon demandé, <a href='profil.php'>ajoutez le!</a></p>";
             exit;
         }
         $sql = $db->prepare($query);
@@ -56,7 +56,7 @@ session_start()
         else {
             include_once "./includes/header.php";
             include_once "./includes/nav.php";
-            echo "<p>Aucun résultat pour le pokemon demandé, <a href='profil.php'>ajoutez le!</a></p>";
+            echo "<p class='erreur'>Aucun résultat pour le pokemon demandé, <a href='profil.php'>ajoutez le!</a></p>";
             exit;
         }
             
