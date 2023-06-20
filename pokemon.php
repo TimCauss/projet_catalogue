@@ -90,8 +90,10 @@ session_start()
                 </ul>
                 <div class="type-container">
                     <h6>Type</h6>
-                    <div class="type type-colors-<?= $type ?>"><?php echo $type ?></div>
-                    <div class="type type-colors-<?= $type2 ?>"><?php echo $type2 ?></div>
+                </div>
+                <div class="type-container">
+                    <div class="type type-colors-<?= $type ?>"><?php echo "<span>" . $type . "</span>" ?></div>
+                    <div class="type type-colors-<?= $type2 ?>"><?php echo "<span>" . $type2 . "</span>" ?></div>
                 </div>
             </div>
         </section>

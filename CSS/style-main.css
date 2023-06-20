@@ -1268,6 +1268,7 @@ table.table-log {
 }
 
 
+
 /** Style Pagination START */
 
 .pagination,
@@ -1275,4 +1276,11 @@ table.table-log {
     text-align: center;
     justify-content: center;
     align-items: center;
+}
+
+@media screen and (max-width: 1000px) {
+
+    .type-container {
+        flex-direction: row;
+    }
 }
