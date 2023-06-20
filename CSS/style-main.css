@@ -291,6 +291,18 @@ header {
         left: 0;
     }
 
+    .menu-nav.active .loginButtonLi {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
+        background: #fff;
+    }
+
+    .menu-nav.active .loginButtonLi .ni-login {
+        height: 71px;
+        width: 71px;
+    }
 
 
     .bouttons-connexion {
