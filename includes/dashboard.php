@@ -59,15 +59,15 @@ if ($isadmin && empty($_GET['search'])) {
     }
 } elseif ($isadmin && !empty($_GET['search'])) {
     $search = $_GET['search'];
-    $sql = "SELECT * FROM pokemon, users WHERE (nom LIKE '%$search%') OR (numero LIKE '%$search%') OR (`p_type` LIKE '%$search%') OR (`p_type-2` LIKE '%$search%') ORDER BY numero ASC LIMIT $premier, $parPage";
+    $sql = "SELECT * FROM pokemon WHERE (nom LIKE '%$search%') OR (numero LIKE '%$search%') OR (`p_type` LIKE '%$search%') OR (`p_type-2` LIKE '%$search%') ORDER BY numero ASC";
     //si la recherche ne donne rien, on affiche un message d'erreur
     if (mysqli_num_rows(mysqli_query($conn, $sql)) == 0) {
-        $error = "<h3>Aucun résultat pour votre recherche</h3>";
+        $error = "<h3 style='text-align: center; padding-top: 15px;'>Aucun résultat pour votre recherche</h3>";
     }
     unset($_GET);
 } elseif (!$isadmin && !empty($_GET['search'])) {
     $search = $_GET['search'];
-    $sql = "SELECT * FROM pokemon WHERE (nom LIKE '%$search%') OR (numero LIKE '%$search%') OR (`p_type` LIKE '%$search%') OR (`p_type-2` LIKE '%$search%') AND created_by = '$user_id' ORDER BY numero ASC LIMIT $premier, $parPage";
+    $sql = "SELECT * FROM pokemon WHERE (nom LIKE '%$search%') OR (numero LIKE '%$search%') OR (`p_type` LIKE '%$search%') OR (`p_type-2` LIKE '%$search%') AND created_by = '$user_id' ORDER BY numero ASC";
     if (mysqli_num_rows(mysqli_query($conn, $sql)) == 0) {
         $error = "<h3 style='text-align: center; padding-top: 15px;'>Aucun résultat pour votre recherche</h3>";
     }
@@ -76,6 +76,7 @@ if ($isadmin && empty($_GET['search'])) {
 
 
 $result = mysqli_query($conn, $sql);
+
 //On vériifie si la requête a retourné des résultats
 $resultCheck = mysqli_num_rows($result);
 
