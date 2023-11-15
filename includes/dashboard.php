@@ -10,7 +10,7 @@ if ($_SESSION['user']['user_role'] == 1) {
 
 //on se connect à la db (Pour changer on utilise mysqli au lieu de PDO)
 try {
-    $conn = mysqli_connect("localhost", "root", "", "projet_catalogue");
+    $conn = mysqli_connect("localhost", "tim", "ixFtgev@ldms#1612", "projet_catalogue");
 } catch (PDOException $e) {
     echo "Echec de connexion à la BDD : " . $e->getMessage();
 }

@@ -238,4 +238,4 @@ if ($_POST) {
         </div>
     </div>
 </section>
-<script type="text/javascript" src="./js/modal-ajouter.js"></script>
+<script type="text/javascript" src="./JS/modal-ajouter.js"></script>

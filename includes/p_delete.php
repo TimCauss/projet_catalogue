@@ -11,7 +11,7 @@ if (!isset($_SESSION['user'])) {
 
 //On se connecte à la base de donnée
 try {
-    $conn = mysqli_connect("localhost", "root", "", "projet_catalogue");
+    $conn = mysqli_connect("localhost", "tim", "ixFtgev@ldms#1612", "projet_catalogue");
 } catch (PDOException $e) {
     echo "Echec de connexion à la BDD : " . $e->getMessage();
 }
