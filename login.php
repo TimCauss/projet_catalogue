@@ -2,7 +2,7 @@
 session_start();
 require_once 'connect.php'; //Connexion BDD
 //On déclare les variables du formulaire à vide pour éviter des bidouilles
-$prenom = $email = $pass = $lastname = "";
+$user = $email = $pass = $lastname = "";
 
 //fonction qui va nettoyer les données du formulaire :
 function testInput($data)
@@ -17,7 +17,7 @@ function testInput($data)
 Renvois un temps en sec, prend en arguments 2 valeurs microtime */
 function timing($timeStart, $timeEnd)
 {
-    return ($timeEnd - $timeStart);
+    return $timeEnd - $timeStart;
 }
 
 
@@ -27,28 +27,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["register-submit"])) {
         //On check si les champs sont remplis
         if (
-            isset($_POST["prenom"]) && !empty($_POST["prenom"]) &&
-            isset($_POST["lastname"]) && !empty($_POST["lastname"]) &&
+            isset($_POST["username"]) && !empty($_POST["username"]) &&
             isset($_POST["email"]) && !empty($_POST["email"]) &&
             isset($_POST["pass"]) && !empty($_POST["pass"])
         ) {
             /*Si le formulaire est complet (Tous les champs ont été remplis)
         ============SECURITE DES DONNEES============
         On check si le prenom est valide (Seulement des lettres) */
-            if (preg_match("/^[a-zA-Z-é' ]*$/", $_POST["prenom"])) {
+            if (preg_match("/^[a-zA-Z-é' ]*$/", $_POST["username"])) {
                 //Si le prenom est valide, on le nettoie
-                $prenom = testInput($_POST["prenom"]);
+                $username = testInput($_POST["username"]);
             } else {
                 //Si le prenom n'est pas valide, message d'erreur
-                die("Le prénom n'est pas valide, seul les lettres sont autorisés");
+                die("L'username n'est pas valide, seul les lettres sont autorisés");
             }
-            //On check si le nom est valide (Seulement des lettres)
-            if (preg_match("/^[a-zA-Z-' ]*$/", $_POST["lastname"])) {
-                //Si le nom est valide, on le nettoie
-                $lastname = testInput($_POST["lastname"]);
-            } else {
-                //Si le nom n'est pas valide, message d'erreur
-                die("Le nom n'est pas valide, seul les lettres sont autorisés");
+
+            //On check si l'username existe déjà dans la bdd:
+            $usernamecheckSQL = "SELECT username FROM users";
+            $usernameSQL = $db->prepare($usernamecheckSQL);
+            $usernameSQL->execute();
+            $usernameSQLList = $usernameSQL->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($usernameSQLList as $usernamedb) {
+                if ($username == $usernamedb) {
+                    die("Cet username n'est pas disponible");
+                }
             }
 
             //On check si l'email est valide
@@ -59,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 //Si l'email n'est pas valide, message d'erreur
                 die("L'email n'est pas valide");
             }
-            //On check si l'email existe déjà :
+            //On check si l'email existe déjà dans la bdd:
 
             $mailcheckSQL = "SELECT email FROM users";
             $mailSQL = $db->prepare($mailcheckSQL);
@@ -93,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             //------------Enregistrement des données en BDD:----------------
 
             //Préparation et execution de la requête :
-            $createUser = "INSERT INTO users(prenom, lastname, email, pass) VALUES ('$prenom', '$lastname', '$email', '$hashedpass')";
+            $createUser = "INSERT INTO users(username, email, pass) VALUES ('$username', '$email', '$hashedpass')";
             $createQuery = $db->prepare($createUser);
             $createQuery->execute();
 
@@ -108,8 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $_SESSION["user"] = [
                 "user_id" => $userResult["user_id"],
-                "prenom" => $prenom,
-                "lastname" => $lastname,
+                "prenom" => $username,
                 "email" => $email,
                 "user_role" => 0
             ];
@@ -124,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST["login-email"]) && isset($_POST["login-pass"])) {
             $email = $_POST["login-email"];
             // on fetch les données utiles pour les vérification:
-            $loginSQL = "SELECT user_id, email, prenom, lastname, pass, user_role FROM users WHERE email = '$email'";
+            $loginSQL = "SELECT user_id, email, username, pass, role FROM users WHERE email = '$email'";
             $loginQuery = $db->prepare($loginSQL);
             $loginQuery->execute();
             $loginResult = $loginQuery->fetch(PDO::FETCH_ASSOC);
@@ -135,10 +136,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     //Si le mot de passe est correct, on crée la session:
                     $_SESSION["user"] = [
                         "user_id" => $loginResult["user_id"],
-                        "prenom" => $loginResult["prenom"],
-                        "lastname" => $loginResult["lastname"],
+                        "username" => $loginResult["username"],
                         "email" => $loginResult["email"],
-                        "user_role" => $loginResult["user_role"]
+                        "user_role" => $loginResult["role"]
                     ];
                     header("Location: index.php");
                 } else {
@@ -198,23 +198,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <a class="form-change">Se connecter</a>
                             </div>
                             <form method="POST" class="needs-validation" novalidate>
-                                <div class="row">
-                                    <div class="col-md-6 mb-4">
-                                        <div class="form-outline">
-                                            <input type="text" name="prenom" id="prenom" class="form-control" required>
-                                            <label class="form-label" for="prenom">Prénom</label>
-                                            <div class="valid-feedback">Ce champ est OK !</div>
-                                            <div class="invalid-feedback">Veuillez remplir ce champ.</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <div class="form-outline">
-                                            <input type="text" name="lastname" id="lastname" class="form-control" required>
-                                            <label class="form-label" for="lastname">Nom</label>
-                                            <div class="valid-feedback">Ce champ est OK !</div>
-                                            <div class="invalid-feedback">Veuillez remplir ce champ.</div>
-                                        </div>
-                                    </div>
+                                <!-- username input -->
+                                <div class="form-outline mb-4">
+                                    <input type="text" name="username" id="prenom" class="form-control" required>
+                                    <label class="form-label" for="username">Username</label>
+                                    <div class="valid-feedback">Ce champ est OK !</div>
+                                    <div class="invalid-feedback">Veuillez remplir ce champ.</div>
                                 </div>
                                 <!-- Email input -->
                                 <div class="form-outline mb-4">

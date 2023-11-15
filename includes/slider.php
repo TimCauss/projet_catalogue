@@ -1,9 +1,14 @@
 <?php
 require_once "connect.php";
 
-$query = "SELECT * FROM pokemon ORDER BY p_id DESC LIMIT 15";
-$result = $db->query($query);
-$rows = $result->fetchAll(PDO::FETCH_ASSOC)
+$query = "SELECT p.*, GROUP_CONCAT(t.type_name ORDER BY t.type_name SEPARATOR ', ') AS types
+    FROM pokemon p LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id LEFT JOIN types t ON pt.type_id = t.id
+    GROUP BY p.id
+    ORDER BY p.id DESC
+    LIMIT 15";
+$stmt = $db->prepare($query);
+$stmt->execute();
+$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 ?>
@@ -32,29 +37,29 @@ $rows = $result->fetchAll(PDO::FETCH_ASSOC)
 
     <div class="carousel" data-flickity='{ "wrapAround": true, "adaptiveHeight": true }'>
 
-        <?php
-        foreach ($rows as $row) {
-            $numero = $row['numero'];
-            $nom = $row['nom'];
-            $type = $row['p_type'];
-            $type2 = $row['p_type-2'];
-            echo '<div class="carousel-cell">';
-            echo ' <div class="carousel-poke-nbr">' . $numero . '</div>';
-            echo '<img class="carousel-img" src="./uploads/' . $nom . '.png" alt="Image d\'Aspicot">';
-            echo ' <div class="carousel-footer">';
-            echo '<div class="crsl-ft-r1">
-                    <h5>' . $nom . ' <span class="carousel-footer-nbr">' . $numero . '</span></h5>
-                </div>';
-            echo '<div class="crsl-ft-r2">';
-            echo ' <div class="crsl-ft-type">Type</div>';
-            echo ' <div>
-                        <div class="type-label type-colors-' . $type . '">' . strtoupper($type) . '</div>
-                        <div class="type-label type-colors-' . $type2 . '">' . strtoupper($type2) . '</div>
+        <?php foreach ($rows as $row) :
+            $numero = htmlspecialchars($row['numero']);
+            $nom = htmlspecialchars($row['nom']);
+            $typesArray = explode(', ', $row['types']);
+        ?>
+            <div class="carousel-cell">
+                <div class="carousel-poke-nbr"><?= $numero ?></div>
+                <img class="carousel-img" src="/uploads/<?= $nom ?>.png" alt="Image de <?= $nom ?>">
+                <div class="carousel-footer">
+                    <div class="crsl-ft-r1">
+                        <h5><?= $nom ?> <span class="carousel-footer-nbr"><?= $numero ?></span></h5>
+                    </div>
+                    <div class="crsl-ft-r2">
+                        <div class="crsl-ft-type">Type</div>
+                        <div>
+                            <?php foreach ($typesArray as $type) : ?>
+                                <?php $type = htmlspecialchars(trim($type)); ?>
+                                <div class="type-label type-colors-<?= strtolower($type) ?>"><?= strtoupper($type) ?></div>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>';
-        }
-        ?>
+        <?php endforeach; ?>
     </div>
 </section>

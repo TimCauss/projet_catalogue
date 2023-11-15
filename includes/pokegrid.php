@@ -1,63 +1,93 @@
 <?php
-
 require_once "connect.php";
 
 
 /* ----------------PAGINATION--------------------- */
-// On determine sur quelle page nous sommes :
-if (isset($_GET['page']) && !empty($_GET['page'])) {
-    $currentPage = (int) strip_tags($_GET['page']);
-} else {
-    $currentPage = 1;
-}
-
-// On détermine le nombre total de pokemon
-$sql = 'SELECT COUNT(*) AS nb_pokemon FROM `pokemon`';
-$query = $db->prepare($sql);
-$query->execute();
-$nbResult = $query->fetch();
-$nbPokemon = (int) $nbResult['nb_pokemon'];
-
-// On détermine le nombre de pokemon par page
+// On initialise les variables de pagination
+$currentPage = isset($_GET['page']) && !empty($_GET['page']) ? (int) strip_tags($_GET['page']) : 1;
 $parPage = 15;
 
-//On calcule le nombre de pages total :
-$pages = ceil($nbPokemon / $parPage);
+// On Calcul le premier élément de la page pour la requête SQL
+$premier = ($currentPage - 1) * $parPage;
 
-// Calcul du 1er article de la page
-$premier = ($currentPage * $parPage) - $parPage;
+
+// On détermine le nombre total de pokemon
+$sqlCount = 'SELECT COUNT(*) AS nb_pokemon FROM `pokemon`';
+$queryCount = $db->prepare($sqlCount);
+$queryCount->execute();
+$resultCount = $queryCount->fetch();
+$nbPokemon = (int) $resultCount['nb_pokemon'];
+
+// On calcul le nombre de pages total
+$pages = ceil($nbPokemon / $parPage);
 
 
 /* ----------------PAGINATION-END----------------- */
 
 
-if (isset($_GET['type'])) {
-    $type = $_GET['type'];
-    $p_sql = "SELECT * FROM pokemon WHERE (p_type = '$type') OR (`p_type-2` ='$type')  ORDER BY numero ASC";
-    unset($_GET);
-} else {
-    $p_sql = "SELECT * FROM pokemon ORDER BY numero ASC LIMIT $premier, $parPage";
-}
 
+/* ----------------REQUÊTE POKÉMON----------------- */
+
+// Si on a une requete get contennant une valeur dans la clé search :
 if (!empty($_GET['search'])) {
-    try {
-        $conn = mysqli_connect("localhost", "tim", "ixFtgev@ldms#1612", "projet_catalogue");
-    } catch (PDOException $e) {
-        echo "Echec de connexion à la BDD : " . $e->getMessage();
-    }
     $search = $_GET['search'];
-    $p_sql = "SELECT * FROM pokemon WHERE (nom LIKE '%$search%') OR (numero LIKE '%$search%') OR (`p_type` LIKE '%$search%') OR (`p_type-2` LIKE '%$search%') ORDER BY numero ASC";
-    //si la recherche ne donne rien, on affiche un message d'erreur
-    if (mysqli_num_rows(mysqli_query($conn, $p_sql)) == 0) {
-        $error = "<h3>Aucun résultat pour votre recherche</h3>";
+    // On vérifie si la recherche correspond à un type de pokémon :
+    $type_sql = "SELECT id FROM types WHERE type_name = :typeName";
+    $type_query = $db->prepare($type_sql);
+    $type_query->bindParam(':typeName', $search, PDO::PARAM_STR);
+    $type_query->execute();
+    $type_result = $type_query->fetch(PDO::FETCH_ASSOC);
+    // Si la recherche est un type, on utilise une requête qui filtre les Pokémon par ce type
+    if ($type_result) {
+        $p_sql = "SELECT p.*, GROUP_CONCAT(distinct t.type_name ORDER BY t.type_name SEPARATOR ', ') as types
+            FROM pokemon p
+            JOIN pokemon_types pt ON p.id = pt.pokemon_id
+            JOIN types t ON pt.type_id = t.id
+            WHERE p.id IN (
+                SELECT pt.pokemon_id 
+                FROM pokemon_types pt 
+                JOIN types t ON pt.type_id = t.id 
+                WHERE t.id = :typeId
+            )
+            GROUP BY p.id
+            ORDER BY p.numero ASC";
+        $p_query = $db->prepare($p_sql);
+        $p_query->bindParam(':typeId', $type_result['id'], PDO::PARAM_INT);
+    } else {
+        // Sinon c'est une requête par nom ou numéro :
+        $p_sql = "SELECT p.*, GROUP_CONCAT(t.type_name SEPARATOR ', ') as types
+            FROM pokemon p
+            LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
+            LEFT JOIN types t ON pt.type_id = t.id
+            WHERE p.nom LIKE :search OR p.numero LIKE :search
+            GROUP BY p.id
+            ORDER BY p.numero ASC";
+        $p_query = $db->prepare($p_sql);
+        $searchTerm = '%' . $search . '%';
+        $p_query->bindParam(':search', $searchTerm, PDO::PARAM_STR);
     }
-    unset($_GET);
+} else {
+    // Requête par défaut
+    $p_sql = "SELECT p.*, GROUP_CONCAT(t.type_name SEPARATOR ', ') as types
+        FROM pokemon p
+        LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
+        LEFT JOIN types t ON pt.type_id = t.id
+        GROUP BY p.id
+        ORDER BY p.numero ASC
+        LIMIT :premier, :parPage";
+    $p_query = $db->prepare($p_sql);
+    $p_query->bindParam(':premier', $premier, PDO::PARAM_INT);
+    $p_query->bindParam(':parPage', $parPage, PDO::PARAM_INT);
 }
 
-
-$p_query = $db->prepare($p_sql);
+// Exécution de la requête
 $p_query->execute();
 $p_result = $p_query->fetchAll(PDO::FETCH_ASSOC);
+
+// Vérification des résultats :
+if (count($p_result) === 0) {
+    $error = "<h3>Aucun résultat trouvé pour votre recherche.</h3>";
+}
 
 
 ?>
@@ -100,18 +130,23 @@ $p_result = $p_query->fetchAll(PDO::FETCH_ASSOC);
 
 <section class="container-grid p-grid pb-5">
     <div class="d-flex flex-row flex-wrap justify-content-center gap-5">
-        <?php foreach ($p_result as $pokemon) : ?>
-            <a href="./pokemon.php?id=<?= $pokemon['p_id'] ?>">
+        <?php foreach ($p_result as $pokemon) :
+            $types = explode(', ', $pokemon['types']); // Transforme la chaîne des types en tableau
+        ?>
+            <a href="./pokemon.php?id=<?= $pokemon['id'] ?>">
                 <div class="p-card p2">
-                    <figure class="grid-p-img" data-p_type="<?= strtolower($pokemon['p_type']) ?>">
+                    <figure class="grid-p-img" data-p_type="<?= strtolower(trim($types[0])) ?>">
                         <div class="circle"></div><img src="./uploads/<?= $pokemon['nom'] ?>.png" alt="pokemon img">
                     </figure>
                     <figcaption class="grid-p-details">
                         <div class="grid-p-nbr">n°<?= $pokemon['numero'] ?></div>
                         <div class="grid-p-name"><?= $pokemon['nom'] ?></div>
                         <div class="p-type-wrapper pt-2">
-                            <div class="grid-p-type1"><?= strtoupper($pokemon['p_type']) ?></div>
-                            <div class="grid-p-type2"><?= strtoupper($pokemon['p_type-2']) ?></div>
+                            <?php
+                            foreach ($types as $type) {
+                                echo '<div class="grid-p-type1">' . strtoupper(trim($type)) . '</div>'; // Affiche chaque type
+                            }
+                            ?>
                         </div>
 
                     </figcaption>

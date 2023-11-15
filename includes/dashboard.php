@@ -1,4 +1,6 @@
 <?php
+//on se connect à la db 
+require_once("connect.php");
 
 $user_id = $_SESSION['user']['user_id'];
 
@@ -8,12 +10,6 @@ if ($_SESSION['user']['user_role'] == 1) {
     $isadmin = false;
 }
 
-//on se connect à la db (Pour changer on utilise mysqli au lieu de PDO)
-try {
-    $conn = mysqli_connect("localhost", "tim", "ixFtgev@ldms#1612", "projet_catalogue");
-} catch (PDOException $e) {
-    echo "Echec de connexion à la BDD : " . $e->getMessage();
-}
 
 /* ----------------PAGINATION--------------------- */
 // On determine sur quelle page nous sommes :
@@ -22,212 +18,227 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
 } else {
     $currentPage = 1;
 }
-
 // On détermine le nombre total de pokemon
 $sql = 'SELECT COUNT(*) AS nb_pokemon FROM `pokemon`';
 $query = $db->prepare($sql);
 $query->execute();
 $nbResult = $query->fetch();
 $nbPokemon = (int) $nbResult['nb_pokemon'];
-
 // On détermine le nombre de pokemon par page
 $parPage = 15;
-
 //On calcule le nombre de pages total :
 $pages = ceil($nbPokemon / $parPage);
-
 // Calcul du 1er article de la page
 $premier = ($currentPage * $parPage) - $parPage;
-
-
 /* ----------------PAGINATION-END----------------- */
 
 
 $error = "";
 
-//On prépare une variable $isadmin pour stocker si l'utilisateur est admin ou non
-//On prépare une variable $sql pour stocker la requête SQL
 if ($isadmin && empty($_GET['search'])) {
-    $sql = "SELECT p_id, nom, numero, p_type, `p_type-2`, evolutions, created_by, created_on FROM pokemon ORDER BY numero ASC LIMIT $premier, $parPage";
-    if (mysqli_num_rows(mysqli_query($conn, $sql)) == 0) {
-        $error = "<h3>Vous n'avez pas encore ajouté de Pokémon</h3>";
-    }
+    // Requête pour les admins sans recherche
+    $sql = "SELECT p.id, p.nom, p.numero,
+            GROUP_CONCAT(t.type_name ORDER BY t.type_name SEPARATOR ', ') AS types
+            FROM pokemon p
+            LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
+            LEFT JOIN types t ON pt.type_id = t.id
+            GROUP BY p.id, p.nom, p.numero
+            ORDER BY p.numero ASC
+            LIMIT :premier, :parPage";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':premier', $premier, PDO::PARAM_INT);
+    $stmt->bindValue(':parPage', $parPage, PDO::PARAM_INT);
 } elseif (!$isadmin && empty($_GET['search'])) {
-    $sql = "SELECT p_id, nom, numero, p_type, `p_type-2`, evolutions, created_on FROM pokemon WHERE created_by = '$user_id' ORDER BY numero ASC LIMIT $premier, $parPage";
-    if (mysqli_num_rows(mysqli_query($conn, $sql)) == 0) {
-        $error = "<h3>Vous n'avez pas encore ajouté de Pokémon</h3>";
-    }
-} elseif ($isadmin && !empty($_GET['search'])) {
+    // Requête pour les utilisateurs non-admins sans recherche
+    $sql = "SELECT p.id, p.nom, p.numero,
+            GROUP_CONCAT(t.type_name ORDER BY t.type_name SEPARATOR ', ') AS types
+            FROM pokemon p
+            INNER JOIN user_pokemon up ON p.id = up.pokemon_id
+            LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
+            LEFT JOIN types t ON pt.type_id = t.id
+            WHERE up.user_id = :user_id
+            GROUP BY p.id, p.nom, p.numero
+            ORDER BY p.numero ASC
+            LIMIT :premier, :parPage";
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->bindValue(':premier', $premier, PDO::PARAM_INT);
+    $stmt->bindValue(':parPage', $parPage, PDO::PARAM_INT);
+} elseif (!empty($_GET['search'])) {
+    // Requête avec recherche
     $search = $_GET['search'];
-    $sql = "SELECT * FROM pokemon WHERE (nom LIKE '%$search%') OR (numero LIKE '%$search%') OR (`p_type` LIKE '%$search%') OR (`p_type-2` LIKE '%$search%') ORDER BY numero ASC";
-    //si la recherche ne donne rien, on affiche un message d'erreur
-    if (mysqli_num_rows(mysqli_query($conn, $sql)) == 0) {
-        $error = "<h3 style='text-align: center; padding-top: 15px;'>Aucun résultat pour votre recherche</h3>";
+    $searchParam = "%$search%";
+    $sql = "SELECT p.id, p.nom, p.numero,
+            GROUP_CONCAT(t.type_name ORDER BY t.type_name SEPARATOR ', ') AS types
+            FROM pokemon p
+            LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
+            LEFT JOIN types t ON pt.type_id = t.id
+            GROUP BY p.id, p.nom, p.numero
+            WHERE (p.nom LIKE :search) OR (p.numero LIKE :search)";
+    if (!$isadmin) {
+        $sql .= " AND up.user_id = :user_id";
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->bindValue(':search', $searchParam, PDO::PARAM_STR);
+    } else {
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':search', $searchParam, PDO::PARAM_STR);
     }
-    unset($_GET);
-} elseif (!$isadmin && !empty($_GET['search'])) {
-    $search = $_GET['search'];
-    $sql = "SELECT * FROM pokemon WHERE (nom LIKE '%$search%') OR (numero LIKE '%$search%') OR (`p_type` LIKE '%$search%') OR (`p_type-2` LIKE '%$search%') AND created_by = '$user_id' ORDER BY numero ASC";
-    if (mysqli_num_rows(mysqli_query($conn, $sql)) == 0) {
-        $error = "<h3 style='text-align: center; padding-top: 15px;'>Aucun résultat pour votre recherche</h3>";
-    }
-    unset($_GET);
+    $stmt->bindValue(':premier', $premier, PDO::PARAM_INT);
+    $stmt->bindValue(':parPage', $parPage, PDO::PARAM_INT);
+}
+
+$stmt->execute();
+
+if ($stmt->rowCount() == 0) {
+    $error = "<h4 style='text-align: center; padding-top: 150px; padding-bottom: 150px;'>Aucun Pokémon trouvé</h4>";
 }
 
 
-$result = mysqli_query($conn, $sql);
-
-//On vériifie si la requête a retourné des résultats
-$resultCheck = mysqli_num_rows($result);
+//On vérifie si la requête a retourné des résultats
+$resultCheck = $stmt->rowCount(); // Obtenir le nombre de lignes affectées
 
 if ($error != "") {
     echo $error;
 } else {
     echo "<h1 style='text-align: center; padding-top: 15px;'>Tableau de bord</h1>";
-}
 ?>
 
-<section class="paginations">
+    <section class="paginations">
+        <div class="currentPage pt-2">
+            <form action="profil.php" method="get">
+                Page<input type="text" id="inputPage" name="page" placeholder="<?= $currentPage ?>"> /<?= $pages ?>
+            </form>
+        </div>
+        <div class="pagination">
+
+            <?php if ($currentPage > 1) : ?>
+                <a href="profil.php?page=<?= $currentPage - 1 ?>"><-- &nbsp</a>
+                    <?php else : ?>
+                        <div class="inline">&nbsp</div>
+                    <?php endif ?>
+                    <div>
+                        <?php for ($page = max(1, $currentPage - 3); $page <= min($currentPage + 3, $pages); $page++) : ?>
+                            <a href="profil.php?page=<?= $page ?>"><?= $page ?></a>
+                        <?php endfor ?>
+                    </div>
+                    <?php if ($currentPage < $pages) : ?>
+                        <a class="inline" href="profil.php?page=<?= $currentPage + 1 ?>">&nbsp--></a>
+        </div>
+    <?php else : ?>
+        <div class="inline">&nbsp</div>
+    <?php endif ?>
+    </div>
+    </section>
+
+    <table class="table dash-table">
+        <thead>
+
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Image</th>
+                <th scope="col">Pokémon</th>
+                <th scope="col">Types</th>
+                <?php if ($isadmin) : ?>
+                    <th scope="col">Créé par</th>
+                <?php endif; ?>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <?php
+            if ($stmt->rowCount() > 0) {
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
+                    <tr class="dash-tr">
+                        <th scope='row'><?= htmlspecialchars($row['numero']) ?></th>
+                        <td><img class='dash-p-img' src='./uploads/<?= htmlspecialchars($row['nom']) ?>.png' alt="Image du poknemon <?= htmlspecialchars($row['nom']) ?>"></td>
+                        <td id="#td">
+                            <div class="resp_th">Nom: </div><?= htmlspecialchars($row['nom']) ?>
+                        </td>
+                        <td>
+                            <?= isset($row['types']) ? htmlspecialchars($row['types']) : 'N/A' ?>
+                        </td>
+                        <?php if ($isadmin) : ?>
+                            <td>
+                                <div class="resp_th">Créé par: </div><?= htmlspecialchars($row['user_id'] ?? 'Inconnu') ?>
+                            </td>
+                        <?php endif; ?>
+                        <div class="btn-wrapper">
+                            <td><a href="p_edit.php?id=<?= $row['id'] ?>">Editer</a></td>
+                            <td><button type="button" class="del-btn" data-id="<?= $row['id'] ?>" data-bs-toggle="modal" data-bs-target="#exampleModal">Supprimer</button></td>
+                        </div>
+                    </tr>
+            <?php
+                }
+            } ?>
+        </tbody>
+    </table>
+
+    <!-- Modal START -->
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Suppression</h5>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Etes-vous sur de vouloir supprimer ce pokemon ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-danger go-del">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal END -->
+
+    <section class="paginations">
+        <div class="pagination">
+
+            <?php if ($currentPage > 1) : ?>
+                <a href="profil.php?page=<?= $currentPage - 1 ?>"><-- &nbsp</a>
+                    <?php else : ?>
+                        <div class="inline">&nbsp</div>
+                    <?php endif ?>
+                    <div>
+                        <?php for ($page = max(1, $currentPage - 3); $page <= min($currentPage + 3, $pages); $page++) : ?>
+                            <a href="profil.php?page=<?= $page ?>"><?= $page ?></a>
+                        <?php endfor ?>
+                    </div>
+                    <?php if ($currentPage < $pages) : ?>
+                        <a class="inline" href="profil.php?page=<?= $currentPage + 1 ?>">&nbsp--></a>
+        </div>
+    <?php else : ?>
+        <div class="inline">&nbsp</div>
+    <?php endif ?>
+    </div>
     <div class="currentPage pt-2">
         <form action="profil.php" method="get">
             Page<input type="text" id="inputPage" name="page" placeholder="<?= $currentPage ?>"> /<?= $pages ?>
         </form>
     </div>
-    <div class="pagination">
-
-        <?php if ($currentPage > 1) : ?>
-            <a href="profil.php?page=<?= $currentPage - 1 ?>"><-- &nbsp</a>
-                <?php else : ?>
-                    <div class="inline">&nbsp</div>
-                <?php endif ?>
-                <div>
-                    <?php for ($page = max(1, $currentPage - 3); $page <= min($currentPage + 3, $pages); $page++) : ?>
-                        <a href="profil.php?page=<?= $page ?>"><?= $page ?></a>
-                    <?php endfor ?>
-                </div>
-                <?php if ($currentPage < $pages) : ?>
-                    <a class="inline" href="profil.php?page=<?= $currentPage + 1 ?>">&nbsp--></a>
-    </div>
-<?php else : ?>
-    <div class="inline">&nbsp</div>
-<?php endif ?>
-</div>
-</section>
-
-<table class="table dash-table">
-    <thead>
-
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Image</th>
-            <th scope="col">Pokémon</th>
-            <th scope="col">Type</th>
-            <th scope="col">Type 2</th>
-            <?php if ($isadmin) { ?>
-                <th scope="col">Créé par</th>
-            <?php } ?>
-            <th scope="col">Créé le</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-
-    <tbody>
-        <?php
-        if ($resultCheck > 0) {
-            while ($row = mysqli_fetch_assoc($result)) { ?>
-                <tr class="dash-tr">
-                    <th scope='row'><?= $row['numero'] ?></th>
-                    <td><img class='dash-p-img' src='./uploads/<?= $row['nom'] ?>.png' alt="Image d'un pokemon"></td>
-                    <td id="#td">
-                        <div class="resp_th">Nom: </div><?= $row['nom'] ?>
-                    </td>
-                    <td>
-                        <div class="resp_th">Type 1: </div><?= $row['p_type'] ?>
-                    </td>
-                    <td>
-                        <div class="resp_th">Type 2: </div><?= $row['p_type-2'] ?>
-                    </td>
-                    <?php if ($isadmin) {
-                        //Si l'utilisateur est admin, on affiche la colonne "Créé par"
-                        //On fetch les mails des utilisateurs pour les afficher
-                        $sql = "SELECT email FROM users WHERE user_id = " . $row['created_by'];
-
-                        $result2 = mysqli_query($conn, $sql);
-                        $row2 = mysqli_fetch_assoc($result2);
-                    ?>
-                        <td>
-                            <div class="resp_th">Créé par: </div><?= $row2['email'] ?>
-                        </td>
-                    <?php
-                    }
-                    ?>
-                    <td>
-                        <div class="resp_th">Créé le: </div><?= $row['created_on'] ?>
-                    </td>
-                    <div class="btn-wrapper">
-                        <td><a href="p_edit.php?id=<?= $row['p_id'] ?>">Editer</a></td>
-                        <td><button type="button" class="del-btn" data-id="<?= $row['p_id'] ?>">Supprimer</button></td>
-                    </div>
-                </tr>
-        <?php
-            }
-        } ?>
-        <!-- Modal START -->
-        <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Suppression</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Etes-vous sur de vouloir supprimer ce pokemon ?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-
-                        <button type="button" class="btn btn-danger go-del">Supprimer</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal END -->
-    </tbody>
-
-</table>
-
-<section class="paginations">
-    <div class="pagination">
-
-        <?php if ($currentPage > 1) : ?>
-            <a href="profil.php?page=<?= $currentPage - 1 ?>"><-- &nbsp</a>
-                <?php else : ?>
-                    <div class="inline">&nbsp</div>
-                <?php endif ?>
-                <div>
-                    <?php for ($page = max(1, $currentPage - 3); $page <= min($currentPage + 3, $pages); $page++) : ?>
-                        <a href="profil.php?page=<?= $page ?>"><?= $page ?></a>
-                    <?php endfor ?>
-                </div>
-                <?php if ($currentPage < $pages) : ?>
-                    <a class="inline" href="profil.php?page=<?= $currentPage + 1 ?>">&nbsp--></a>
-    </div>
-<?php else : ?>
-    <div class="inline">&nbsp</div>
-<?php endif ?>
-</div>
-<div class="currentPage pt-2">
-    <form action="profil.php" method="get">
-        Page<input type="text" id="inputPage" name="page" placeholder="<?= $currentPage ?>"> /<?= $pages ?>
-    </form>
-</div>
-</section>
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </section>
+<?php } ?>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
-<script src="./JS/modal-profil.js"></script>
 <script src="./JS/pagination.js"></script>
+<script type="text/javascript" src="./JS/modal-profil.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+
+<script>
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2({
+            tags: false,
+            tokenSeparators: [',', ' ']
+        });
+    });
+</script>

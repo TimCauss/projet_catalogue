@@ -1,8 +1,0 @@
-#On met en place l'outil de réecriture
-RewriteEngine On
-
-#On recup la requete URI, seulement l'extension et seulement les fichiers (png, jpg, jpeg)
-RewriteCond %{REQUEST_URI} !\.(png|jpg|jpeg)$
-
-#je met tout le reste en Forbidden
-RewriteRule .*$ - [F]

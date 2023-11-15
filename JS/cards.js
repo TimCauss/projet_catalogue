@@ -1,5 +1,5 @@
 const cards = document.querySelectorAll(".type-card");
-const url = "/projet_catalogue/pokedex.php?type=";
+const url = "/pokedex.php?search=";
 
 cards.forEach((e, k) => {
   e.addEventListener("click", () => {
@@ -38,7 +38,7 @@ cards.forEach((e, k) => {
     } else if (k == 16) {
       window.location.href = url + "Dragon";
     } else {
-      window.location.href = url + "Fee";
+      window.location.href = url + "Fée";
     }
   });
 });

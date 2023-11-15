@@ -103,7 +103,6 @@ h4 {
 }
 
 .desc {
-    margin-top: 20px;
     margin-left: 15px;
     max-width: 450px;
 }
@@ -131,11 +130,13 @@ h6 {
     margin-top: 50px;
     margin-bottom: 30px;
 }
+
 .erreur {
     font-size: 2em;
     margin: 15%;
     margin-left: 50%;
 }
+
 .type {
 
     width: 130px;
