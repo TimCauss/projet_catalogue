@@ -15,12 +15,9 @@ $found = false; // flag pour check si un pokémon à été trouvé
 // On récupère la requête GET, on la filtre pour n'accepter que les entier :
 if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     $id = $_GET['id'];
-    $query = "SELECT p.*, GROUP_CONCAT(t.type_name ORDER BY t.type_name SEPARATOR ', ') as types 
-        FROM pokemon p 
-        LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id 
-        LEFT JOIN types t ON pt.type_id = t.id
-        WHERE p.id = :id
-        GROUP BY p.id";
+    $query = "SELECT p.*, GROUP_CONCAT(t.type_name ORDER BY t.type_name SEPARATOR ', ') as types
+        FROM pokemon p LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id LEFT JOIN types t ON pt.type_id = t.id
+        WHERE p.id = :id GROUP BY p.id";
     $stmt = $db->prepare($query);
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();

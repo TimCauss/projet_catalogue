@@ -1,0 +1,5 @@
+# python venv 
+/script/.venv/
+create-db-template.sql
+pojet_catalogue.sql
+connect.php

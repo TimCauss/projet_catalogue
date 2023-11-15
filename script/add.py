@@ -118,8 +118,7 @@ def scrapper(range_start, range_end):
         # On gère l'image
         img = d.find_element(
             By.XPATH, "//img[@alt='" + p_nom + "']")
-        urllib.request.urlretrieve(img.get_attribute("src"),
-                                   "C:\\laragon\\www\\projet_catalogue\\img\\pokemon\\" + p_nom + ".png")
+        urllib.request.urlretrieve(img.get_attribute("src"), "/var/www/html/uploads/" + p_nom + ".png")
 
         # On gère les évo, on créer une boucle de 3:
         p_evo = ""
@@ -129,20 +128,18 @@ def scrapper(range_start, range_end):
                 j) + ") > a:nth-child(1) > h3:nth-child(2)"
 
             if (check_exists_css(locator, d) == True):
-                p_evo += keep_word(d.find_element(By.CSS_SELECTOR,
-                                   locator).text, 0) + ","
+                p_evo += keep_word(d.find_element(By.CSS_SELECTOR, locator).text, 0) + ","
             else:
                 p_evo += ""
 
         if count == 1:
-            d.get("http://localhost/projet_catalogue/profil.php")
-            wait.until(lambda d: d.find_element(By.ID, "login-email")
-                       ).send_keys("jesuisun@bot.fr")
+            d.get("http://127.0.0.1:80/profil.php")
+            wait.until(lambda d: d.find_element(By.ID, "login-email")).send_keys("jesuisun@bot.fr")
             d.find_element(By.ID, "login-pass").send_keys("123456@#")
             time.sleep(0.1)
             d.find_element(By.ID, "submitLogin").click()
 
-        d.get("http://localhost/projet_catalogue/profil.php")
+        d.get("http://127.0.0.1:80/profil.php")
         d.find_element(
             By.XPATH, "//*[contains(text(),'Ajouter')]").click()
         wait.until(lambda d: d.find_element(By.ID, "nom")).send_keys(p_nom)
@@ -179,7 +176,7 @@ def scrapper(range_start, range_end):
             remove_last_comma(p_evo))
 
         d.find_element(By.ID, "p_img").send_keys(
-            "C:\\laragon\\www\\projet_catalogue\\img\\pokemon\\" + p_nom + ".png")
+            "/var/www/html/img/pokemon/" + p_nom + ".png")
         d.find_element(By.ID, "submit").submit()
 
 

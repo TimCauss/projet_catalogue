@@ -129,7 +129,7 @@ if (count($p_result) === 0) {
 </section>
 
 <section class="container-grid p-grid pb-5">
-    <div class="d-flex flex-row flex-wrap justify-content-center gap-5">
+    <div class="d-flex flex-row flex-wrap justify-content-center gap-3">
         <?php foreach ($p_result as $pokemon) :
             $types = explode(', ', $pokemon['types']); // Transforme la chaîne des types en tableau
         ?>
