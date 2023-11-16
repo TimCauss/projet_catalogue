@@ -10,7 +10,6 @@ $stmt = $db->prepare($query);
 $stmt->execute();
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
 ?>
 
 
@@ -36,15 +35,15 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <div class="carousel" data-flickity='{ "wrapAround": true, "adaptiveHeight": true }'>
-
         <?php foreach ($rows as $row) :
+            $id = htmlspecialchars($row['id']);
             $numero = htmlspecialchars($row['numero']);
             $nom = htmlspecialchars($row['nom']);
             $typesArray = explode(', ', $row['types']);
         ?>
             <div class="carousel-cell">
                 <div class="carousel-poke-nbr"><?= $numero ?></div>
-                <img class="carousel-img" src="/uploads/<?= $nom ?>.png" alt="Image de <?= $nom ?>">
+                <a href="/pokemon.php?id=<?= $id ?>"><img class="carousel-img" src="/uploads/<?= $nom ?>.png" alt="Image de <?= $nom ?>"></a>
                 <div class="carousel-footer">
                     <div class="crsl-ft-r1">
                         <h5><?= $nom ?> <span class="carousel-footer-nbr"><?= $numero ?></span></h5>

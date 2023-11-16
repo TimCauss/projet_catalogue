@@ -1,11 +1,6 @@
 <?php
-// On affiche toutes les erreurs :
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 
 require_once("connect.php");
-
 
 /* Verification de la connexion de l'utilisateur */
 if (!isset($_SESSION['user'])) {
@@ -17,31 +12,34 @@ define('MB', 1048576); //on Définir la valeur d'un MB
 
 include_once "./includes/fonctions.php";
 
-
+// Requête pour récupérer tous les Pokémon
+$query = "SELECT id, nom, numero FROM pokemon ORDER BY nom ASC";
+$stmt = $db->prepare($query);
+$stmt->execute();
+$pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 /* Si on capture un POST:*/
 if ($_POST) {
     /* On vérifie si les champs necessaire sont remplis : */
-    if (!empty($_POST['nom']) && !empty($_POST['numero'])) {
+    if (
+        !empty($_POST['nom']) && !empty($_POST['numero']) && !empty($_POST['description'])
+        && !empty($_POST['taille']) && !empty($_POST['poids'] && !empty($_POST['type']))
+    ) {
 
-        /* On fetch la base de donnée des pokémons pour la comparer au données entrées dans le formulaire */
-        $sql_all = "SELECT nom, numero FROM pokemon";
-        $query_all = $db->prepare($sql_all);
-        $query_all->execute();
-        $result_all = $query_all->fetchAll(PDO::FETCH_ASSOC);
         /* On Vérifie que le Pokémon n'est pas déjà présent dans la base de donée
         Si le nom ou le numero existe déjà, on stock un message d'erreur
         dans la session PHP */
 
-        /* On nettoies les post puis on stock le résultat de ce netooyage dans une variable */
+        /* On nettoies les post puis on stock le résultat de ce netoyage dans une variable */
         $nom = strip_tags($_POST['nom']);
         $numero = pNumeroCheck(strip_tags($_POST["numero"]));
         $description = strip_tags($_POST['description']);
-        $taille = strip_tags($_POST['taille']);
-        $poids = strip_tags($_POST['poids']);
+        $taille = str_replace_comma(strip_tags($_POST['taille']));
+        $poids = str_replace_comma(strip_tags($_POST['poids']));
 
-        foreach ($result_all as $result) {
+        foreach ($pokemonList as $result) {
+
             //Si le nom ou le numéro existe déjà, un message d'erreur apparait.
             if (strtolower($result["nom"]) == strtolower($nom)) {
                 die("Ce Pokémon existe déjà");
@@ -88,9 +86,6 @@ if ($_POST) {
             if (!move_uploaded_file($_FILES["p_img"]["tmp_name"], $newfilename)) {
                 die("Le transfert de fichier a échoué. Erreur: " . error_get_last()['message']);
             }
-            // if (!move_uploaded_file($_FILES["p_img"]["tmp_name"], $newfilename)) {
-            //     die("Le transfert de fichier à échoué, veuillez contacter un administrateur");
-            // }
 
             // On récupère l'id de l'utilisateur connecté
             $user_id = $_SESSION['user']['user_id'];
@@ -110,7 +105,7 @@ if ($_POST) {
                 // On insère l'évolution si le formulaire n'est pas vide sur ce champ
                 if (!empty($_POST['is_evolution']) && !empty($_POST['evolution_from'])) {
                     $evolution_from_id = strip_tags($_POST['evolution_from']);
-                    $sql_evolution = "INSERT INTO `evolutions` (`pokemon_id`, `evolve_from` VALUES (:pokemon_id, :evolves_from)";
+                    $sql_evolution = "INSERT INTO `evolutions` (`pokemon_id`, `evolves_from`) VALUES (:pokemon_id, :evolves_from)";
                     $query_evo = $db->prepare($sql_evolution);
                     $query_evo->bindValue(':pokemon_id', $pokemon_id);
                     $query_evo->bindValue(':evolves_from', $evolution_from_id);
@@ -212,7 +207,7 @@ if ($_POST) {
         function checkLabelPosition(inputElement) {
             // Récupérer l'élément d'étiquette correspondant
             var labelElement = document.querySelector('.custom-label[for="' + inputElement.id + '"]');
-            // Appliquer la classe "active" si l'input a du texte, sinon la supprimer
+
             if (labelElement) {
                 if (inputElement.value.length > 0) {
                     labelElement.classList.add('active');
@@ -279,19 +274,27 @@ if ($_POST) {
                     </div>
                 </div>
                 <div class="row mb-4" id="evolution_from_container" style="display: none;">
+
                     <label for="evolution_from" class="form-label">Évolution de :</label>
-                    <select class="form-control" name="evolution_from" id="evolution_from">
+                    <select class="form-control centered" name="evolution_from" id="evolution_from">
                     </select>
                 </div>
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
-                        var checkbox = document.getElementById('is_evolution');
-                        var container = document.getElementById('evolution_from_container');
-
+                        let checkbox = document.getElementById('is_evolution');
+                        let container = document.getElementById('evolution_from_container');
+                        let select = document.getElementById('evolution_from');
                         checkbox.addEventListener('change', function() {
                             if (checkbox.checked) {
                                 container.style.display = 'block';
-                                // Charger dynamiquement les options ici
+                                select.innerHTML = '';
+                                let pokemonList = <?php echo json_encode($pokemonList); ?>;
+                                pokemonList.forEach(function(pokemon) {
+                                    let option = document.createElement('option');
+                                    option.value = pokemon.id;
+                                    option.textContent = pokemon.nom;
+                                    select.appendChild(option);
+                                });
                             } else {
                                 container.style.display = 'none';
                             }
@@ -299,8 +302,7 @@ if ($_POST) {
                     });
                 </script>
                 <div class="row mb-4">
-                    <label for="types" class="form-label">Types</label>
-                    <select class="js-example-basic-multiple form-outline custom-select" name="type[]" id="type" multiple required>
+                    <select class="js-example-basic-multiple custom-select create-type" name="type[]" id="type_create" multiple required>
                         <option value="feu">Feu</option>
                         <option value="plante">Plante</option>
                         <option value="eau">Eau</option>
@@ -320,7 +322,6 @@ if ($_POST) {
                         <option value="fée">Fée</option>
                         <option value="dragon">Dragon</option>
                     </select>
-
                 </div>
                 <div class="d-flex justify-content-center">
                     <input type="submit" id="submit" class="btn btn-form" value="Ajouter">

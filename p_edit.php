@@ -1,4 +1,7 @@
 <?php
+// On affiche toutes les erreurs :
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 session_start();
 
@@ -6,38 +9,42 @@ if (!isset($_SESSION['user'])) {
     header('Location: ./login.php');
     die();
 }
-
+include_once "./connect.php";
 include_once "./includes/fonctions.php";
-
-//On se connecte à la base de donnée
-try {
-    $conn = mysqli_connect("localhost", "tim", "ixFtgev@ldms#1612", "projet_catalogue");
-} catch (PDOException $e) {
-    echo "Echec de connexion à la BDD : " . $e->getMessage();
-}
 
 /* -------------------------GET----------------------- */
 //On vérifie que le GET existe et qu'il n'est pas vide
 if (isset($_GET['id']) && !empty($_GET['id'])) {
     //On stocke l'id récupérée dans le GET dans une variable :
-    $p_id = $_GET['id'];
+    $p_id = htmlspecialchars($_GET['id']);
     //On prépare une requête SQL pour récupérer les infos du pokémon à éditer :
-    $sql = "SELECT * FROM pokemon WHERE p_id = $p_id";
-    //On execute la requête :
-    $result = mysqli_query($conn, $sql);
+    $sql = "SELECT p.*, GROUP_CONCAT(t.type_name ORDER BY t.type_name SEPARATOR ', ') AS types,
+            e.evolves_from FROM pokemon p
+            LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
+            LEFT JOIN types t ON pt.type_id = t.id
+            LEFT JOIN evolutions e ON p.id = e.pokemon_id
+            WHERE p.id = :id GROUP BY p.id, e.evolves_from";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':id', $p_id, PDO::PARAM_INT);
+    $stmt->execute();
+
+
     //On vérifie que la requête s'est bien executée :
-    if ($result) {
+    if ($stmt) {
         //Si oui, on stock les infos du pokémon dans une variable :
-        $row = mysqli_fetch_assoc($result);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
         //On stock les infos du pokémon dans des variables :
-        $nom = $row['nom'];
-        $numero = pNumeroUncheck($row['numero']);
-        $description = $row['p_description'];
-        $taille = $row['taille'];
-        $poids = $row['poids'];
-        $type = $row['p_type'];
-        $type2 = $row['p_type-2'];
-        $evolutions = explode(",", $row['evolutions']);
+        if ($row) {
+            $nom = htmlspecialchars($row['nom']);
+            $numero = htmlspecialchars(pNumeroUncheck($row['numero']));
+            $description = htmlspecialchars($row['description']);
+            $taille = htmlspecialchars($row['taille']);
+            $poids = htmlspecialchars($row['poids']);
+            $type = $row['types'];
+            if ($row['evolves_from']) {
+                $evolutions = htmlspecialchars($row['evolves_from']);
+            }
+        }
     } else {
         //Si non, on stock un message d'erreur dans la session PHP :
         $_SESSION['action'] = [
@@ -58,8 +65,6 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 /* -------------------------POST----------------------- */
 if (isset($_POST['valider'])) {
     if (!empty($_GET['id']) && !empty($_POST['nom']) && !empty($_POST['numero']) && !empty($_POST['description']) && !empty($_POST['taille']) && !empty($_POST['poids']) && !empty($_POST['type1'])) {
-
-
         //On récupère les données du formulaire :
         $p_id = strip_tags($_GET['id']);
         $nom = strip_tags($_POST['nom']);
@@ -160,12 +165,15 @@ if (isset($_POST['valider'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link rel="stylesheet" href="./CSS/style-main.css">
+
     <title>Pokeliste - Editer <?= $nom ?></title>
 </head>
 
 <body>
-
     <?php
     include_once './includes/header.php';
     include_once './includes/nav.php';
@@ -198,7 +206,7 @@ if (isset($_POST['valider'])) {
 
                 <div class="desc">
                     <div class="p-input-wrapper">
-                        <textarea class="p-input-desc" name="description" rows="5" cols="35" required maxlength="255"><?= $description ?></textarea>
+                        <textarea class="p-input-desc form-outline custom-select" name="description" rows="5" cols="35" required maxlength="255"><?= $description ?></textarea>
                     </div>
                     <div class="p-input-det-wrapper">
                         <ul>
@@ -208,7 +216,7 @@ if (isset($_POST['valider'])) {
                     </div>
                     <div class="type-container">
                         <h6>Type</h6>
-                        <select class="type-select-size col" name="type1" id="type" required>
+                        <select class="js-example-basic-multiple form-outline custom-select" name="type[]" id="type" multiple required>
                             <option selected><?= $type ?></option>
                             <option value="feu">Feu</option>
                             <option value="plante">Plante</option>
@@ -221,30 +229,13 @@ if (isset($_POST['valider'])) {
                             <option value="psy">Psy</option>
                             <option value="combat">Combat</option>
                             <option value="acier">Acier</option>
-                            <option value="tenebres">Tenèbres</option>
+                            <option value="tenebres">Tenebres</option>
                             <option value="spectre">Spectre</option>
                             <option value="sol">Sol</option>
                             <option value="roche">Roche</option>
                             <option value="vol">Vol</option>
-                        </select>
-                        <select class="type-select-size col" name="type2" id="type">
-                            <option selected><?= $type2 ?></option>
-                            <option value="feu">Feu</option>
-                            <option value="plante">Plante</option>
-                            <option value="eau">Eau</option>
-                            <option value="glace">Glace</option>
-                            <option value="insecte">Insecte</option>
-                            <option value="normal">Normal</option>
-                            <option value="electrik">Electrik</option>
-                            <option value="poison">Poison</option>
-                            <option value="psy">Psy</option>
-                            <option value="combat">Combat</option>
-                            <option value="acier">Acier</option>
-                            <option value="tenebres">Tenèbres</option>
-                            <option value="spectre">Spectre</option>
-                            <option value="sol">Sol</option>
-                            <option value="roche">Roche</option>
-                            <option value="vol">Vol</option>
+                            <option value="fée">Fée</option>
+                            <option value="dragon">Dragon</option>
                         </select>
                     </div>
                 </div>
@@ -252,41 +243,7 @@ if (isset($_POST['valider'])) {
             <section class="evolutions">
                 <h2>Evolutions:</h2>
                 <div class="evo-container">
-                    <?php
-                    $i = 0;
-                    foreach ($evolutions as $evo_nom) {
-                        $i++;
-                        // Préparez une requête SQL pour récupérer les informations de l'évolution courante
-                        $sql = "SELECT * FROM pokemon WHERE nom = '$evo_nom'";
-                        // Exécutez la requête SQL
-                        $result = mysqli_query($conn, $sql);
-                        // Récupérez la ligne de résultat sous forme de tableau associatif
-                        $row = mysqli_fetch_assoc($result);
-                        // Vérifiez si la requête SQL a renvoyé des résultats
-                        if ($row !== false && $row !== null) {
-                            // Récupérez les informations de l'évolution courante
-                            $evo_nom = $row['nom'];
-                            // On prépare le tableau des evolutions pour l'édition :
-                    ?>
-                            <div class="evo">
-                                <span class="poke"><input id="pInput" name="evo<?= $i ?>" value="<?= $evo_nom ?>"></span>
-                            </div>
-                        <?php
 
-                        } else {
-                            // La requête SQL n'a renvoyé aucun résultat
-                        ?>
-                            <div class="evo">
-                                <span class="poke"><input value="Aucune Evolution"></span>
-                            </div>
-                    <?php
-                        }
-                        if (next($evolutions)) {
-                            echo "<span class=\"arrow\">→</span>";
-                        }
-                    }
-
-                    ?>
                 </div>
 
             </section>
@@ -294,7 +251,16 @@ if (isset($_POST['valider'])) {
 
 
     </form>
-
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2({
+                tags: false,
+                tokenSeparators: [',', ' '],
+                placeholder: "Type(s)",
+                maximumSelectionLength: 2
+            })
+        });
+    </script>
     <script src="./JS/edit.js"></script>
 </body>
 

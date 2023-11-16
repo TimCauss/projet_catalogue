@@ -1,6 +1,7 @@
 <?php
-function pNumeroCheck($numero)
+function pNumeroCheck($numero_a_modifier)
 {
+    $numero = $numero_a_modifier;
     if (strlen($numero) == 1) {
         return "000" . $numero;
     } elseif (strlen($numero) == 2) {
@@ -10,8 +11,9 @@ function pNumeroCheck($numero)
     }
 }
 
-function pNumeroUncheck($numero)
+function pNumeroUncheck($numero_a_modifier)
 {
+    $numero = $numero_a_modifier;
     if (substr($numero, 0, 3) == "000") {
         return substr($numero, 3);
     } elseif (substr($numero, 0, 2) == "00") {
@@ -21,4 +23,10 @@ function pNumeroUncheck($numero)
     } else {
         return $numero;
     }
+}
+
+function str_replace_comma($string)
+{
+    $newString = str_replace(".", ",", $string);
+    return $newString;
 }

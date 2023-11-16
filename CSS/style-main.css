@@ -728,6 +728,20 @@ header img {
     margin-bottom: 0;
 }
 
+#evolution_from_container {
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+.centered {
+    text-align: center;
+}
+
+#type_create .select2-selection__choice {
+    font-size: 12px !important;
+    padding: 0 !important;
+}
+
 .form-control:focus+.custom-label {
     transform: translateY(-1rem) translateY(0.1rem) scale(.8);
     color: #3b71ca;
@@ -736,6 +750,8 @@ header img {
 .custom-label.active {
     transform: translateY(-1rem) translateY(0.1rem) scale(.8);
 }
+
+
 
 /*Style pokeball*/
 
@@ -1141,7 +1157,195 @@ header img {
 
 /**STYLE EDIT PAGE START */
 
+.select2-selection__choice {
+    border: none;
+    border-radius: 10px;
+    background-color: none;
+    color: rgb(255, 255, 255);
+    padding: 5px 10px;
+    margin-right: 5px;
+}
 
+.select2-container--default .select2-selection--multiple {
+    background-color: white;
+    border-radius: 4px;
+    cursor: text;
+    padding-bottom: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #e4e4e4;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: inline-block;
+    margin-left: 5px;
+    margin-top: 5px;
+    padding: 0;
+    padding-left: 20px;
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+    white-space: nowrap;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    background-color: transparent;
+    border: none;
+    border-right: none;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 0 4px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.select2-container .select2-search--inline .select2-search__field {
+    text-align: center;
+    box-sizing: border-box;
+    border: none;
+    font-size: 100%;
+    margin-left: 5px;
+    padding: 0;
+    max-width: 100%;
+    resize: none;
+    height: 25px;
+    vertical-align: bottom;
+    font-family: sans-serif;
+    overflow: hidden;
+    word-break: keep-all;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+    background-color: none;
+}
+
+.select2-selection__choice__remove {
+    color: white;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover,
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:focus {
+    background-color: transparent;
+    color: #333;
+    outline: none;
+}
+
+.select2-selection__choice__remove:hover {
+    color: white;
+    cursor: pointer;
+    background-color: transparent;
+    margin-right: 5px;
+}
+
+/* Vous pourriez vouloir ajouter des couleurs spécifiques pour chaque type */
+.select2-selection__choice[title="Feu"] {
+    background-color: #E3350D !important;
+    /* Couleur pour le type Feu */
+}
+
+.select2-selection__choice[title="Plante"] {
+    background-color: #68D037 !important;
+    /* Couleur pour le type Feu */
+}
+
+.select2-selection__choice[title="Eau"] {
+    background-color: #1E90FF !important;
+    /* Couleur pour le type Feu */
+}
+
+.select2-selection__choice[title="Insecte"] {
+    background-color: #729f3f !important;
+    /* Couleur pour le type Feu */
+}
+
+.select2-selection__choice[title="Poison"] {
+    background-color: #800080 !important;
+    /* Couleur pour le type Feu */
+}
+
+.select2-selection__choice[title="Normal"] {
+    background-color: #a4acaf !important;
+    color: #1f1f1f;
+    /* Couleur pour le type Feu */
+}
+
+.select2-selection__choice[title="Glace"] {
+    background-color: #289e9e !important;
+    /* Couleur pour le type Feu */
+}
+
+.select2-selection__choice[title="Psy"] {
+    background-color: #a549a5 !important;
+    /* Couleur pour le type Feu */
+}
+
+.select2-selection__choice[title="Acier"] {
+    background-color: #3d5256 !important;
+    /* Couleur pour le type Feu */
+}
+
+.select2-selection__choice[title="Combat"] {
+    background-color: #700000 !important;
+    /* Couleur pour le type Feu */
+}
+
+.select2-selection__choice[title="Ténèbres"] {
+    background-color: #1a1a1a !important;
+    /* Couleur pour le type Feu */
+}
+
+.select2-selection__choice[title="Roche"] {
+    background-color: #80744a !important;
+    /* Couleur pour le type Feu */
+}
+
+.select2-selection__choice[title="Sol"] {
+    background-color: #865036 !important;
+    /* Couleur pour le type Feu */
+}
+
+.select2-selection__choice[title="Spectre"] {
+    background-color: #353e71 !important;
+    /* Couleur pour le type Feu */
+}
+
+.select2-selection__choice[title="Vol"] {
+    background-color: #5d75a1 !important;
+    /* Couleur pour le type Feu */
+}
+
+.select2-selection__choice[title="Dragon"] {
+    background-color: #0C69C8 !important;
+    /* Couleur pour le type Feu */
+}
+
+.select2-selection__choice[title="Fée"] {
+    background-color: #EE90E6 !important;
+    color: #1f1f1f;
+    /* Couleur pour le type Feu */
+}
+
+.type-container .select2-selection__choice {
+    font-size: 22px;
+}
 
 #retour,
 #valider {
@@ -1164,8 +1368,9 @@ header img {
 
 
 .p-input-desc {
-    padding: 10px;
+    padding: 15px;
     resize: none;
+    font-size: 18px;
 }
 
 .input-taille,
@@ -1207,13 +1412,13 @@ header img {
     border: none;
 }
 
-select.type-select-size {
+/* select.type-select-size {
     text-align: center;
     width: 100px;
     height: 30px;
     border: none;
     border-radius: 5px;
-}
+} */
 
 .evo input {
     text-align: center;

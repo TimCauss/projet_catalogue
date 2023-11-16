@@ -113,8 +113,7 @@ if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
                 <img id="pokemon" src="./uploads/<?= htmlspecialchars($nom) ?>.png" alt="<?= htmlspecialchars($nom) ?>">
                 <div class="desc">
                     <p><?= htmlspecialchars($description) ?></p>
-
-                    <ul>
+                    <ul class="p-input-det-wrapper">
                         <li>Taille: <span class="vert"><?= htmlspecialchars($taille) ?>m</span></li>
                         <li>Poids: <span class="vert"><?= htmlspecialchars($poids) ?>kg</span></li>
                     </ul>
