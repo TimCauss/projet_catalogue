@@ -1,5 +1,4 @@
 // POKEBALL SECTION :
-
 const pokeball = document.querySelector(".pokeball");
 const pokeballbutton = document.querySelector(".pokeball__button");
 
@@ -8,7 +7,6 @@ pokeball.addEventListener("mouseover", () => {
 });
 
 // MODAL SECTION :
-
 const addBtnElement = document.querySelector(".trg-btn");
 const modalAddElement = document.querySelector(".form-add-container");
 const overlayElement = document.querySelector(".overlay");
@@ -32,4 +30,3 @@ function closeModal() {
   addBtnElement.classList.remove("onuse");
   overlayElement.classList.remove("active");
 }
-

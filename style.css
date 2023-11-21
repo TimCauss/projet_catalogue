@@ -206,15 +206,11 @@ h2 {
 
 .evo-container {
     display: flex;
-    align-items: center;
-}
-
-.evo {
-    display: flex;
+    flex-wrap: 10px;
     flex-direction: column;
     align-items: center;
-    text-align: center;
-    margin: 0px 50px;
+    font-size: 18px;
+
 }
 
 .arrow {
@@ -234,7 +230,7 @@ h2 {
 
 @media screen and (max-width: 1000px) {
     .evo-container {
-        display: block;
+
         text-align: center;
     }
 

@@ -274,7 +274,6 @@ if ($_POST) {
                     </div>
                 </div>
                 <div class="row mb-4" id="evolution_from_container" style="display: none;">
-
                     <label for="evolution_from" class="form-label">Évolution de :</label>
                     <select class="form-control centered" name="evolution_from" id="evolution_from">
                     </select>
@@ -326,7 +325,6 @@ if ($_POST) {
                 <div class="d-flex justify-content-center">
                     <input type="submit" id="submit" class="btn btn-form" value="Ajouter">
                 </div>
-
             </form>
         </div>
     </div>

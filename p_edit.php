@@ -12,45 +12,64 @@ if (!isset($_SESSION['user'])) {
 include_once "./connect.php";
 include_once "./includes/fonctions.php";
 
+
+$user_id = $_SESSION['user']['user_id'];
+
 /* -------------------------GET----------------------- */
 //On vérifie que le GET existe et qu'il n'est pas vide
 if (isset($_GET['id']) && !empty($_GET['id'])) {
     //On stocke l'id récupérée dans le GET dans une variable :
-    $p_id = htmlspecialchars($_GET['id']);
-    //On prépare une requête SQL pour récupérer les infos du pokémon à éditer :
-    $sql = "SELECT p.*, GROUP_CONCAT(t.type_name ORDER BY t.type_name SEPARATOR ', ') AS types,
-            e.evolves_from FROM pokemon p
-            LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
-            LEFT JOIN types t ON pt.type_id = t.id
-            LEFT JOIN evolutions e ON p.id = e.pokemon_id
-            WHERE p.id = :id GROUP BY p.id, e.evolves_from";
-    $stmt = $db->prepare($sql);
-    $stmt->bindValue(':id', $p_id, PDO::PARAM_INT);
-    $stmt->execute();
+    $p_id = strip_tags($_GET['id']);
+    //On vérifie si l'utilisateur est lié au pokémon:
+    $sql_user = "SELECT user_id, pokemon_id FROM user_pokemon WHERE pokemon_id = :id";
+    $reqUser = $db->prepare($sql_user);
+    $reqUser->bindValue(':id', $p_id, PDO::PARAM_INT);
+    $reqUser->execute();
+    $array_user_pokemon = $reqUser->fetch(PDO::FETCH_ASSOC);
+    if (!empty($array_user_pokemon) && $user_id == $array_user_pokemon['user_id']) {
 
+        // Requête pour récupérer tous les Pokémon
+        $query = "SELECT id, nom, numero FROM pokemon ORDER BY nom ASC";
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+        $pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    //On vérifie que la requête s'est bien executée :
-    if ($stmt) {
-        //Si oui, on stock les infos du pokémon dans une variable :
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        //On stock les infos du pokémon dans des variables :
-        if ($row) {
-            $nom = htmlspecialchars($row['nom']);
-            $numero = htmlspecialchars(pNumeroUncheck($row['numero']));
-            $description = htmlspecialchars($row['description']);
-            $taille = htmlspecialchars($row['taille']);
-            $poids = htmlspecialchars($row['poids']);
-            $type = $row['types'];
-            if ($row['evolves_from']) {
-                $evolutions = htmlspecialchars($row['evolves_from']);
+        //On prépare une requête SQL pour récupérer les infos du pokémon à éditer :
+        $sql = "SELECT p.*, GROUP_CONCAT(t.type_name ORDER BY t.type_name SEPARATOR ', ') AS types,
+                e.evolves_from FROM pokemon p LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
+                LEFT JOIN types t ON pt.type_id = t.id LEFT JOIN evolutions e ON p.id = e.pokemon_id
+                WHERE p.id = :id GROUP BY p.id, e.evolves_from";
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id', $p_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        //On vérifie que la requête s'est bien executée :
+        if ($stmt) {
+            //Si oui, on stock les infos du pokémon dans une variable :
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            //On stock les infos du pokémon dans des variables :
+            if ($row) {
+                $nom = strip_tags($row['nom']);
+                $numero = strip_tags(pNumeroUncheck($row['numero']));
+                $description = strip_tags($row['description']);
+                $taille = strip_tags($row['taille']);
+                $poids = strip_tags($row['poids']);
+                $typeArray = explode(', ', $row['types']);
+                if ($row['evolves_from']) {
+                    $evolutions = strip_tags($row['evolves_from']);
+                }
             }
+        } else {
+            //Si non, on stock un message d'erreur dans la session PHP :
+            $_SESSION['action'] = [
+                'ERROR EDIT' => "Une erreur est survenue impossible de récupérer les données du Pokémon"
+            ];
+            header('Location: profil.php');
         }
     } else {
-        //Si non, on stock un message d'erreur dans la session PHP :
         $_SESSION['action'] = [
-            'ERROR EDIT' => "Une erreur est survenue impossible de récupérer les données du Pokémon"
+            'ERROR' => "Vous n'ête pas lié à ce Pokémon"
         ];
-        die();
         header('Location: profil.php');
     }
 } else {
@@ -58,13 +77,16 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     $_SESSION['action'] = [
         'ERROR ID' => "Une erreur est survenue lors de la récupération des données du Pokémon"
     ];
-    die();
     header('Location: profil.php');
 }
 
 /* -------------------------POST----------------------- */
 if (isset($_POST['valider'])) {
-    if (!empty($_GET['id']) && !empty($_POST['nom']) && !empty($_POST['numero']) && !empty($_POST['description']) && !empty($_POST['taille']) && !empty($_POST['poids']) && !empty($_POST['type1'])) {
+    if (
+        !empty($_GET['id']) && !empty($_POST['nom']) && !empty($_POST['numero'])
+        && !empty($_POST['description']) && !empty($_POST['taille'])
+        && !empty($_POST['poids']) && !empty($_POST['type'])
+    ) {
         //On récupère les données du formulaire :
         $p_id = strip_tags($_GET['id']);
         $nom = strip_tags($_POST['nom']);
@@ -72,27 +94,7 @@ if (isset($_POST['valider'])) {
         $description = strip_tags($_POST['description']);
         $taille = strip_tags($_POST['taille']);
         $poids = strip_tags($_POST['poids']);
-        if ($_POST['type2'] == "Type") {
-            $_POST['type2'] = NULL;
-        } else {
-            $type2 = strip_tags($_POST['type2']);
-        }
-        if ($_POST['type1'] == "Type") {
-            die("Veuillez choisir un type pour le Pokémon");
-        } else {
-            $type = strip_tags($_POST['type1']);
-        }
-
-        //On récupère et trie les évolutions :
-        if (isset($_POST['evo1'])) {
-            $evo = $_POST['evo1'] . ",";
-        }
-        if (isset($_POST['evo2'])) {
-            $evo .= $_POST['evo2'] . ",";
-        }
-        if (isset($_POST['evo3'])) {
-            $evo .= $_POST['evo3'];
-        }
+        $type = $_POST['type'];
 
         //On vérifie si un fichier à été posté :
         if (!empty($_FILES["p_img"]["name"])) {
@@ -129,27 +131,66 @@ if (isset($_POST['valider'])) {
             }
         }
 
-        //On prépare une requête SQL pour mettre à jour les données du pokémon :
-        $sql = "UPDATE pokemon SET nom = '$nom', numero = '$numero', p_description = '$description', taille = $taille, poids = $poids, p_type = '$type', `p_type-2` = '$type2', evolutions = '$evo' WHERE p_id = $p_id";
-        //on execute la requête :
-        $result = mysqli_query($conn, $sql);
-        //On vérifie que la requête s'est bien executée :
-        if ($result) {
-            //On ajoute un repère de l'action dans la Session
-            $_SESSION['action'] = [
-                "Edition Réussie" => "Pokémon modifié avec succès"
-            ];
-            //On logs l'action da,s la BDD logs :
-            $user_id = $_SESSION['user']['user_id'];
-            $log = "INSERT INTO `logs`(`user_id`,`log_description`, `log_pokemon` ,`log_date`) VALUES ($user_id, ' a modifié le Pokémon ', '$nom', now())";
-            $logs = mysqli_query($conn, $log);
+        // On met les modification dans un try pour pouvoir annuler les modification si on catch une erreur
+        try {
 
-            //On redirige vers la page profil.php :
+            /* Mise à jour table principale des Pokemon: */
+            $db->beginTransaction(); // On début ici la transaction avec la bdd 
+            $stmt = $db->prepare("UPDATE pokemon SET nom = :nom, numero = :numero, description = :description, taille = :taille, poids = :poids WHERE id = :id");
+            $stmt->execute([':nom' => $nom, ':numero' => $numero, ':description' => $description, ':taille' => $taille, ':poids' => $poids, ':id' => $p_id]);
+
+            /* Mise à jour de la table des types
+            On doit d'abord supprimer les jointures du pokémon afin d'en insérer de nouveaux */
+            $stmt = $db->prepare("DELETE FROM pokemon_types WHERE pokemon_id = :p_id");
+            $stmt->execute([':p_id' => $p_id]);
+
+            foreach ($type as $type_name) {
+                //requête pour récup l'id correspondant au type_name
+                $type_stmt = $db->prepare("SELECT id FROM types WHERE type_name = :type_name");
+                $type_stmt->execute([':type_name' => $type_name]);
+                $type_id = $type_stmt->fetch(PDO::FETCH_ASSOC)['id']; // On stocke l'id du type dans cette variable
+                // On insère les données dans la tables pokémon_types :
+                $stmt = $db->prepare('INSERT INTO pokemon_types (pokemon_id, type_id) VALUES(:pokemon_id, :type_id)');
+                $stmt->execute([':pokemon_id' => $p_id, ':type_id' => $type_id]);
+            }
+
+            /* Mise à jour des évolutions */
+            if (!empty($_POST['evolution_from'])) {
+                $evolves_from = strip_tags($_POST['evolution_from']);
+                $evolve_del_stmt = $db->prepare("DELETE FROM evolutions WHERE pokemon_id = :p_id");
+                $evolve_del_stmt->execute([':p_id' => $p_id]);
+                $evolve_stmt = $db->prepare("INSERT INTO evolutions (pokemon_id, evolves_from) VALUES(:pokemon_id,  :evolves_from)");
+                $evolve_stmt->execute([':pokemon_id' => $p_id, ':evolves_from' => $evolves_from]);
+            }
+        } catch (Exception $e) {
+            // Annuler la transaction si une erreur survient
+            $db->rollBack();
+            $e->getMessage();
+            $_SESSION['action'] = [
+                'ERROR RESULT' => "Erreur: . $e"
+            ];
+            //On redirige l'utilisateur vers la page profil:
             header('Location: profil.php');
-        } else {
-            //Si non, on stock un message d'erreur dans la session PHP :
-            die("Erreur SQL : " . $sql . "<br>" . mysqli_error($conn));
         }
+
+        // Pas d'erreur, on commit les changement à la db:
+        $db->commit();
+
+        //On ajoute un repère de l'action dans la Session
+        $_SESSION['action'] = [
+            "Edition Réussie" => "Pokémon . $nom . modifié avec succès"
+        ];
+
+        // On log l'action de l'utilisateur :
+        $sql_log = "INSERT INTO user_logs (user_id, action_type, description) VALUES (:user_id, :action_type, :description)";
+        $query_log = $db->prepare($sql_log);
+        $query_log->bindValue(':user_id', $user_id);
+        $query_log->bindValue(':action_type', 'Création');
+        $query_log->bindValue(':description', $nom);
+        $query_log->execute();
+
+        //On redirige vers la page profil.php :
+        header('Location: profil.php');
     } else {
         die("Tous les champs ne sont pas remplis");
     }
@@ -217,7 +258,9 @@ if (isset($_POST['valider'])) {
                     <div class="type-container">
                         <h6>Type</h6>
                         <select class="js-example-basic-multiple form-outline custom-select" name="type[]" id="type" multiple required>
-                            <option selected><?= $type ?></option>
+                            <?php foreach ($typeArray as $type) : ?>
+                                <option value="<?= htmlspecialchars($type) ?>" selected><?= htmlspecialchars($type) ?></option>
+                            <?php endforeach; ?>
                             <option value="feu">Feu</option>
                             <option value="plante">Plante</option>
                             <option value="eau">Eau</option>
@@ -243,13 +286,42 @@ if (isset($_POST['valider'])) {
             <section class="evolutions">
                 <h2>Evolutions:</h2>
                 <div class="evo-container">
-
+                    <div class="row mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="is_evolution" name="is_evolution">
+                            <label class="form-check-label" for="is_evolution">Est une évolution</label>
+                        </div>
+                    </div>
+                    <div class="row mb-4" id="evolution_from_container" style="display: none;">
+                        <label for="evolution_from" class="form-label">Évolution de :</label>
+                        <select class="form-control centered" name="evolution_from" id="evolution_from">
+                        </select>
+                    </div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            let checkbox = document.getElementById('is_evolution');
+                            let container = document.getElementById('evolution_from_container');
+                            let select = document.getElementById('evolution_from');
+                            checkbox.addEventListener('change', function() {
+                                if (checkbox.checked) {
+                                    container.style.display = 'block';
+                                    select.innerHTML = '';
+                                    let pokemonList = <?php echo json_encode($pokemonList); ?>;
+                                    pokemonList.forEach(function(pokemon) {
+                                        let option = document.createElement('option');
+                                        option.value = pokemon.id;
+                                        option.textContent = pokemon.nom;
+                                        select.appendChild(option);
+                                    });
+                                } else {
+                                    container.style.display = 'none';
+                                }
+                            });
+                        });
+                    </script>
                 </div>
-
             </section>
         </div>
-
-
     </form>
     <script>
         $(document).ready(function() {

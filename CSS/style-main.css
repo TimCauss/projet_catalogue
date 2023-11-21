@@ -8,7 +8,6 @@ body * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
 }
 
 body {
@@ -45,7 +44,6 @@ header {
 header img {
     max-width: 1440px;
 }
-
 
 @media screen and (max-width: 555px) {
     header img {
@@ -514,32 +512,24 @@ header img {
 .type-colors-feu {
     background-color: #E3350D;
 }
-
 .type-colors-plante {
     background-color: #68D037;
 }
-
-
 .type-colors-eau {
     background-color: #1E90FF;
 }
-
 .type-colors-insecte {
     background-color: #729f3f;
 }
-
 .type-colors-poison {
     background-color: #800080;
 }
-
 .type-colors-normal {
     background-color: #a4acaf;
 }
-
 .type-colors-glace {
     background-color: #289e9e;
 }
-
 .type-colors-electrik {
     background-color: #d0b118;
 }
