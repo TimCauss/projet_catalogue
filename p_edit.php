@@ -7,13 +7,14 @@ session_start();
 
 if (!isset($_SESSION['user'])) {
     header('Location: ./login.php');
-    die();
 }
+
 include_once "./connect.php";
 include_once "./includes/fonctions.php";
 
 
 $user_id = $_SESSION['user']['user_id'];
+$user_role = $_SESSION['user']['user_role'];
 
 /* -------------------------GET----------------------- */
 //On vérifie que le GET existe et qu'il n'est pas vide
@@ -21,12 +22,14 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     //On stocke l'id récupérée dans le GET dans une variable :
     $p_id = strip_tags($_GET['id']);
     //On vérifie si l'utilisateur est lié au pokémon:
-    $sql_user = "SELECT user_id, pokemon_id FROM user_pokemon WHERE pokemon_id = :id";
+    $sql_user = "SELECT COUNT(*) FROM user_pokemon WHERE pokemon_id = :pokemon_id AND user_id = :user_id";
     $reqUser = $db->prepare($sql_user);
-    $reqUser->bindValue(':id', $p_id, PDO::PARAM_INT);
+    $reqUser->bindValue(':pokemon_id', $p_id, PDO::PARAM_INT);
+    $reqUser->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $reqUser->execute();
-    $array_user_pokemon = $reqUser->fetch(PDO::FETCH_ASSOC);
-    if (!empty($array_user_pokemon) && $user_id == $array_user_pokemon['user_id']) {
+    $isLinked = $reqUser->fetchColumn();
+
+    if ($isLinked > 0 || $user_role === 1) {
 
         // Requête pour récupérer tous les Pokémon
         $query = "SELECT id, nom, numero FROM pokemon ORDER BY nom ASC";
@@ -68,7 +71,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
         }
     } else {
         $_SESSION['action'] = [
-            'ERROR' => "Vous n'ête pas lié à ce Pokémon"
+            'ERROR' => "Vous n'êtes pas lié à ce Pokémon"
         ];
         header('Location: profil.php');
     }
@@ -131,13 +134,18 @@ if (isset($_POST['valider'])) {
             }
         }
 
-        // On met les modification dans un try pour pouvoir annuler les modification si on catch une erreur
+        // On met les modification dans un try pour pouvoir annuler les modifications si on catch une erreur
         try {
-
+            $db->beginTransaction();
             /* Mise à jour table principale des Pokemon: */
-            $db->beginTransaction(); // On début ici la transaction avec la bdd 
-            $stmt = $db->prepare("UPDATE pokemon SET nom = :nom, numero = :numero, description = :description, taille = :taille, poids = :poids WHERE id = :id");
-            $stmt->execute([':nom' => $nom, ':numero' => $numero, ':description' => $description, ':taille' => $taille, ':poids' => $poids, ':id' => $p_id]);
+            $stmt = $db->prepare("UPDATE pokemon SET nom = :nom, numero = :num, description = :desc, taille = :taille, poids = :poids WHERE id = :id");
+            $stmt->bindValue(':nom', $nom, PDO::PARAM_STR);
+            $stmt->bindValue(':num', $numero, PDO::PARAM_STR);
+            $stmt->bindValue(':desc', $description, PDO::PARAM_STR);
+            $stmt->bindValue(':taille', $taille, PDO::PARAM_INT);
+            $stmt->bindValue(':poids', $poids, PDO::PARAM_STR);
+            $stmt->bindValue(':id', $p_id, PDO::PARAM_INT);
+            $stmt->execute();
 
             /* Mise à jour de la table des types
             On doit d'abord supprimer les jointures du pokémon afin d'en insérer de nouveaux */
@@ -147,20 +155,26 @@ if (isset($_POST['valider'])) {
             foreach ($type as $type_name) {
                 //requête pour récup l'id correspondant au type_name
                 $type_stmt = $db->prepare("SELECT id FROM types WHERE type_name = :type_name");
-                $type_stmt->execute([':type_name' => $type_name]);
+                $type_stmt->bindValue(':type_name', $type_name, PDO::PARAM_STR);
+                $type_stmt->execute();
                 $type_id = $type_stmt->fetch(PDO::FETCH_ASSOC)['id']; // On stocke l'id du type dans cette variable
                 // On insère les données dans la tables pokémon_types :
                 $stmt = $db->prepare('INSERT INTO pokemon_types (pokemon_id, type_id) VALUES(:pokemon_id, :type_id)');
-                $stmt->execute([':pokemon_id' => $p_id, ':type_id' => $type_id]);
+                $stmt->bindValue(':pokemon_id', $p_id, PDO::PARAM_INT);
+                $stmt->bindValue(':type_id', $type_id, PDO::PARAM_INT);
+                $stmt->execute();
             }
 
             /* Mise à jour des évolutions */
             if (!empty($_POST['evolution_from'])) {
                 $evolves_from = strip_tags($_POST['evolution_from']);
                 $evolve_del_stmt = $db->prepare("DELETE FROM evolutions WHERE pokemon_id = :p_id");
-                $evolve_del_stmt->execute([':p_id' => $p_id]);
+                $evolve_del_stmt->bindValue(':p_id', $p_id, PDO::PARAM_INT);
+                $evolve_del_stmt->execute();
                 $evolve_stmt = $db->prepare("INSERT INTO evolutions (pokemon_id, evolves_from) VALUES(:pokemon_id,  :evolves_from)");
-                $evolve_stmt->execute([':pokemon_id' => $p_id, ':evolves_from' => $evolves_from]);
+                $evolve_stmt->bindValue('pokemon_id', $p_id, PDO::PARAM_INT);
+                $evolve_stmt->bindValue('evolves_from', $evolves_from, PDO::PARAM_INT);
+                $evolve_stmt->execute();
             }
         } catch (Exception $e) {
             // Annuler la transaction si une erreur survient

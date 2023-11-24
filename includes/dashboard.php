@@ -38,30 +38,24 @@ $error = "";
 if ($isadmin && empty($_GET['search'])) {
     $sql = "SELECT p.id, p.nom, p.numero,
             GROUP_CONCAT(t.type_name ORDER BY t.type_name SEPARATOR ', ') AS types,
-            u.username
-            FROM pokemon p
-            LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
-            LEFT JOIN types t ON pt.type_id = t.id
-            LEFT JOIN user_pokemon up ON p.id = up.pokemon_id
-            LEFT JOIN users u ON up.user_id = u.user_id
-            GROUP BY p.id, p.nom, p.numero, u.username
-            ORDER BY p.numero ASC
-            LIMIT :premier, :parPage";
+            u.username FROM pokemon p LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
+            LEFT JOIN types t ON pt.type_id = t.id LEFT JOIN user_pokemon up ON p.id = up.pokemon_id
+            LEFT JOIN users u ON up.user_id = u.user_id GROUP BY p.id, p.nom, p.numero, u.username
+            ORDER BY p.numero ASC LIMIT :premier, :parPage";
     $stmt = $db->prepare($sql);
     $stmt->bindValue(':premier', $premier, PDO::PARAM_INT);
     $stmt->bindValue(':parPage', $parPage, PDO::PARAM_INT);
 } elseif (!$isadmin && empty($_GET['search'])) {
     // Requête pour les utilisateurs non-admins sans recherche
     $sql = "SELECT p.id, p.nom, p.numero,
-            GROUP_CONCAT(t.type_name ORDER BY t.type_name SEPARATOR ', ') AS types
-            FROM pokemon p
-            INNER JOIN user_pokemon up ON p.id = up.pokemon_id
-            LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
-            LEFT JOIN types t ON pt.type_id = t.id
-            WHERE up.user_id = :user_id
-            GROUP BY p.id, p.nom, p.numero
-            ORDER BY p.numero ASC
-            LIMIT :premier, :parPage";
+        GROUP_CONCAT(t.type_name ORDER BY t.type_name SEPARATOR ', ') AS types
+        FROM pokemon p 
+        INNER JOIN user_pokemon up ON p.id = up.pokemon_id
+        LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id 
+        LEFT JOIN types t ON pt.type_id = t.id
+        WHERE up.user_id = :user_id 
+        GROUP BY p.id, p.nom, p.numero
+        ORDER BY p.numero ASC LIMIT :premier, :parPage";
     $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->bindValue(':premier', $premier, PDO::PARAM_INT);
     $stmt->bindValue(':parPage', $parPage, PDO::PARAM_INT);

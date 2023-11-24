@@ -4,12 +4,18 @@ require_once 'connect.php'; //Connexion BDD
 //On déclare les variables du formulaire à vide pour éviter des bidouilles
 $user = $email = $pass = $lastname = "";
 
+// On affiche toutes les erreurs :
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+
+
+
 //fonction qui va nettoyer les données du formulaire :
 function testInput($data)
 {
     $data = trim($data);
     $data = stripslashes($data);
-    $data = htmlspecialchars($data);
+    $data = strip_tags($data);
     return $data;
 }
 
@@ -95,12 +101,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             //------------Enregistrement des données en BDD:----------------
 
             //Préparation et execution de la requête :
-            $createUser = "INSERT INTO users(username, email, pass) VALUES ('$username', '$email', '$hashedpass')";
+            $createUser = "INSERT INTO users(username, email, pass) VALUES (':username', ':email', ':hashedpass')";
             $createQuery = $db->prepare($createUser);
+            $createQuery->bindValue(':username', $username);
+            $createQuery->bindValue(':email', $email);
+            $createQuery->bindValue(':pass', $hashedpass);
             $createQuery->execute();
 
-            $userSQL = "SELECT user_id FROM users WHERE email = '$email'";
+            $userSQL = "SELECT user_id FROM users WHERE email = ':email'";
             $userQuery = $db->prepare($userSQL);
+            $userQuery->bindValue(':email', $email);
             $userQuery->execute();
             $userResult = $userQuery->fetch(PDO::FETCH_ASSOC);
 

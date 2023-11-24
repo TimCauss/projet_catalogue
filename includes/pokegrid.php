@@ -68,12 +68,12 @@ if (!empty($_GET['search'])) {
     }
 } else {
     // Requête par défaut
-    $p_sql = "SELECT p.*, GROUP_CONCAT(t.type_name SEPARATOR ', ') as types
-        FROM pokemon p
-        LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
-        LEFT JOIN types t ON pt.type_id = t.id
-        GROUP BY p.id
-        ORDER BY p.numero ASC
+    $p_sql = "SELECT pokemon.*, GROUP_CONCAT(t.type_name SEPARATOR ', ') as types
+        FROM pokemon
+        LEFT JOIN pokemon_types pt ON pokemon.id = pokemon_types.pokemon_id
+        LEFT JOIN types t ON pokemon_types.type_id = types.id
+        GROUP BY pokemon.id
+        ORDER BY pokemon.numero ASC
         LIMIT :premier, :parPage";
     $p_query = $db->prepare($p_sql);
     $p_query->bindParam(':premier', $premier, PDO::PARAM_INT);

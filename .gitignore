@@ -1,8 +1,7 @@
 # python venv 
 /script/.venv/
-
-
 create-db-template.sql
 CSS/json.json
 projet_catalogue.sql
 connect.php
+.env

@@ -5,7 +5,6 @@ require_once("connect.php");
 /* Verification de la connexion de l'utilisateur */
 if (!isset($_SESSION['user'])) {
     header('Location: ./index.php');
-    die();
 }
 
 define('MB', 1048576); //on Définir la valeur d'un MB
@@ -121,15 +120,15 @@ if ($_POST) {
                         $query_type->execute();
                         $type_result = $query_type->fetch(PDO::FETCH_ASSOC);
 
-                        if ($type_result) {
-                            $type_id = $type_result['id']; // id du type
-                            //insertioni dans la table pokemon_types
-                            $sql_pokemon_type = "INSERT INTO pokemon_types (pokemon_id, type_id) VALUES (:pokemon_id, :type_id)";
-                            $query_pokemon_type = $db->prepare($sql_pokemon_type);
-                            $query_pokemon_type->bindValue(':pokemon_id', $pokemon_id);
-                            $query_pokemon_type->bindValue(':type_id', $type_id);
-                            $query_pokemon_type->execute();
-                        }
+                    if ($type_result) {
+                        $type_id = $type_result['id']; // id du type
+                        //insertion dans la table pokemon_types
+                        $sql_pokemon_type = "INSERT INTO pokemon_types (pokemon_id, type_id) VALUES (:pokemon_id, :type_id)";
+                        $query_pokemon_type = $db->prepare($sql_pokemon_type);
+                        $query_pokemon_type->bindValue(':pokemon_id', $pokemon_id);
+                        $query_pokemon_type->bindValue(':type_id', $type_id);
+                        $query_pokemon_type->execute();
+                    }
                     }
                 }
                 // On associe le Pokémon à l'utilisateur

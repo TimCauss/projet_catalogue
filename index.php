@@ -48,8 +48,11 @@ session_start();
     <?php
     include_once "./includes/header.php";
     include_once "./includes/nav.php";
+
     include_once "./includes/slider.php";
+
     include_once "./includes/types.php";
+    
     include_once "./includes/footer.php"
     ?>
 

@@ -13,12 +13,12 @@ if (!isset($_SESSION['user'])) {
 
 //On récupère l'id du pokemon à supprimer
 
-if (isset($_GET['p_id'])) {
+if (isset($_GET['p_id']) && !empty($_GET['id'])) {
     //On stock l'id récupérée dans le GET dans une variable :
-    $p_id = $_GET['p_id'];
-    // On récupère l'id de l'utilisateur connecté
+    $p_id = strip_tags($_GET['p_id']);
+    // On récupère l'id et le rôle de l'utilisateur connecté
     $user_id = $_SESSION['user']['user_id'];
-
+    $user_role = $_SESSOP['user']['user_role'];
 
     //On vérifie que le pokémon est lié à l'id utilisateur :
     $sql = "SELECT COUNT(*) FROM user_pokemon WHERE pokemon_id = :pokemon_id AND user_id = :user_id";
@@ -30,7 +30,7 @@ if (isset($_GET['p_id'])) {
     // On récupère le nombre de lignes qui correspondent à notre requête
     $isLinked = $stmt->fetchColumn();
 
-    if ($isLinked > 0) {
+    if ($isLinked > 0 || $user_role === 1) {
         //On récupère le nom du pokémon:
         $sql2 = "SELECT nom FROM pokemon WHERE id=:pokemon_id";
         $stmt2 = $db->prepare($sql2);
@@ -78,6 +78,8 @@ if (isset($_GET['p_id'])) {
         $_SESSION['action'] = [
             'ERROR RESULT' => "Vous n'êtes pas autorisé à supprimer ce Pokémon"
         ];
+        //On redirige l'utilisateur vers la page précédente :
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
 }
 //On redirige l'utilisateur vers la page précédente :
