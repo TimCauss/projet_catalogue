@@ -50,6 +50,7 @@ header img {
         width: 900px;
     }
 }
+
 /** STYLE HEADER END */
 
 /** STYLE NAV START */
@@ -335,7 +336,8 @@ header img {
     display: flex;
     align-items: center;
     color: #919191;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 40%;
     padding: 0 200px;
 }
 
@@ -508,24 +510,31 @@ header img {
 .type-colors-feu {
     background-color: #E3350D;
 }
+
 .type-colors-plante {
     background-color: #68D037;
 }
+
 .type-colors-eau {
     background-color: #1E90FF;
 }
+
 .type-colors-insecte {
     background-color: #729f3f;
 }
+
 .type-colors-poison {
     background-color: #800080;
 }
+
 .type-colors-normal {
     background-color: #a4acaf;
 }
+
 .type-colors-glace {
     background-color: #289e9e;
 }
+
 .type-colors-electrik {
     background-color: #d0b118;
 }
@@ -818,12 +827,29 @@ header img {
 }
 
 @keyframes shake {
-    0% { transform: translate(0, 0) rotate(0); }
-    20% { transform: translate(-10px, 0) rotate(-20deg); }
-    30% { transform: translate(10px, 0) rotate(20deg); }
-    50% { transform: translate(-10px, 0) rotate(-10deg); }
-    60% { transform: translate(10px, 0) rotate(10deg); }
-    100% { transform: translate(0, 0) rotate(0); }
+    0% {
+        transform: translate(0, 0) rotate(0);
+    }
+
+    20% {
+        transform: translate(-10px, 0) rotate(-20deg);
+    }
+
+    30% {
+        transform: translate(10px, 0) rotate(20deg);
+    }
+
+    50% {
+        transform: translate(-10px, 0) rotate(-10deg);
+    }
+
+    60% {
+        transform: translate(10px, 0) rotate(10deg);
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(0);
+    }
 }
 
 @keyframes fall {

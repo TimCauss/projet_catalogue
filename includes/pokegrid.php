@@ -5,7 +5,7 @@ require_once "connect.php";
 /* ----------------PAGINATION--------------------- */
 // On initialise les variables de pagination
 $currentPage = isset($_GET['page']) && !empty($_GET['page']) ? (int) strip_tags($_GET['page']) : 1;
-$parPage = 15;
+$parPage = 16;
 
 // On Calcul le premier élément de la page pour la requête SQL
 $premier = ($currentPage - 1) * $parPage;
@@ -68,10 +68,10 @@ if (!empty($_GET['search'])) {
     }
 } else {
     // Requête par défaut
-    $p_sql = "SELECT pokemon.*, GROUP_CONCAT(t.type_name SEPARATOR ', ') as types
+    $p_sql = "SELECT pokemon.*, GROUP_CONCAT(types.type_name SEPARATOR ', ') as types
         FROM pokemon
-        LEFT JOIN pokemon_types pt ON pokemon.id = pokemon_types.pokemon_id
-        LEFT JOIN types t ON pokemon_types.type_id = types.id
+        LEFT JOIN pokemon_types ON pokemon.id = pokemon_types.pokemon_id
+        LEFT JOIN types ON pokemon_types.type_id = types.id
         GROUP BY pokemon.id
         ORDER BY pokemon.numero ASC
         LIMIT :premier, :parPage";

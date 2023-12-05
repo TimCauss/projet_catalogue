@@ -1,6 +1,9 @@
 <?php
 //on se connect à la db 
-require_once("connect.php");
+require_once "connect.php";
+require_once "fonctions.php";
+require_once "verify_session.php";
+
 
 $user_id = $_SESSION['user']['user_id'];
 
@@ -35,66 +38,65 @@ $premier = ($currentPage * $parPage) - $parPage;
 
 /* ----------------Fetch des infos---------------- */
 $error = "";
+// si admin sans recherche :
 if ($isadmin && empty($_GET['search'])) {
-    $sql = "SELECT p.id, p.nom, p.numero,
-            GROUP_CONCAT(t.type_name ORDER BY t.type_name SEPARATOR ', ') AS types,
-            u.username FROM pokemon p LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
-            LEFT JOIN types t ON pt.type_id = t.id LEFT JOIN user_pokemon up ON p.id = up.pokemon_id
-            LEFT JOIN users u ON up.user_id = u.user_id GROUP BY p.id, p.nom, p.numero, u.username
-            ORDER BY p.numero ASC LIMIT :premier, :parPage";
-    $stmt = $db->prepare($sql);
-    $stmt->bindValue(':premier', $premier, PDO::PARAM_INT);
-    $stmt->bindValue(':parPage', $parPage, PDO::PARAM_INT);
+    $query = "SELECT p.id, p.nom, p.numero, GROUP_CONCAT(t.type_name ORDER by t.type_name SEPARATOR ', ') AS types,
+    u.username FROM pokemon p
+    LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
+    LEFT JOIN types t ON pt.type_id = t.id
+    LEFT JOIN user_pokemon up ON p.id = up.pokemon_id
+    LEFT JOIN users u ON up.user_id = u.user_id
+    GROUP BY p.id, p.nom, p.numero, u.username
+    ORDER BY p.nom ASC
+    LIMIT :premier, :parPage";
+    $stmt = $db->prepare($query);
+} elseif ($isadmin && $_GET['search']) {
+    $searchTerm =  $_GET['search'];
+    $searchParam = "%{$searchTerm}%";
+    $query = "SELECT p.id, p.nom, p.numero, GROUP_CONCAT(t.type_name ORDER by t.type_name SEPARATOR ', ') AS types,
+    u.username FROM pokemon p
+    LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
+    LEFT JOIN types t ON pt.type_id = t.id
+    LEFT JOIN user_pokemon up ON p.id = up.pokemon_id
+    LEFT JOIN users u ON up.user_id = u.user_id
+    WHERE (p.nom LIKE :search OR p.numero LIKE :search OR t.type_name LIKE :search OR u.username LIKE :search)
+    GROUP BY p.id, p.nom, p.numero, u.username
+    ORDER BY p.numero ASC
+    LIMIT :premier, :parPage";
+    $stmt = $db->prepare($query);
+    $stmt->bindValue(":search", $searchParam);
 } elseif (!$isadmin && empty($_GET['search'])) {
-    // Requête pour les utilisateurs non-admins sans recherche
-    $sql = "SELECT p.id, p.nom, p.numero,
-        GROUP_CONCAT(t.type_name ORDER BY t.type_name SEPARATOR ', ') AS types
-        FROM pokemon p 
-        INNER JOIN user_pokemon up ON p.id = up.pokemon_id
-        LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id 
-        LEFT JOIN types t ON pt.type_id = t.id
-        WHERE up.user_id = :user_id 
-        GROUP BY p.id, p.nom, p.numero
-        ORDER BY p.numero ASC LIMIT :premier, :parPage";
-    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt->bindValue(':premier', $premier, PDO::PARAM_INT);
-    $stmt->bindValue(':parPage', $parPage, PDO::PARAM_INT);
-} elseif (!empty($_GET['search'])) {
-    // Requête avec recherche
-    $search = $_GET['search'];
-    $searchParam = "%$search%";
-    $sql = "SELECT p.id, p.nom, p.numero,
-            GROUP_CONCAT(t.type_name ORDER BY t.type_name SEPARATOR ', ') AS types";
-    if ($isadmin) {
-        $sql .= ", u.username ";
-    } else {
-        $sql .= ", '' as username ";
-    }
-    $sql .= "FROM pokemon p LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id LEFT JOIN types t ON pt.type_id = t.id";
-    if ($isadmin) {
-        $sql .= " LEFT JOIN user_pokemon up ON p.id = up.pokemon_id LEFT JOIN users u ON up.user_id = u.user_id";
-    } else {
-        $sql .= " INNER JOIN user_pokemon up ON p.id = up.pokemon_id AND up.user_id = :user_id";
-    }
-    $sql .= " WHERE (p.nom LIKE :search OR p.numero LIKE :search)";
-    if ($isadmin) {
-        $sql .= " OR u.username LIKE :search";
-    }
-    $sql .= " GROUP BY p.id, p.nom, p.numero";
-    if ($isadmin) {
-        $sql .= ", u.username";
-    }
-    $sql .= " ORDER BY p.numero ASC LIMIT :premier, :parPage";
-
-    $stmt = $db->prepare($sql);
-    if (!$isadmin) {
-        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-    }
-    $stmt->bindValue(':search', $searchParam, PDO::PARAM_STR);
-    $stmt->bindValue(':premier', $premier, PDO::PARAM_INT);
-    $stmt->bindValue(':parPage', $parPage, PDO::PARAM_INT);
+    $query = "SELECT p.id, p.nom, p.numero, GROUP_CONCAT(t.type_name ORDER by t.type_name SEPARATOR ', ') AS types, u.username
+    FROM pokemon p
+    LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
+    LEFT JOIN types t ON pt.type_id = t.id
+    LEFT JOIN user_pokemon up ON p.id = up.pokemon_id
+    LEFT JOIN users u ON up.user_id = u.user_id
+    WHERE up.user_id = :user_id
+    GROUP BY p.id, p.nom, p.numero, u.username
+    ORDER BY p.numero ASC
+    LIMIT :premier, :parPage";
+    $stmt = $db->prepare($query);
+    $stmt->bindValue(":user_id", $user_id, PDO::PARAM_INT);
+} elseif (!$isadmin && $_GET['search']) {
+    $searchTerm =  $_GET['search'];
+    $searchParam = "%{$searchTerm}%";
+    $query = "SELECT p.id, p.nom, p.numero, GROUP_CONCAT(t.type_name ORDER by t.type_name SEPARATOR ', ') AS types, u.username
+    FROM pokemon p
+    LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
+    LEFT JOIN types t ON pt.type_id = t.id
+    LEFT JOIN user_pokemon up ON p.id = up.pokemon_id
+    LEFT JOIN users u ON up.user_id = u.user_id
+    WHERE up.user_id = :user_id AND (p.nom LIKE :search OR p.numero LIKE :search OR t.type_name LIKE :search)
+    GROUP BY p.id, p.nom, p.numero, u.username
+    ORDER BY p.numero ASC
+    LIMIT :premier, :parPage";
+    $stmt = $db->prepare($query);
+    $stmt->bindValue(":user_id", $user_id, PDO::PARAM_INT);
+    $stmt->bindValue(":search", $searchParam);
 }
-
+$stmt->bindValue(":premier", $premier);
+$stmt->bindValue(":parPage", $parPage);
 $stmt->execute();
 
 if ($stmt->rowCount() == 0) {

@@ -1,6 +1,8 @@
 <?php
-
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 require_once("connect.php");
+require("./includes/fonctions.php");
 
 /* Verification de la connexion de l'utilisateur */
 if (!isset($_SESSION['user'])) {
@@ -89,7 +91,7 @@ if ($_POST) {
             // On récupère l'id de l'utilisateur connecté
             $user_id = $_SESSION['user']['user_id'];
 
-            $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `description`, `taille`, `poids`) VALUES (:nom, :numero, :description, :taille, :poids)";
+            $sql = "INSERT INTO `pokemon`(`nom`, `numero`, `description`, `taille`, `poids`, `evolves_from`) VALUES (:nom, :numero, :description, :taille, :poids, :evolves_from)";
             $query = $db->prepare($sql);
 
             $query->bindValue(':nom', $nom);
@@ -98,18 +100,18 @@ if ($_POST) {
             $query->bindValue(':taille', $taille);
             $query->bindValue(':poids', $poids);
 
+            // On vérifie si c'est une évolution et on lie la valeur ou NULL
+
+            if (!empty($_POST['is_evolution']) && !empty($_POST['evolution_from'])) {
+                $evolves_from = testInput($_POST['evolution_from']);
+                $query->bindValue(':evolves_from', $evolves_from);
+            } else {
+                $query->bindValue(':evolves_from', null);
+            }
+
+
             if ($query->execute()) {
                 $pokemon_id = $db->lastInsertId(); // On récup la dernière id pokémon insérée en bdd
-
-                // On insère l'évolution si le formulaire n'est pas vide sur ce champ
-                if (!empty($_POST['is_evolution']) && !empty($_POST['evolution_from'])) {
-                    $evolution_from_id = strip_tags($_POST['evolution_from']);
-                    $sql_evolution = "INSERT INTO `evolutions` (`pokemon_id`, `evolves_from`) VALUES (:pokemon_id, :evolves_from)";
-                    $query_evo = $db->prepare($sql_evolution);
-                    $query_evo->bindValue(':pokemon_id', $pokemon_id);
-                    $query_evo->bindValue(':evolves_from', $evolution_from_id);
-                    $query_evo->execute();
-                }
 
                 if (!empty($_POST['type'])) {
                     foreach ($_POST['type'] as $type_name) {
@@ -120,15 +122,15 @@ if ($_POST) {
                         $query_type->execute();
                         $type_result = $query_type->fetch(PDO::FETCH_ASSOC);
 
-                    if ($type_result) {
-                        $type_id = $type_result['id']; // id du type
-                        //insertion dans la table pokemon_types
-                        $sql_pokemon_type = "INSERT INTO pokemon_types (pokemon_id, type_id) VALUES (:pokemon_id, :type_id)";
-                        $query_pokemon_type = $db->prepare($sql_pokemon_type);
-                        $query_pokemon_type->bindValue(':pokemon_id', $pokemon_id);
-                        $query_pokemon_type->bindValue(':type_id', $type_id);
-                        $query_pokemon_type->execute();
-                    }
+                        if ($type_result) {
+                            $type_id = $type_result['id']; // id du type
+                            //insertion dans la table pokemon_types
+                            $sql_pokemon_type = "INSERT INTO pokemon_types (pokemon_id, type_id) VALUES (:pokemon_id, :type_id)";
+                            $query_pokemon_type = $db->prepare($sql_pokemon_type);
+                            $query_pokemon_type->bindValue(':pokemon_id', $pokemon_id);
+                            $query_pokemon_type->bindValue(':type_id', $type_id);
+                            $query_pokemon_type->execute();
+                        }
                     }
                 }
                 // On associe le Pokémon à l'utilisateur

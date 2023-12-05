@@ -9,15 +9,24 @@ session_start();
     <!-- META --->
 
     <meta charset="UTF-8">
+
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Pokédex Complet - Explorez le Monde des Pokémon</title>
+
+
     <meta name="description" content="Découvrez notre Pokédex en ligne avec des informations détaillées sur chaque Pokémon,
     y compris leurs types, statistiques et évolutions. Parfait pour les fans et les dresseurs !">
+
+    
     <meta name="keywords" content="Pokédex, Pokémon, Guide Pokémon, Stats Pokémon, Types Pokémon, Évolutions Pokémon">
 
 
     <meta property="og:title" content="Pokédex Complet en Ligne - Découvrez le Monde des Pokémon">
+
     <meta property="og:description" content="Explorez notre Pokédex en ligne pour
     des informations détaillées sur chaque Pokémon, y compris leurs types, statistiques et évolutions.">
 
@@ -48,11 +57,8 @@ session_start();
     <?php
     include_once "./includes/header.php";
     include_once "./includes/nav.php";
-
     include_once "./includes/slider.php";
-
     include_once "./includes/types.php";
-    
     include_once "./includes/footer.php"
     ?>
 

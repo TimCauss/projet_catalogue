@@ -1,10 +1,7 @@
 <?php
-session_start();
+require "includes/verify_session.php";
 
-if (!isset($_SESSION['user'])) {
-    header('Location: ./login.php');
-    die();
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

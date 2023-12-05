@@ -1,7 +1,4 @@
 <?php
-// On affiche toutes les erreurs :
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 session_start();
 
@@ -20,7 +17,7 @@ $user_role = $_SESSION['user']['user_role'];
 //On vérifie que le GET existe et qu'il n'est pas vide
 if (isset($_GET['id']) && !empty($_GET['id'])) {
     //On stocke l'id récupérée dans le GET dans une variable :
-    $p_id = strip_tags($_GET['id']);
+    $p_id = testInput($_GET['id']);
     //On vérifie si l'utilisateur est lié au pokémon:
     $sql_user = "SELECT COUNT(*) FROM user_pokemon WHERE pokemon_id = :pokemon_id AND user_id = :user_id";
     $reqUser = $db->prepare($sql_user);
@@ -52,14 +49,14 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             //On stock les infos du pokémon dans des variables :
             if ($row) {
-                $nom = strip_tags($row['nom']);
-                $numero = strip_tags(pNumeroUncheck($row['numero']));
-                $description = strip_tags($row['description']);
-                $taille = strip_tags($row['taille']);
-                $poids = strip_tags($row['poids']);
+                $nom = testInput($row['nom']);
+                $numero = testInput(pNumeroUncheck($row['numero']));
+                $description = testInput($row['description']);
+                $taille = testInput($row['taille']);
+                $poids = testInput($row['poids']);
                 $typeArray = explode(', ', $row['types']);
                 if ($row['evolves_from']) {
-                    $evolutions = strip_tags($row['evolves_from']);
+                    $evolutions = testInput($row['evolves_from']);
                 }
             }
         } else {
@@ -91,12 +88,12 @@ if (isset($_POST['valider'])) {
         && !empty($_POST['poids']) && !empty($_POST['type'])
     ) {
         //On récupère les données du formulaire :
-        $p_id = strip_tags($_GET['id']);
-        $nom = strip_tags($_POST['nom']);
-        $numero = pNumeroCheck(strip_tags($_POST['numero']));
-        $description = strip_tags($_POST['description']);
-        $taille = strip_tags($_POST['taille']);
-        $poids = strip_tags($_POST['poids']);
+        $p_id = testInput($_GET['id']);
+        $nom = testInput($_POST['nom']);
+        $numero = pNumeroCheck(testInput($_POST['numero']));
+        $description = testInput($_POST['description']);
+        $taille = testInput($_POST['taille']);
+        $poids = testInput($_POST['poids']);
         $type = $_POST['type'];
 
         //On vérifie si un fichier à été posté :
@@ -138,13 +135,18 @@ if (isset($_POST['valider'])) {
         try {
             $db->beginTransaction();
             /* Mise à jour table principale des Pokemon: */
-            $stmt = $db->prepare("UPDATE pokemon SET nom = :nom, numero = :num, description = :desc, taille = :taille, poids = :poids WHERE id = :id");
+            $stmt = $db->prepare("UPDATE pokemon SET nom = :nom, numero = :num, description = :desc, taille = :taille, poids = :poids, evolves_from = :evofrom WHERE id = :id");
             $stmt->bindValue(':nom', $nom, PDO::PARAM_STR);
             $stmt->bindValue(':num', $numero, PDO::PARAM_STR);
             $stmt->bindValue(':desc', $description, PDO::PARAM_STR);
             $stmt->bindValue(':taille', $taille, PDO::PARAM_INT);
             $stmt->bindValue(':poids', $poids, PDO::PARAM_STR);
             $stmt->bindValue(':id', $p_id, PDO::PARAM_INT);
+            if (!empty($_POST['is_evolution']) && !empty($_POST['evolution_from'])) {
+                $id_evo = testInput($_POST['evolution_from']);
+                $stmt->bindValue(':evofrom', $id_evo);
+            }
+
             $stmt->execute();
 
             /* Mise à jour de la table des types
@@ -167,7 +169,7 @@ if (isset($_POST['valider'])) {
 
             /* Mise à jour des évolutions */
             if (!empty($_POST['evolution_from'])) {
-                $evolves_from = strip_tags($_POST['evolution_from']);
+                $evolves_from = testInput($_POST['evolution_from']);
                 $evolve_del_stmt = $db->prepare("DELETE FROM evolutions WHERE pokemon_id = :p_id");
                 $evolve_del_stmt->bindValue(':p_id', $p_id, PDO::PARAM_INT);
                 $evolve_del_stmt->execute();
@@ -199,7 +201,7 @@ if (isset($_POST['valider'])) {
         $sql_log = "INSERT INTO user_logs (user_id, action_type, description) VALUES (:user_id, :action_type, :description)";
         $query_log = $db->prepare($sql_log);
         $query_log->bindValue(':user_id', $user_id);
-        $query_log->bindValue(':action_type', 'Création');
+        $query_log->bindValue(':action_type', 'Modification');
         $query_log->bindValue(':description', $nom);
         $query_log->execute();
 

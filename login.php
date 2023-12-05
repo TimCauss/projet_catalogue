@@ -1,23 +1,18 @@
 <?php
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 session_start();
 require_once 'connect.php'; //Connexion BDD
+require './includes/fonctions.php';
 //On déclare les variables du formulaire à vide pour éviter des bidouilles
 $user = $email = $pass = $lastname = "";
 
-// On affiche toutes les erreurs :
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
 
 
+// On récupère l'ip et l'user_agent de l'utilisateur
+$user_ip = $_SERVER['REMOTE_ADDR'];
+$user_agent = $_SERVER['HTTP_USER_AGENT'];
 
-//fonction qui va nettoyer les données du formulaire :
-function testInput($data)
-{
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = strip_tags($data);
-    return $data;
-}
 
 /*fonction pour calculer le temps d'execution
 Renvois un temps en sec, prend en arguments 2 valeurs microtime */
@@ -98,17 +93,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             //On Hash le password : (0.25s en moyenne)
             $hashedpass = password_hash($_POST["pass"], PASSWORD_ARGON2ID, $options);
 
+            // On génère le token de session :
+            $token = gen_token($username);
+            $token_exp = token_exp();
             //------------Enregistrement des données en BDD:----------------
 
-            //Préparation et execution de la requête :
-            $createUser = "INSERT INTO users(username, email, pass) VALUES (':username', ':email', ':hashedpass')";
+            //Préparation et execution de la requête 
+            $createUser = "INSERT INTO users(username, email, pass, ip, u_agent, token, token_exp ) VALUES (:username, :email, :pass, :ip, :agent, :token, :token_exp)";
             $createQuery = $db->prepare($createUser);
             $createQuery->bindValue(':username', $username);
             $createQuery->bindValue(':email', $email);
             $createQuery->bindValue(':pass', $hashedpass);
+            $createQuery->bindValue(':ip', $user_ip);
+            $createQuery->bindValue(':agent', $user_agent);
+            $createQuery->bindValue(':token', $token);
+            $createQuery->bindValue(':token_exp', $token_exp);
             $createQuery->execute();
 
-            $userSQL = "SELECT user_id FROM users WHERE email = ':email'";
+            $userSQL = "SELECT user_id FROM users WHERE email = :email";
             $userQuery = $db->prepare($userSQL);
             $userQuery->bindValue(':email', $email);
             $userQuery->execute();
@@ -117,12 +119,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["action"] = [
                 "create_user" => 1
             ];
-
+            session_regenerate_id();
             $_SESSION["user"] = [
                 "user_id" => $userResult["user_id"],
-                "prenom" => $username,
-                "email" => $email,
-                "user_role" => 0
+                "user_role" => 0,
+                "uer_token" => $token
             ];
             header("Location: index.php");
         } else {
@@ -143,12 +144,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($loginResult) {
                 //Si l'utilisateur existe, on vérifie le mot de passe:
                 if (password_verify($_POST["login-pass"], $loginResult["pass"])) {
-                    //Si le mot de passe est correct, on crée la session:
+                    //Si le mot de passe est correct, on stocke les données de session dans la base:
+                    $token = gen_token($loginResult['username']);
+                    $token_exp = token_exp();
+                    $user_id = $loginResult['user_id'];
+                    $update_sql = "UPDATE users SET ip = :ip, u_agent = :agent, token = :token, token_exp = :token_exp WHERE user_id = :user_id";
+                    $stmt_update = $db->prepare($update_sql);
+                    $stmt_update->bindValue(':ip', $user_ip);
+                    $stmt_update->bindValue(':agent', $user_agent);
+                    $stmt_update->bindValue(':token', $token);
+                    $stmt_update->bindValue(':token_exp', $token_exp);
+                    $stmt_update->bindValue(':user_id', $user_id);
+                    $stmt_update->execute();
+
+                    session_regenerate_id();
                     $_SESSION["user"] = [
-                        "user_id" => $loginResult["user_id"],
+                        "user_id" => $user_id,
                         "username" => $loginResult["username"],
-                        "email" => $loginResult["email"],
-                        "user_role" => $loginResult["role"]
+                        "user_role" => $loginResult["role"],
+                        "user_token" => $token,
                     ];
                     header("Location: index.php");
                 } else {
@@ -183,9 +197,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
+
     <link rel="stylesheet" href="./CSS/style-main.css">
     <title>Pokelist - Login Page</title>
 </head>
+
+
 
 <body onload="formVerif()">
     <?php
@@ -293,7 +311,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ?>
 
     <script type="text/javascript" src="./JS/formValidation.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
 </body>
 
 </html>

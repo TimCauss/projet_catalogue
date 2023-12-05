@@ -19,7 +19,7 @@ $result = $sql->fetch(PDO::FETCH_ASSOC);
                     </div>
                 </a>
                 <div class="login-buttons">
-                    <?php if (isset($_SESSION["user"]["email"])) {
+                    <?php if (isset($_SESSION["user"]["user_id"])) {
                         echo "<a href='./deconnect.php'>Se déconnecter</a>";
                     } else {
                         echo "<a href='./login.php'>Se connecter</a>";
@@ -41,7 +41,7 @@ $result = $sql->fetch(PDO::FETCH_ASSOC);
                     <div class="nav-item ni-4">Random</div>
                 </a>
             </li>
-            <?php if (isset($_SESSION["user"]["email"])) {
+            <?php if (isset($_SESSION["user"]["user_id"])) {
                 include_once "profile_btn.php";
             } ?>
         </div>

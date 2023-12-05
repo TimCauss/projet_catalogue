@@ -1,9 +1,8 @@
 <?php
-
-session_start();
+require "includes/verify_session.php";
 
 //On vérifie que l'utilisateur est connecté et est administrateur :
-if (!empty($_SESSION["user"]) && $_SESSION["user"]["user_role"] == 1) {
+if ($_SESSION["user"]["user_role"] == 1) {
     $isadmin = true;
 } else {
     header("Location: ./profil.php");
@@ -11,7 +10,7 @@ if (!empty($_SESSION["user"]) && $_SESSION["user"]["user_role"] == 1) {
 
 require_once "./connect.php";
 // Récupérez les logs
-$sql = "SELECT ul.*, u.username FROM user_logs ul JOIN users u ON ul.user_id = u.user_id ORDER BY ul.action_timestamp DESC";
+$sql = "SELECT user_logs.*, users.username FROM user_logs JOIN users ON user_logs.user_id = users.user_id ORDER BY user_logs.action_timestamp DESC";
 $query = $db->prepare($sql);
 $query->execute();
 $logs = $query->fetchAll(PDO::FETCH_ASSOC);

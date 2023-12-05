@@ -18,10 +18,8 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.keys import Keys
 
-# On prépare les variables utilisateurs:
-range_start = input("Starting range of pokemon number: ")
-range_end = input("Ending range of pokemon number: ")
-
+range_start = input('Start: ')
+range_end = input('End :')
 # Fonction qui rajoute des 0 devant le numéro du pokemon si celui-ci est inférieur à 4 chiffres:
 
 
@@ -78,6 +76,7 @@ def scrapper(range_start, range_end):
 
     for i in range(int(range_start), int(range_end)):
         d.implicitly_wait(5)
+        print('Connexion a site Pokemon officiel')
         d.get("https://www.pokemon.com/fr/pokedex")
 
         count += 1
@@ -93,7 +92,7 @@ def scrapper(range_start, range_end):
             By.XPATH, "/html/body/div[4]/section[5]/ul/li[1]/a/img")).click()
 
         # On récupère les infos du pokemon:
-
+        print('Récupérationd des infos du pokémon')
         p_numero = add_zero(str(i))
         p_nom = keep_word(wait.until(lambda d: d.find_element(
             By.XPATH, "/html/body/div[4]/section[1]/div[2]/div")).text, 0)
@@ -115,10 +114,18 @@ def scrapper(range_start, range_end):
         else:
             p_type2 = "Type"
 
+        print(f'Nom: {p_nom}')
+        print(f'Numéro: {p_numero}')
+        print(f'Description: {p_description}')
+        print(f'Taille: {p_taille}')
+        print(f'Poids: {p_poids}')
+        print(f'Type:  {p_type}, {p_type2}')
+
         # On gère l'image
         img = d.find_element(
             By.XPATH, "//img[@alt='" + p_nom + "']")
-        urllib.request.urlretrieve(img.get_attribute("src"), "/var/www/html/uploads/" + p_nom + ".png")
+        urllib.request.urlretrieve(img.get_attribute(
+            "src"), "/var/www/html/uploads/" + p_nom + ".png")
 
         # On gère les évo, on créer une boucle de 3:
         p_evo = ""
@@ -128,14 +135,16 @@ def scrapper(range_start, range_end):
                 j) + ") > a:nth-child(1) > h3:nth-child(2)"
 
             if (check_exists_css(locator, d) == True):
-                p_evo += keep_word(d.find_element(By.CSS_SELECTOR, locator).text, 0) + ","
+                p_evo += keep_word(d.find_element(By.CSS_SELECTOR,
+                                   locator).text, 0) + ","
             else:
                 p_evo += ""
 
         if count == 1:
             d.get("http://127.0.0.1:80/profil.php")
-            wait.until(lambda d: d.find_element(By.ID, "login-email")).send_keys("jesuisun@bot.fr")
-            d.find_element(By.ID, "login-pass").send_keys("123456@#")
+            wait.until(lambda d: d.find_element(
+                By.ID, "login-email")).send_keys("jesuisun@bot.fr")
+            d.find_element(By.ID, "login-pass").send_keys("123456789")
             time.sleep(0.1)
             d.find_element(By.ID, "submitLogin").click()
 

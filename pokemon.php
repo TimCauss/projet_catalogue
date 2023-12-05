@@ -1,8 +1,14 @@
 <?php
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+
+
 session_start();
+
 
 // Connexion BDD
 require_once "connect.php";
+require './includes/fonctions.php';
 
 // Initialisation des variables
 $nom = $numero = $description = $taille = $poids = $types = "";
@@ -19,6 +25,21 @@ if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+    $evoChainQuery = "WITH RECURSIVE ancestor AS (SELECT p.id, p.nom, p.evolves_from FROM pokemon p WHERE p.id = :id
+                    UNION ALL SELECT p.id, p.nom, p.evolves_from FROM pokemon p INNER JOIN ancestor ON p.id = ancestor.evolves_from),
+                    descendant AS (SELECT p.id, p.nom, p.evolves_from FROM pokemon p WHERE p.evolves_from = :id2 UNION ALL
+                    SELECT p.id, p.nom, p.evolves_from FROM pokemon p INNER JOIN descendant ON p.evolves_from = descendant.id),
+                    combined AS (SELECT id, nom FROM ancestor UNION SELECT id, nom FROM descendant)
+                    SELECT c.id, c.nom, GROUP_CONCAT(t.type_name ORDER BY t.type_name SEPARATOR ', ') AS types
+                    FROM combined c LEFT JOIN pokemon_types pt ON pt.pokemon_id = c.id LEFT JOIN types t ON t.id = pt.type_id
+                    GROUP BY c.id, c.nom ORDER BY c.id";
+    $evoStmt = $db->prepare($evoChainQuery);
+    $evoStmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $evoStmt->bindParam(':id2', $id, PDO::PARAM_INT);
+    $evoStmt->execute();
+    $evoChain = $evoStmt->fetchAll(PDO::FETCH_ASSOC);
 
     if ($row) {
         $nom = $row['nom'];
@@ -44,6 +65,7 @@ if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
         $nextStmt->execute();
         $nextRow = $nextStmt->fetch(PDO::FETCH_ASSOC);
         $url_next = $nextRow ? "pokemon.php?id=" . $nextRow['id'] : "#";
+
 
         // Trouver l'ID max et min pour la navigation en boucle
         $maxMinQuery = "SELECT MAX(id) as maxId, MIN(id) as minId FROM pokemon";
@@ -130,39 +152,22 @@ if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
                 <h2>Evolutions:</h2>
                 <div class="arrow-container">
                     <div class="evo-container">
-                        <?php
-                        foreach ($evolutions as $evo_nom) {
-                            //requête SQL pour récupérer les informations de l'évolution courante
-                            $query = "SELECT * FROM pokemon WHERE nom = :nom";
-                            $sql = $db->prepare($query);
-                            $sql->bindParam(':nom', $evo_nom);
-                            $sql->execute();
-                            $row = $sql->fetch(PDO::FETCH_ASSOC);
-
-
-                            // Vérifiez si la requête SQL a renvoyé des résultats
-                            if ($row !== false) {
-                                // Récupérez les informations de l'évolution courante
-                                $evo_id = $row['p_id'];
-                                $evo_nom = $row['nom'];
-                                $evo_numero = $row['numero'];
-                                $evo_type = $row['p_type'];
-                                echo "<div class=\"evo\">";
-                                echo "<a href='./pokemon.php?id=$evo_id'><img src=\"uploads/$evo_nom.png\">";
-                                echo "<span class=\"poke\">$evo_nom</span></a>";
-                                echo "<span class=\"evo-type type-colors-$evo_type\">$evo_type</span>";
-                                echo "<span class=\"evo-type type-colors-$evo_type2\">$evo_type2</span>";
-                                echo "</div> ";
-                            } else {
-                                // La requête SQL n'a renvoyé aucun résultat
-                                echo "Aucun résultat pour l'évolution '$evo_nom'.";
-                            }
-                            if (next($evolutions)) {
-                                echo "<span class=\"arrow\">→</span>";
-                            }
-                        }
-                        ?>
+                        <?php foreach ($evoChain as $index => $evo) : ?>
+                            <div class='evo'>
+                                <a href='./pokemon.php?id=<?= $evo['id']; ?>'>
+                                    <img src='uploads/<?= htmlspecialchars($evo['nom']); ?>.png' alt='<?= htmlspecialchars($evo['nom']); ?>' />
+                                    <span class='poke'><?= htmlspecialchars($evo['nom']); ?></span>
+                                </a>
+                                <?php foreach (explode(', ', $evo['types']) as $type) : ?>
+                                    <span class='evo-type type-colors-<?= strtolower($type); ?>'><?= htmlspecialchars($type); ?></span>
+                                <?php endforeach; ?>
+                            </div>
+                            <?php if ($index < count($evoChain) - 1) : ?>
+                                <span class='arrow'>→</span>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     </div>
+                </div>
             </section>
         </div>
 
