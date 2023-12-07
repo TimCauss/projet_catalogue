@@ -1,5 +1,9 @@
 <?php
+//On affiche toutes les erreur sql et php 
+// ini_set('display_errors', 1);
+// error_reporting(E_ALL | E_STRICT);
 require_once "connect.php";
+require_once "fonctions.php";
 
 
 /* ----------------PAGINATION--------------------- */
@@ -30,54 +34,36 @@ $pages = ceil($nbPokemon / $parPage);
 
 // Si on a une requete get contennant une valeur dans la clé search :
 if (!empty($_GET['search'])) {
-    $search = $_GET['search'];
-    // On vérifie si la recherche correspond à un type de pokémon :
-    $type_sql = "SELECT id FROM types WHERE type_name = :typeName";
-    $type_query = $db->prepare($type_sql);
-    $type_query->bindParam(':typeName', $search, PDO::PARAM_STR);
-    $type_query->execute();
-    $type_result = $type_query->fetch(PDO::FETCH_ASSOC);
-    // Si la recherche est un type, on utilise une requête qui filtre les Pokémon par ce type
-    if ($type_result) {
-        $p_sql = "SELECT p.*, GROUP_CONCAT(distinct t.type_name ORDER BY t.type_name SEPARATOR ', ') as types
-            FROM pokemon p
-            JOIN pokemon_types pt ON p.id = pt.pokemon_id
-            JOIN types t ON pt.type_id = t.id
-            WHERE p.id IN (
-                SELECT pt.pokemon_id 
-                FROM pokemon_types pt 
-                JOIN types t ON pt.type_id = t.id 
-                WHERE t.id = :typeId
-            )
-            GROUP BY p.id
-            ORDER BY p.numero ASC";
-        $p_query = $db->prepare($p_sql);
-        $p_query->bindParam(':typeId', $type_result['id'], PDO::PARAM_INT);
-    } else {
-        // Sinon c'est une requête par nom ou numéro :
-        $p_sql = "SELECT p.*, GROUP_CONCAT(t.type_name SEPARATOR ', ') as types
-            FROM pokemon p
-            LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
-            LEFT JOIN types t ON pt.type_id = t.id
-            WHERE p.nom LIKE :search OR p.numero LIKE :search
-            GROUP BY p.id
-            ORDER BY p.numero ASC";
-        $p_query = $db->prepare($p_sql);
-        $searchTerm = '%' . $search . '%';
-        $p_query->bindParam(':search', $searchTerm, PDO::PARAM_STR);
+    $search = testInput($_GET['search']);
+    // Si $search contient un entier :
+    if (is_numeric($search)) {
+        $search = pNumeroCheck($search);
     }
+    // Requête :
+    $p_sql = "SELECT p.id, p.nom, p.numero, GROUP_CONCAT(t.type_name ORDER by t.type_name SEPARATOR ', ') AS types
+    FROM pokemon p
+    INNER JOIN pokemon_types pt ON p.id = pt.pokemon_id
+    INNER JOIN types t ON pt.type_id = t.id
+    WHERE (p.nom LIKE :search OR p.numero LIKE :search2 OR t.type_name LIKE :search3)
+    GROUP BY p.id
+    ORDER BY p.numero ASC";
+    $p_query = $db->prepare($p_sql);
+    $searchTerm = $search . '%';
+    $p_query->bindValue(':search', $searchTerm, PDO::PARAM_STR);
+    $p_query->bindValue(':search2', $searchTerm, PDO::PARAM_STR);
+    $p_query->bindValue(':search3', $searchTerm, PDO::PARAM_STR);
 } else {
     // Requête par défaut
-    $p_sql = "SELECT pokemon.*, GROUP_CONCAT(types.type_name SEPARATOR ', ') as types
-        FROM pokemon
-        LEFT JOIN pokemon_types ON pokemon.id = pokemon_types.pokemon_id
-        LEFT JOIN types ON pokemon_types.type_id = types.id
-        GROUP BY pokemon.id
-        ORDER BY pokemon.numero ASC
+    $p_sql = "SELECT p.id, p.nom, p.numero, GROUP_CONCAT(types.type_name SEPARATOR ', ') as types
+        FROM pokemon p
+        INNER JOIN pokemon_types ON p.id = pokemon_types.pokemon_id
+        INNER JOIN types ON pokemon_types.type_id = types.id
+        GROUP BY p.id
+        ORDER BY p.numero ASC
         LIMIT :premier, :parPage";
     $p_query = $db->prepare($p_sql);
-    $p_query->bindParam(':premier', $premier, PDO::PARAM_INT);
-    $p_query->bindParam(':parPage', $parPage, PDO::PARAM_INT);
+    $p_query->bindValue(':premier', $premier, PDO::PARAM_INT);
+    $p_query->bindValue(':parPage', $parPage, PDO::PARAM_INT);
 }
 
 // Exécution de la requête

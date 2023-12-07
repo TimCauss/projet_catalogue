@@ -1,24 +1,25 @@
 <?php
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 
-require_once "../connect.php";
 session_start();
+require_once "../connect.php";
+require_once "fonctions.php";
 
 
-//On vérifie que l'utilisateur est connecté
 if (!isset($_SESSION['user'])) {
     header('Location: ./login.php');
-    die();
+    exit;
 }
-
 
 //On récupère l'id du pokemon à supprimer
 
-if (isset($_GET['p_id']) && !empty($_GET['id'])) {
+if (isset($_GET['p_id']) && !empty($_GET['p_id'])) {
     //On stock l'id récupérée dans le GET dans une variable :
     $p_id = strip_tags($_GET['p_id']);
     // On récupère l'id et le rôle de l'utilisateur connecté
     $user_id = $_SESSION['user']['user_id'];
-    $user_role = $_SESSOP['user']['user_role'];
+    $user_role = $_SESSION['user']['user_role'];
 
     //On vérifie que le pokémon est lié à l'id utilisateur :
     $sql = "SELECT COUNT(*) FROM user_pokemon WHERE pokemon_id = :pokemon_id AND user_id = :user_id";
@@ -37,6 +38,12 @@ if (isset($_GET['p_id']) && !empty($_GET['id'])) {
         $stmt2->bindParam(":pokemon_id", $p_id, PDO::PARAM_INT);
         $stmt2->execute();
         $nom = $stmt2->fetch()[0];
+
+        //on update la foreign key
+        $updateQuery = "UPDATE pokemon SET evolves_from = NULL WHERE evolves_from = :id";
+        $updateStmt = $db->prepare($updateQuery);
+        $updateStmt->bindParam(':id', $p_id, PDO::PARAM_INT);
+        $updateStmt->execute();
 
         // Requete de supression
         $sql_del = "DELETE FROM pokemon WHERE id = :pokemon_id";

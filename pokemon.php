@@ -27,10 +27,11 @@ if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
-    $evoChainQuery = "WITH RECURSIVE ancestor AS (SELECT p.id, p.nom, p.evolves_from FROM pokemon p WHERE p.id = :id
+    $evoChainQuery = "WITH RECURSIVE ancestor AS
+                    (SELECT p.id, p.nom, p.evolves_from FROM pokemon p WHERE p.id = :id
                     UNION ALL SELECT p.id, p.nom, p.evolves_from FROM pokemon p INNER JOIN ancestor ON p.id = ancestor.evolves_from),
-                    descendant AS (SELECT p.id, p.nom, p.evolves_from FROM pokemon p WHERE p.evolves_from = :id2 UNION ALL
-                    SELECT p.id, p.nom, p.evolves_from FROM pokemon p INNER JOIN descendant ON p.evolves_from = descendant.id),
+                    descendant AS (SELECT p.id, p.nom, p.evolves_from FROM pokemon p WHERE p.evolves_from = :id2 
+                    UNION ALL SELECT p.id, p.nom, p.evolves_from FROM pokemon p INNER JOIN descendant ON p.evolves_from = descendant.id),
                     combined AS (SELECT id, nom FROM ancestor UNION SELECT id, nom FROM descendant)
                     SELECT c.id, c.nom, GROUP_CONCAT(t.type_name ORDER BY t.type_name SEPARATOR ', ') AS types
                     FROM combined c LEFT JOIN pokemon_types pt ON pt.pokemon_id = c.id LEFT JOIN types t ON t.id = pt.type_id

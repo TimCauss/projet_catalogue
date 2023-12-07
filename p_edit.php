@@ -28,7 +28,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
     if ($isLinked > 0 || $user_role === 1) {
 
-        // Requête pour récupérer tous les Pokémon
+        // On récup tous les Pokémons
         $query = "SELECT id, nom, numero FROM pokemon ORDER BY nom ASC";
         $stmt = $db->prepare($query);
         $stmt->execute();
@@ -135,7 +135,8 @@ if (isset($_POST['valider'])) {
         try {
             $db->beginTransaction();
             /* Mise à jour table principale des Pokemon: */
-            $stmt = $db->prepare("UPDATE pokemon SET nom = :nom, numero = :num, description = :desc, taille = :taille, poids = :poids, evolves_from = :evofrom WHERE id = :id");
+            $stmt = $db->prepare("UPDATE pokemon SET nom = :nom, numero = :num, description = :desc, 
+            taille = :taille, poids = :poids, evolves_from = :evofrom WHERE id = :id");
             $stmt->bindValue(':nom', $nom, PDO::PARAM_STR);
             $stmt->bindValue(':num', $numero, PDO::PARAM_STR);
             $stmt->bindValue(':desc', $description, PDO::PARAM_STR);
@@ -145,8 +146,9 @@ if (isset($_POST['valider'])) {
             if (!empty($_POST['is_evolution']) && !empty($_POST['evolution_from'])) {
                 $id_evo = testInput($_POST['evolution_from']);
                 $stmt->bindValue(':evofrom', $id_evo);
+            } else {
+                $stmt->bindValue(':evofrom', null);
             }
-
             $stmt->execute();
 
             /* Mise à jour de la table des types
@@ -165,18 +167,6 @@ if (isset($_POST['valider'])) {
                 $stmt->bindValue(':pokemon_id', $p_id, PDO::PARAM_INT);
                 $stmt->bindValue(':type_id', $type_id, PDO::PARAM_INT);
                 $stmt->execute();
-            }
-
-            /* Mise à jour des évolutions */
-            if (!empty($_POST['evolution_from'])) {
-                $evolves_from = testInput($_POST['evolution_from']);
-                $evolve_del_stmt = $db->prepare("DELETE FROM evolutions WHERE pokemon_id = :p_id");
-                $evolve_del_stmt->bindValue(':p_id', $p_id, PDO::PARAM_INT);
-                $evolve_del_stmt->execute();
-                $evolve_stmt = $db->prepare("INSERT INTO evolutions (pokemon_id, evolves_from) VALUES(:pokemon_id,  :evolves_from)");
-                $evolve_stmt->bindValue('pokemon_id', $p_id, PDO::PARAM_INT);
-                $evolve_stmt->bindValue('evolves_from', $evolves_from, PDO::PARAM_INT);
-                $evolve_stmt->execute();
             }
         } catch (Exception $e) {
             // Annuler la transaction si une erreur survient
@@ -236,7 +226,7 @@ if (isset($_POST['valider'])) {
     include_once './includes/nav.php';
     ?>
 
-    <form method="POST" enctype="multipart/form-data">
+    <form class='edit-form' method="POST" enctype="multipart/form-data">
         <div class="ind-wrapper">
 
             <div class="ind-container">
@@ -245,7 +235,7 @@ if (isset($_POST['valider'])) {
                     <input type="submit" id="valider" name="valider" value="Valider">
                 </div>
 
-                <div class="p-header-title">
+                <div class="p-header-title header-title-edit">
                     <input class="input-h1" type="text" name="nom" class="input-nbr" value="<?= $nom ?>" required>
                 </div>
             </div>

@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             /*Si le formulaire est complet (Tous les champs ont été remplis)
         ============SECURITE DES DONNEES============
         On check si le prenom est valide (Seulement des lettres) */
-            if (preg_match("/^[a-zA-Z-é' ]*$/", $_POST["username"])) {
+            if (preg_match("/^[a-zA-Z0-9-é' ]*$/", $_POST["username"])) {
                 //Si le prenom est valide, on le nettoie
                 $username = testInput($_POST["username"]);
             } else {
@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 PASSWORD_ARGON2_DEFAULT_THREADS => 2
             ];
             //On Hash le password : (0.25s en moyenne)
-            $hashedpass = password_hash($_POST["pass"], PASSWORD_ARGON2ID, $options);
+            $hashedpass = password_hash(htmlspecialchars($_POST["pass"]), PASSWORD_ARGON2ID, $options);
 
             // On génère le token de session :
             $token = gen_token($username);
@@ -148,7 +148,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $token = gen_token($loginResult['username']);
                     $token_exp = token_exp();
                     $user_id = $loginResult['user_id'];
-                    $update_sql = "UPDATE users SET ip = :ip, u_agent = :agent, token = :token, token_exp = :token_exp WHERE user_id = :user_id";
+                    $update_sql = "UPDATE users SET ip = :ip, u_agent = :agent, token = :token, token_exp = :token_exp
+                    WHERE user_id = :user_id";
                     $stmt_update = $db->prepare($update_sql);
                     $stmt_update->bindValue(':ip', $user_ip);
                     $stmt_update->bindValue(':agent', $user_agent);
@@ -160,7 +161,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     session_regenerate_id();
                     $_SESSION["user"] = [
                         "user_id" => $user_id,
-                        "username" => $loginResult["username"],
                         "user_role" => $loginResult["role"],
                         "user_token" => $token,
                     ];
@@ -310,7 +310,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include_once "./includes/footer.php"
     ?>
 
+</body>
+
     <script type="text/javascript" src="./JS/formValidation.js"></script>
+    <script type="text/javascript" src="./JS/formValidation.js"></script>
+</body>
+<script type="text/javascript" src="./JS/formValidation.js"></script>
 </body>
 
 </html>

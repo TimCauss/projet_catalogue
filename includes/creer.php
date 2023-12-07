@@ -1,6 +1,8 @@
 <?php
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
+
+
 require_once("connect.php");
 require("./includes/fonctions.php");
 
@@ -22,6 +24,7 @@ $pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 /* Si on capture un POST:*/
 if ($_POST) {
+
     /* On vérifie si les champs necessaire sont remplis : */
     if (
         !empty($_POST['nom']) && !empty($_POST['numero']) && !empty($_POST['description'])

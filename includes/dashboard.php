@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+
 //on se connect à la db 
 require_once "connect.php";
 require_once "fonctions.php";
@@ -28,7 +31,7 @@ $query->execute();
 $nbResult = $query->fetch();
 $nbPokemon = (int) $nbResult['nb_pokemon'];
 // On détermine le nombre de pokemon par page
-$parPage = 15;
+$parPage = 10;
 //On calcule le nombre de pages total :
 $pages = ceil($nbPokemon / $parPage);
 // Calcul du 1er article de la page
@@ -38,6 +41,12 @@ $premier = ($currentPage * $parPage) - $parPage;
 
 /* ----------------Fetch des infos---------------- */
 $error = "";
+
+
+//Tableau des paramètres
+$queryParams = array();
+
+
 // si admin sans recherche :
 if ($isadmin && empty($_GET['search'])) {
     $query = "SELECT p.id, p.nom, p.numero, GROUP_CONCAT(t.type_name ORDER by t.type_name SEPARATOR ', ') AS types,
@@ -47,24 +56,25 @@ if ($isadmin && empty($_GET['search'])) {
     LEFT JOIN user_pokemon up ON p.id = up.pokemon_id
     LEFT JOIN users u ON up.user_id = u.user_id
     GROUP BY p.id, p.nom, p.numero, u.username
-    ORDER BY p.nom ASC
+    ORDER BY p.numero ASC
     LIMIT :premier, :parPage";
-    $stmt = $db->prepare($query);
 } elseif ($isadmin && $_GET['search']) {
     $searchTerm =  $_GET['search'];
-    $searchParam = "%{$searchTerm}%";
+    $searchParam = "{$searchTerm}%";
     $query = "SELECT p.id, p.nom, p.numero, GROUP_CONCAT(t.type_name ORDER by t.type_name SEPARATOR ', ') AS types,
     u.username FROM pokemon p
     LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
     LEFT JOIN types t ON pt.type_id = t.id
     LEFT JOIN user_pokemon up ON p.id = up.pokemon_id
     LEFT JOIN users u ON up.user_id = u.user_id
-    WHERE (p.nom LIKE :search OR p.numero LIKE :search OR t.type_name LIKE :search OR u.username LIKE :search)
+    WHERE (p.nom LIKE :search OR p.numero LIKE :search2 OR t.type_name LIKE :search3 OR u.username LIKE :search4)
     GROUP BY p.id, p.nom, p.numero, u.username
     ORDER BY p.numero ASC
     LIMIT :premier, :parPage";
-    $stmt = $db->prepare($query);
-    $stmt->bindValue(":search", $searchParam);
+    $queryParams[':search'] = testinput($searchParam);
+    $queryParams[':search2'] = testinput($searchParam);
+    $queryParams[':search3'] = testinput($searchParam);
+    $queryParams[':search4'] = testinput($searchParam);
 } elseif (!$isadmin && empty($_GET['search'])) {
     $query = "SELECT p.id, p.nom, p.numero, GROUP_CONCAT(t.type_name ORDER by t.type_name SEPARATOR ', ') AS types, u.username
     FROM pokemon p
@@ -76,28 +86,29 @@ if ($isadmin && empty($_GET['search'])) {
     GROUP BY p.id, p.nom, p.numero, u.username
     ORDER BY p.numero ASC
     LIMIT :premier, :parPage";
-    $stmt = $db->prepare($query);
-    $stmt->bindValue(":user_id", $user_id, PDO::PARAM_INT);
+    $queryParams[':user_id'] = testinput($user_id);
 } elseif (!$isadmin && $_GET['search']) {
     $searchTerm =  $_GET['search'];
-    $searchParam = "%{$searchTerm}%";
+    $searchParam = "{$searchTerm}%";
     $query = "SELECT p.id, p.nom, p.numero, GROUP_CONCAT(t.type_name ORDER by t.type_name SEPARATOR ', ') AS types, u.username
     FROM pokemon p
     LEFT JOIN pokemon_types pt ON p.id = pt.pokemon_id
     LEFT JOIN types t ON pt.type_id = t.id
     LEFT JOIN user_pokemon up ON p.id = up.pokemon_id
     LEFT JOIN users u ON up.user_id = u.user_id
-    WHERE up.user_id = :user_id AND (p.nom LIKE :search OR p.numero LIKE :search OR t.type_name LIKE :search)
+    WHERE up.user_id = :user_id AND (p.nom LIKE :search1 OR p.numero LIKE :search2 OR t.type_name LIKE :search3)
     GROUP BY p.id, p.nom, p.numero, u.username
     ORDER BY p.numero ASC
     LIMIT :premier, :parPage";
-    $stmt = $db->prepare($query);
-    $stmt->bindValue(":user_id", $user_id, PDO::PARAM_INT);
-    $stmt->bindValue(":search", $searchParam);
+    $queryParams[':user_id'] = testinput($user_id);
+    $queryParams[':search1'] = testinput($searchParam);
+    $queryParams[':search2'] = testinput($searchParam);
+    $queryParams[':search3'] = testinput($searchParam);
 }
-$stmt->bindValue(":premier", $premier);
-$stmt->bindValue(":parPage", $parPage);
-$stmt->execute();
+$queryParams[':premier'] = testInput($premier);
+$queryParams[':parPage'] = testinput($parPage);
+$stmt = $db->prepare($query);
+$stmt->execute($queryParams);
 
 if ($stmt->rowCount() == 0) {
     $error = "<h4 style='text-align: center; padding-top: 150px; padding-bottom: 150px;'>Aucun Pokémon trouvé</h4>";
@@ -161,15 +172,15 @@ if ($error != "") {
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $id = htmlspecialchars($row['id']);
                     $nom = htmlspecialchars($row['nom']);
-                    $username = htmlspecialchars($row['username'] ?? "Inconnu");
+                    $username = testInput($row['username'] ?? "Inconnu");
             ?>
                     <tr class="dash-tr">
                         <th scope='row'><?= htmlspecialchars($row['numero']) ?></th>
-                        <td><a href="/pokemon.php?id=<?= $id ?>"><img class='dash-p-img' src='./uploads/<?= $nom ?>.png' alt="Image du poknemon <?= $nom ?>"></a></td>
+                        <td><a href="/pokemon.php?id=<?= $id ?>"><img class='dash-p-img' src='./uploads/<?= $nom ?>.png' alt="Image du pokemon <?= $nom ?>"></a></td>
                         <td id="#td">
                             <div class="resp_th">Nom: </div><?= $nom ?>
                         </td>
-                        <td>
+                        <td class='type-td'>
                             <?= isset($row['types']) ? htmlspecialchars($row['types']) : 'N/A' ?>
                         </td>
                         <?php if ($isadmin) : ?>

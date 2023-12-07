@@ -42,7 +42,9 @@ header {
 }
 
 header img {
-    max-width: 1440px;
+    min-height: 20vh;
+    max-width: 100%;
+    object-fit: cover;
 }
 
 @media screen and (max-width: 555px) {
@@ -55,7 +57,7 @@ header img {
 
 /** STYLE NAV START */
 .main-nav {
-    width: 1440px;
+    width: 100%;
     border: #bfbfbf 1px solid;
     margin-bottom: 0px;
     border-top: none;
@@ -247,6 +249,10 @@ header img {
 /** NAV RESPONSIVE */
 
 @media(max-width: 650px) {
+    .bouton-droit-slider {
+        display: none;
+    }
+
     .burger {
         display: block;
     }
@@ -274,7 +280,7 @@ header img {
         gap: 0;
         display: block;
         background-color: #c0c2c500;
-        width: 100%;
+        width: 100vw;
         text-align: center;
         transition: 0.3s;
         z-index: 99;
@@ -700,6 +706,11 @@ header img {
 
 .closer {
     z-index: 1;
+}
+
+.image-preview {
+    display: flex;
+    justify-content: center;
 }
 
 #image-preview {
@@ -1147,10 +1158,18 @@ header img {
     color: #0069d1;
 }
 
+.type-td {
+    width: 150px;
+}
+
 /** STYLE DASHBOARD PAGE END */
 
 
 /**STYLE EDIT PAGE START */
+
+.edit-form {
+    width: auto;
+}
 
 .select2-selection__choice {
     border: none;
@@ -1346,7 +1365,7 @@ header img {
 #valider {
     background-color: #A4A4A4;
     width: 49%;
-    height: 80px;
+    height: 50px;
     font-size: 2em;
     color: white;
     text-align: left;
@@ -1359,7 +1378,6 @@ header img {
     padding-right: 20px;
 
 }
-
 
 
 .p-input-desc {
@@ -1390,21 +1408,25 @@ header img {
     width: 30%;
 }
 
+.header-title-edit {
+    margin-top: 0px;
+}
+
 .input-h1 {
     position: relative;
     z-index: 2;
     background-color: #FFF;
-    margin-top: -50px;
+    margin-top: -5px;
     font-size: 36px;
     font-weight: 520;
     text-align: center;
     padding: 10px;
-    width: 800px;
     margin-left: auto;
     margin-right: auto;
     border-top-right-radius: 30px;
     border-top-left-radius: 30px;
     border: none;
+    width: 100%
 }
 
 /* select.type-select-size {
@@ -1512,5 +1534,7 @@ header img {
 
     .type-container {
         flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 }

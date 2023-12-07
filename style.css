@@ -9,7 +9,6 @@ body {
 }
 
 h1 {
-    position: relative;
     z-index: 2;
     background-color: #FFF;
     margin-top: -50px;
@@ -17,7 +16,6 @@ h1 {
     font-weight: 520;
     text-align: center;
     padding: 10px;
-    width: 800px;
     margin-left: auto;
     margin-right: auto;
     border-top-right-radius: 30px;
@@ -42,16 +40,17 @@ h4 {
 }
 
 #precedent {
-    padding-left: 25%;
+    padding-left: 5%;
 }
 
 #suivant {
     text-align: right;
-    padding-right: 27%;
+    padding-right: 4%;
 }
 
 .ind-wrapper {
     display: flex;
+    max-width: 1440px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -69,7 +68,7 @@ h4 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 75%;
+    width: 100%;
 }
 
 .p-header-nav:first-child {
@@ -82,6 +81,7 @@ h4 {
 
 .p-header-title {
     margin-top: -30px;
+    width: 100%;
 }
 
 #section1 {
@@ -93,7 +93,6 @@ h4 {
 
 #pokemon {
     background-color: #F2F2F2;
-    margin-right: 15px;
 }
 
 #section1 p {
@@ -102,7 +101,7 @@ h4 {
 }
 
 .desc {
-    margin-left: 15px;
+    margin: 15px;
     max-width: 450px;
 }
 
@@ -236,21 +235,21 @@ h2 {
 
 @media screen and (max-width: 1000px) {
     .evo-container {
-
         text-align: center;
+        flex-direction: column;
     }
 
     .evolutions {
         max-width: 400px;
+        width: 100%;
+    }
+
+    .evo {
+        border: 1px white;
     }
 
     .arrow {
-        display: inline-block;
-        transform-origin: 0 0;
-        transform: rotate(90deg);
-        justify-content: center;
-        position: relative;
-        left: 45%;
+        display: none;
 
     }
 
@@ -273,16 +272,14 @@ h2 {
 
 @media screen and (max-width: 450px) {
     #pokemon {
-        width: 250px;
+        width: 100%;
+        object-fit: contain;
     }
 
-    #section1 {
-        max-width: 300px;
-    }
 }
 
 
-/** STYLE HEADER START */
+/* * STYLE HEADER START
 header {
     display: flex;
     flex-direction: column;
@@ -297,7 +294,7 @@ header {
 
 .title-container img {
     width: 500px;
-}
+} */
 
 
 
